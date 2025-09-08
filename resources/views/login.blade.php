@@ -11,21 +11,21 @@
 
     <div class="w-full max-w-md flex flex-col items-center">
         <!-- Logo di luar card -->
-        <div class="flex flex-col items-center mb-4">
-            <img src="/images/logorri.png" alt="Logo RRI" class="w-28 h-20 mb-5">
-            <h1 class="text-2xl font-bold text-black drop-shadow mb-2">SIPANDU</h1>
+        <div class="flex flex-col items-center mb-6">
+            <img src="/images/logorri.png" alt="Logo RRI" class="w-50 h-20 mb-8">
+            <h1 class="text-4xl font-bold text-blue-500 drop-shadow mb-2">SIPANDU</h1>
         </div>
 
         <!-- Card Login -->
-        <div class="bg-white/95 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.45)] w-full p-8">
+        <div class="bg-white/95 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.45)] w-full p-8 mb-4">
             
             <!-- Judul -->
-        <div class="text-center mb-6 pb-1">
-            <h2 class="text-lg font-semibold text-gray-900">Selamat Datang Kembali</h2>
-            <p class="text-sm text-gray-500">Silahkan masuk ke akun Anda</p>
+        <div class="text-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-1">Selamat Datang</h2>
+            <p class="text-sm font-semibold text-gray-500 pb-3">Silahkan Masuk Ke Akun Anda</p>
 
             <!-- Garis abu-abu pendek -->
-            <div class="mx-auto mt-4 w-30 border-b-3 border-gray-400"></div>
+            <div class="mx-auto mt-4 w-40 border-b-3 border-gray-400"></div>
         </div>
 
 
