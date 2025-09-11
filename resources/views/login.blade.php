@@ -7,13 +7,13 @@
     @vite('resources/css/app.css')
 </head>
 <body class="min-h-screen flex items-center justify-center bg-cover bg-center" 
-      style="background-image: url('/images/bg.png')">
+      style="background-color: #EDF2F9;">
 
     <div class="w-full max-w-md flex flex-col items-center">
         <!-- Logo di luar card -->
         <div class="flex flex-col items-center mb-6">
             <img src="/images/logorri.png" alt="Logo RRI" class="w-50 h-20 mb-8">
-            <h1 class="text-4xl font-bold text-blue-500 drop-shadow mb-2">SIPANDU</h1>
+            <!-- <h1 class="text-4xl font-bold text-blue-500 drop-shadow mb-2">SIPANDU</h1> -->
         </div>
 
         <!-- Card Login -->
@@ -34,7 +34,7 @@
             <form class="space-y-5">
                 <!-- Email -->
                 <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700">Email/NIP</label>
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                     <div class="relative mt-1">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
                             <!-- Icon email -->
@@ -78,7 +78,7 @@
 
                 <!-- Tombol -->
                 <button type="button"
-                        class="w-full bg-blue-700 text-white py-2 rounded-md font-semibold hover:bg-blue-800 transition">
+                        class="w-full bg-[#68778B] text-white py-2 rounded-md font-semibold hover:bg-[#003B69] transition">
                     Masuk
                 </button>
             </form>
