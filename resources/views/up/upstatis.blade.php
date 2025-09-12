@@ -51,29 +51,28 @@
 
             <!-- Submenu dengan stagger animasi -->
             <div class="ml-2 mt-2 space-y-2 p-1">
-<template x-for="(menu, i) in menus" :key="i">
-    <a href="#"
-       x-show="open"
-       x-transition:enter="transition ease-out duration-300"
-       x-transition:enter-start="opacity-0 -translate-y-2"
-       x-transition:enter-end="opacity-100 translate-y-0"
-       x-transition:leave="transition ease-in duration-200"
-       x-transition:leave-start="opacity-100 translate-y-0"
-       x-transition:leave-end="opacity-0 -translate-y-2"
-       :style="open 
-           ? `transition-delay: ${i * 100}ms` 
-           : `transition-delay: ${(menus.length - i) * 100}ms`"
-       class="group flex items-center space-x-2 p-2 rounded hover:bg-[#CBD2DA] transition-all duration-300 ease-in-out"
-       :class="menu.text === 'Statistik Arsip' ? 'text-[#003B69] font-semibold' : 'text-white'">
-       
-        <img :src="menu.icon" alt="" 
-             class="w-4 h-4 transition-transform duration-300 ease-in-out group-hover:scale-110">
-        
-        <span x-text="menu.text" 
-              class="transition-transform duration-300 ease-in-out group-hover:translate-x-1"></span>
-    </a>
-</template>
-
+                <template x-for="(menu, i) in menus" :key="i">
+                    <a href="#"
+                    x-show="open"
+                    x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 -translate-y-2"
+                    x-transition:enter-end="opacity-100 translate-y-0"
+                    x-transition:leave="transition ease-in duration-200"
+                    x-transition:leave-start="opacity-100 translate-y-0"
+                    x-transition:leave-end="opacity-0 -translate-y-2"
+                    :style="open 
+                        ? `transition-delay: ${i * 100}ms` 
+                        : `transition-delay: ${(menus.length - i) * 100}ms`"
+                    class="group flex items-center space-x-2 p-2 rounded hover:bg-[#CBD2DA] transition-all duration-300 ease-in-out"
+                    :class="menu.text === 'Statistik Arsip' ? 'text-[#003B69] font-semibold' : 'text-white'">
+                    
+                        <img :src="menu.icon" alt="" 
+                            class="w-4 h-4 transition-transform duration-300 ease-in-out group-hover:scale-110">
+                        
+                        <span x-text="menu.text" 
+                            class="transition-transform duration-300 ease-in-out group-hover:translate-x-1"></span>
+                    </a>
+                </template>
             </div>
         </nav>
     </aside>

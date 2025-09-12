@@ -89,55 +89,55 @@
             </button>
         </header>
 
-        <!-- Content -->
-        <main class="p-6 space-y-6">
-        <!-- Bagian atas: Pencarian + Total Arsip -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <!-- Pencarian -->
-            <div class="bg-white p-4 rounded shadow md:col-span-2">
-                <h2 class="font-semibold text-lg mb-3">Pencarian</h2>
-                <div class="space-y-3">
-                    <div class="h-5 bg-gray-200 rounded"></div>
-                    <div class="h-5 bg-gray-200 rounded"></div>
+            <!-- Content -->
+            <main class="p-6 space-y-6">
+            <!-- Bagian atas: Pencarian + Total Arsip -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <!-- Pencarian -->
+                <div class="bg-white p-4 rounded shadow md:col-span-2">
+                    <h2 class="font-semibold text-lg mb-3">Pencarian</h2>
+                    <div class="space-y-3">
+                        <div class="h-5 bg-gray-200 rounded"></div>
+                        <div class="h-5 bg-gray-200 rounded"></div>
+                    </div>
+                </div>
+
+                <!-- Total Arsip -->
+                <div class="bg-white p-4 rounded shadow flex flex-col items-center justify-center">
+                    <h2 class="font-semibold text-lg mb-2">Total Arsip</h2>
+                    <div class="bg-[#E3E8EE] px-11 py-4 rounded shadow-inner">
+                        <p class="text-3xl font-bold text-gray-800">100</p>
+                    </div>
+                </div>
+
+                <!-- Total Arsip Publik -->
+                <div class="bg-white p-4 rounded shadow flex flex-col items-center justify-center">
+                    <h2 class="font-semibold text-lg mb-2">Total Arsip Publik</h2>
+                    <div class="bg-[#E3E8EE] px-11 py-4 rounded shadow-inner">
+                        <p class="text-3xl font-bold text-gray-800">100</p>
+                    </div>
                 </div>
             </div>
 
-            <!-- Total Arsip -->
-            <div class="bg-white p-4 rounded shadow flex flex-col items-center justify-center">
-                <h2 class="font-semibold text-lg mb-2">Total Arsip</h2>
-                <div class="bg-[#E3E8EE] px-11 py-4 rounded shadow-inner">
-                    <p class="text-3xl font-bold text-gray-800">100</p>
+            <!-- Bagian bawah: Statistik Arsip -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Statistik Arsip -->
+                <div class="bg-white p-4 rounded shadow">
+                    <h2 class="font-semibold text-center mb-3">Statistik Arsip</h2>
+                    <div class="h-64 flex items-center justify-center text-gray-400">
+                        <p>[Grafik Arsip Dummy]</p>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Total Arsip Publik -->
-            <div class="bg-white p-4 rounded shadow flex flex-col items-center justify-center">
-                <h2 class="font-semibold text-lg mb-2">Total Arsip Publik</h2>
-                <div class="bg-[#E3E8EE] px-11 py-4 rounded shadow-inner">
-                    <p class="text-3xl font-bold text-gray-800">100</p>
+                <!-- Statistik Arsip Publik -->
+                <div class="bg-white p-4 rounded shadow">
+                    <h2 class="font-semibold text-center mb-3">Statistik Arsip Publik</h2>
+                    <div class="h-64 flex items-center justify-center text-gray-400">
+                        <p>[Grafik Arsip Publik Dummy]</p>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Bagian bawah: Statistik Arsip -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Statistik Arsip -->
-            <div class="bg-white p-4 rounded shadow">
-                <h2 class="font-semibold text-center mb-3">Statistik Arsip</h2>
-                <div class="h-64 flex items-center justify-center text-gray-400">
-                    <p>[Grafik Arsip Dummy]</p>
-                </div>
-            </div>
-
-            <!-- Statistik Arsip Publik -->
-            <div class="bg-white p-4 rounded shadow">
-                <h2 class="font-semibold text-center mb-3">Statistik Arsip Publik</h2>
-                <div class="h-64 flex items-center justify-center text-gray-400">
-                    <p>[Grafik Arsip Publik Dummy]</p>
-                </div>
-            </div>
-        </div>
-    </main>
+        </main>
     </div>
 </body>
 </html>
