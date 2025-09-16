@@ -16,9 +16,9 @@
            x-data="{ 
                open: false, 
                menus: [
-                   {icon: '/images/panahbiru.png', text: 'Statistik Arsip'},
-                   {icon: '/images/panahputih.png', text: 'Kelola Arsip Publik'},
-                   {icon: '/images/panahputih.png', text: 'Daftar Arsip Publik'},
+            {icon: '/images/panahbiru.png', text: 'Statistik Arsip', route: '{{ url('/upstatis') }}'},
+            {icon: '/images/panahputih.png', text: 'Verifikasi Arsip', route: '{{ url('/verifikasi') }}'},
+            {icon: '/images/panahputih.png', text: 'Daftar Arsip Publik', route: '{{ url('/dap') }}'},
                    {icon: '/images/panahputih.png', text: 'Pencarian Arsip Publik'},
                    {icon: '/images/panahputih.png', text: 'Laporan Layanan Arsip Publik'}
                ]
@@ -51,7 +51,7 @@
             <!-- Submenu dengan stagger animasi -->
             <div class="ml-2 mt-2 space-y-2 p-1">
                 <template x-for="(menu, i) in menus" :key="i">
-                    <a href="#"
+                    <a :href="menu.route"
                     x-show="open"
                     x-transition:enter="transition ease-out duration-300"
                     x-transition:enter-start="opacity-0 -translate-y-2"
