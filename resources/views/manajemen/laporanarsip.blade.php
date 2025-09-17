@@ -12,67 +12,35 @@
 <body class="flex min-h-screen bg-[#EDF2F9]">
 
     <!-- Sidebar -->
-    <aside class="w-64 bg-[#8E9BAB] text-white flex flex-col" 
-           x-data="{ 
-               open: false, 
-               menus: [
-                {icon: '/images/panahputih.png', text: 'Statistik Arsip', route: '{{ url('/mastatis') }}'},
-                {icon: '/images/panahbiru.png', text: 'Laporan Arsip Unit', route: '{{ url('/laporanarsip') }}'},
-                {icon: '/images/panahputih.png', text: 'Laporan Layanan Arsip Publik', route: '{{ url('/laporanlayanan') }}'}
-               ]
-           }">
-
+    <aside class="w-64 bg-[#8E9BAB] text-white flex flex-col">
+        <!-- Logo -->
         <div class="px-3 py-2 bg-[#68778B] flex items-center">
             <img src="/images/logo.png" class="h-16">
         </div>
 
-
-
+        <!-- Navigation -->
         <nav class="flex-1 p-4 space-y-2">
-            <!-- Dashboard dengan toggle -->
-            <div class="text-xs font-bold uppercase tracking-wide text-white rounded [letter-spacing:4px] p-4 mb-3">Navigation</div>
-
-            <button @click="open = !open"
-                class="flex items-center justify-between w-full p-5 rounded bg-[#68778B] hover:bg-gray-500">
-                <div class="flex items-center space-x-2">
-                    <img src="/images/dash.png" alt="Dashboard" class="w-5 h-5">
-                    <span>Dashboard</span>
-                </div>
-                <svg :class="open ? 'rotate-90' : ''" 
-                     class="w-4 h-4 transform transition-transform"
-                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M9 5l7 7-7 7" />
-                </svg>
-            </button>
-
-            <!-- Submenu dengan stagger animasi -->
-            <div class="ml-2 mt-2 space-y-2 p-1">
-                <template x-for="(menu, i) in menus" :key="i">
-                    <a :href="menu.route"
-                    x-show="open"
-                    x-transition:enter="transition ease-out duration-300"
-                    x-transition:enter-start="opacity-0 -translate-y-2"
-                    x-transition:enter-end="opacity-100 translate-y-0"
-                    x-transition:leave="transition ease-in duration-200"
-                    x-transition:leave-start="opacity-100 translate-y-0"
-                    x-transition:leave-end="opacity-0 -translate-y-2"
-                    :style="open 
-                        ? `transition-delay: ${i * 100}ms` 
-                        : `transition-delay: ${(menus.length - i) * 100}ms`"
-                    class="group flex items-center space-x-2 p-2 rounded hover:bg-[#CBD2DA] transition-all duration-300 ease-in-out"
-                    :class="menu.text === 'Laporan Arsip Unit' ? 'text-[#003B69] font-semibold' : 'text-white'">
-
-                        <!-- Icon -->
-                        <img :src="menu.icon" alt="" 
-                            class="w-4 h-4 transition-transform duration-300 ease-in-out group-hover:scale-110">
-
-                        <!-- Text -->
-                        <span x-text="menu.text" 
-                            class="transition-transform duration-300 ease-in-out group-hover:translate-x-1"></span>
-                    </a>
-                </template>
+            <div class="text-xs font-bold uppercase tracking-wide text-white rounded [letter-spacing:4px] p-4 mb-3">
+                Selamat Datang
             </div>
+
+            <a href="{{ url('/mastatis') }}"
+               class="flex items-center space-x-2 p-3 rounded bg-[#68778B] hover:bg-gray-500 transition-all duration-300 ease-in-out">
+                <img src="/images/dash.png" alt="Dashboard" class="w-5 h-5">
+                <span>Dashboard</span>
+            </a>
+
+            <a href="{{ url('/laporanarsip') }}"
+               class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] transition-all duration-300 ease-in-out text-[#003B69] font-semibold">
+                <img src="/images/unitbiru.png" alt="" class="w-6 h-6 transition-transform duration-300 group-hover:scale-110">
+                <span class="transition-transform duration-300 group-hover:translate-x-1">Laporan Arsip Unit</span>
+            </a>
+
+            <a href="{{ url('/laporanlayanan') }}"
+               class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] transition-all duration-300 ease-in-out font-semibold">
+                <img src="/images/unit.png" alt="" class="w-6 h-6 transition-transform duration-300 group-hover:scale-110">
+                <span class="transition-transform duration-300 group-hover:translate-x-1">Laporan Arsip Publik</span>
+            </a>
         </nav>
     </aside>
 
@@ -94,12 +62,11 @@
             <!-- Judul -->
             <div class="bg-white p-5 rounded shadow">
                 <div class="flex items-center justify-between mb-4">
-                    <h2 class="font-bold text-lg text-[#003B69]">Laporan Arsip Publik</h2>
-                    <button class="font-semibold bg-[#B1B1B1] text-white px-4 py-2 rounded shadow hover:bg-[#898989] transition">
+                    <h2 class="font-bold text-lg text-[#003B69]">Laporan Arsip Unit</h2>
+                    <button class="font-semibold bg-[#C4C4C4] text-white px-4 py-2 rounded shadow hover:bg-[#68778B] transition">
                         Cetak PDF
                     </button>
                 </div>
-                
                 <!-- Wrapper scroll -->
                 <div class="overflow-x-auto">
                     <table class="min-w-full border border-gray-300 text-sm">
