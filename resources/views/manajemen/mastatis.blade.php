@@ -18,7 +18,7 @@
                menus: [
                 {icon: '/images/panahbiru.png', text: 'Statistik Arsip', route: '{{ url('/mastatis') }}'},
                 {icon: '/images/panahputih.png', text: 'Laporan Arsip', route: '{{ url('/laporanarsip') }}'},
-                {icon: '/images/panahputih.png', text: 'Laporan Layanan Arsip Publik', route: '{{ url('/laporanlayanan') }}'},
+                {icon: '/images/panahputih.png', text: 'Laporan Layanan Arsip Publik', route: '{{ url('/laporanlayanan') }}'}
                ]
            }">
 
