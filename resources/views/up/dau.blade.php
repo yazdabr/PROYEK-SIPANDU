@@ -13,33 +13,28 @@
 
     <!-- Sidebar -->
     <aside class="w-64 bg-[#8E9BAB] text-white flex flex-col">
-        <!-- Logo -->
         <div class="px-3 py-2 bg-[#68778B] flex items-center">
             <img src="/images/logo.png" class="h-16">
         </div>
 
-        <!-- Navigation -->
         <nav class="flex-1 p-4 space-y-2">
             <div class="text-xs font-bold uppercase tracking-wide text-white rounded [letter-spacing:4px] p-4 mb-3">
                 Selamat Datang
             </div>
-
             <a href="{{ url('/upstatis') }}"
-               class="flex items-center space-x-2 p-3 rounded bg-[#68778B] hover:bg-gray-500 transition-all duration-300 ease-in-out">
+               class="flex items-center space-x-2 p-3 rounded bg-[#68778B] hover:bg-gray-500 transition">
                 <img src="/images/dash.png" alt="Dashboard" class="w-5 h-5">
                 <span>Dashboard</span>
             </a>
-
             <a href="{{ url('/input') }}"
-               class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] transition-all duration-300 ease-in-out font-semibold">
-                <img src="/images/input.png" alt="" class="w-7 h-7 transition-transform duration-300 group-hover:scale-110">
-                <span class="transition-transform duration-300 group-hover:translate-x-1">Input Arsip</span>
+               class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] transition font-semibold">
+                <img src="/images/input.png" alt="" class="w-7 h-7 group-hover:scale-110 transition-transform">
+                <span class="group-hover:translate-x-1 transition-transform">Input Arsip</span>
             </a>
-
             <a href="{{ url('/dau') }}"
-               class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] transition-all duration-300 ease-in-out  text-[#003B69] font-semibold">
-                <img src="/images/daftarbiru.png" alt="" class="w-7 h-7 transition-transform duration-300 group-hover:scale-110">
-                <span class="transition-transform duration-300 group-hover:translate-x-1">Daftar Arsip Unit</span>
+               class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] transition text-[#003B69] font-semibold">
+                <img src="/images/daftarbiru.png" alt="" class="w-7 h-7 group-hover:scale-110 transition-transform">
+                <span class="group-hover:translate-x-1 transition-transform">Arsip Unit</span>
             </a>
         </nav>
     </aside>
@@ -51,63 +46,132 @@
             <div class="px-3 py-3 bg-[#CBD2DA] text-[#003B69] font-bold rounded [letter-spacing:1px]">
                 Unit Pengolah
             </div>
-            <button class="flex items-center space-x-2 bg-[#CBD2DA] text-[#003B69] font-bold px-3 py-3 rounded [letter-spacing:1px] rounded hover:bg-gray-300">
+            <button class="flex items-center space-x-2 bg-[#CBD2DA] text-[#003B69] font-bold px-3 py-3 rounded hover:bg-gray-300">
                 <img src="/images/user.png" alt="User" class="w-5 h-5">
                 <span>Log Out</span>
             </button>
         </header>
 
         <!-- Content -->
-        <main class="p-6 space-y-6">
+        <main class="p-6 space-y-6" x-data="{ showModal: false, selected: null }">
+                <!-- Notifikasi Sukses -->
+                @if(session('success'))
+                    <div 
+                        x-data="{ show: true }" 
+                        x-show="show" 
+                        x-init="setTimeout(() => show = false, 3000)" 
+                        x-transition:enter="transform transition ease-out duration-500"
+                        x-transition:enter-start="translate-y-20 opacity-0"
+                        x-transition:enter-end="translate-y-0 opacity-100"
+                        x-transition:leave="transform transition ease-in duration-500"
+                        x-transition:leave-start="translate-y-0 opacity-100"
+                        x-transition:leave-end="translate-y-20 opacity-0"
+                        class="fixed bottom-5 left-1/2 transform -translate-x-1/2 z-50">
+                        <div class="bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg text-center flex items-center space-x-3">
+                            <span>{{ session('success') }}</span>
+                            <button @click="show = false" class="font-bold">✕</button>
+                        </div>
+                    </div>
+                @endif
+
             <!-- Judul -->
             <div class="bg-white p-5 rounded shadow">
                 <h2 class="font-bold text-lg text-[#003B69] mb-4">Daftar Arsip Unit</h2>
                 
-                <!-- Wrapper scroll -->
-                <div class="overflow-x-auto">
-                    <table class="min-w-full border border-gray-300 text-sm">
+                <div class="w-full overflow-x-auto">
+                    <table class="border border-gray-300 text-sm w-full table-auto">
                         <thead>
                             <tr class="bg-gray-200 text-gray-700">
                                 <th class="px-3 py-2 border">No</th>
                                 <th class="px-3 py-2 border">Kode Klasifikasi</th>
-                                <th class="px-3 py-2 border">Indeks</th>
-                                <th class="px-3 py-2 border">No Item Arsip</th>
-                                <th class="px-3 py-2 border">Uraian Informasi</th>
-                                <th class="px-3 py-2 border">Tanggal</th>
-                                <th class="px-3 py-2 border">Jumlah</th>
-                                <th class="px-3 py-2 border">Unit Pengolah Arsip</th>
-                                <th class="px-3 py-2 border">Lokasi Arsip</th>
-                                <th class="px-3 py-2 border">Ruangan</th>
-                                <th class="px-3 py-2 border">No Filling</th>
-                                <th class="px-3 py-2 border">No Laci</th>
-                                <th class="px-3 py-2 border">No Folder</th>
-                                <th class="px-3 py-2 border">Keterangan</th>
-                                <th class="px-3 py-2 border">Arsip Digital (Link)</th>
+                                <th class="px-3 py-2 border">Nama Berkas</th>
                                 <th class="px-3 py-2 border">Kategori</th>
+                                <th class="px-3 py-2 border">Unit Pengolah</th>
+                                <th class="px-3 py-2 border">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach ($arsipunit as $index => $arsip)
                             <tr>
-                                <td class="px-3 py-2 border text-center">1</td>
-                                <td class="px-3 py-2 border">A-001</td>
-                                <td class="px-3 py-2 border">IDX-01</td>
-                                <td class="px-3 py-2 border">001</td>
-                                <td class="px-3 py-2 border">Contoh uraian arsip</td>
-                                <td class="px-3 py-2 border">2025-09-12</td>
-                                <td class="px-3 py-2 border text-center">2</td>
-                                <td class="px-3 py-2 border">Unit A</td>
-                                <td class="px-3 py-2 border">Rak 1</td>
-                                <td class="px-3 py-2 border">Ruang 101</td>
-                                <td class="px-3 py-2 border">F-001</td>
-                                <td class="px-3 py-2 border">L-01</td>
-                                <td class="px-3 py-2 border">FD-01</td>
-                                <td class="px-3 py-2 border">Lengkap</td>
-                                <td class="px-3 py-2 border text-blue-600 underline cursor-pointer">Link</td>
-                                <td class="px-3 py-2 border">Rahasia</td>
+                                <td class="px-3 py-2 border text-center">{{ $index + 1 }}</td>
+                                <td class="px-3 py-2 border">{{ $arsip->kode_final }}</td>
+                                <td class="px-3 py-2 border">{{ $arsip->judul }}</td>
+                                <td class="px-3 py-2 border">{{ $arsip->kategori }}</td>
+                                <td class="px-3 py-2 border">{{ $arsip->unit_pengolah_arsip }}</td>
+                                <td class="px-3 py-2 border text-center">
+                                    <div class="flex justify-center items-center space-x-2">
+                                        <!-- Tombol Lihat -->
+                                        <button 
+                                            class="bg-gray-600 text-white px-2 py-1 rounded hover:bg-gray-400 transition font-semibold"
+                                            @click="showModal = true; selected = {{ json_encode($arsip) }}">
+                                            Lihat Selengkapnya
+                                        </button>
+
+                                        <!-- Tombol Hapus -->
+                                        <form action="{{ route('arsip.destroy', $arsip->id) }}" method="POST" 
+                                            onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" 
+                                                class="bg-[#BB5456] text-white px-2 py-1 rounded hover:bg-[#8B6869] transition font-semibold">
+                                                Hapus
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
                             </tr>
-                            <!-- Tambahkan baris data lainnya di sini -->
+                            @endforeach
                         </tbody>
                     </table>
+                </div>
+
+            </div>
+
+            <!-- Modal -->
+            <div 
+                class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center px-4 z-50"
+                x-show="showModal"
+                x-transition.opacity
+                x-cloak>
+                <div class="bg-white rounded-lg shadow-lg w-full max-w-4xl p-6 relative"
+                     x-transition.scale>
+                    <!-- Tombol Close -->
+                    <button class="absolute top-3 right-3 text-gray-600 hover:text-gray-900"
+                            @click="showModal = false">&times;</button>
+
+                    <h3 class="text-lg font-bold text-[#003B69] mb-4">Detail Arsip</h3>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full border border-gray-300 text-sm">
+                            <tbody>
+                                <tr><th class="px-3 py-2 border text-left">Nama Berkas</th><td class="px-3 py-2 border" x-text="selected?.judul"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">Nomor Item Arsip</th><td class="px-3 py-2 border" x-text="selected?.nomor"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">Kategori</th><td class="px-3 py-2 border" x-text="selected?.kategori"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">Kode Klasifikasi</th><td class="px-3 py-2 border" x-text="selected?.kode_klasifikasi"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">Indeks</th><td class="px-3 py-2 border" x-text="selected?.indeks"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">Uraian Informasi</th><td class="px-3 py-2 border" x-text="selected?.uraian_informasi"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">Tanggal</th><td class="px-3 py-2 border" x-text="selected?.tanggal"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">Tingkat Perkembangan</th><td class="px-3 py-2 border" x-text="selected?.tingkat_perkembangan"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">Jumlah</th><td class="px-3 py-2 border" x-text="selected?.jumlah"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">Lembar/Jilid/Bundle</th><td class="px-3 py-2 border" x-text="selected?.satuan"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">Unit Pengolah Arsip</th><td class="px-3 py-2 border" x-text="selected?.unit_pengolah_arsip"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">Ruangan</th><td class="px-3 py-2 border" x-text="selected?.ruangan"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">No Filling</th><td class="px-3 py-2 border" x-text="selected?.no_filling"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">No Laci</th><td class="px-3 py-2 border" x-text="selected?.no_laci"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">No Folder</th><td class="px-3 py-2 border" x-text="selected?.no_folder"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">Keterangan</th><td class="px-3 py-2 border" x-text="selected?.keterangan"></td></tr>
+                                <tr>
+                                    <th class="px-3 py-2 border text-left">Dokumen</th>
+                                    <td class="px-3 py-2 border">
+                                        <template x-if="selected?.upload_dokumen">
+                                            <a :href="'/storage/' + selected.upload_dokumen" target="_blank" class="text-blue-600 underline">Lihat</a>
+                                        </template>
+                                        <template x-if="!selected?.upload_dokumen">-</template>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </main>

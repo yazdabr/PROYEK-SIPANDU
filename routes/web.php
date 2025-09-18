@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ArsipController;
 
 Route::get('/', function () {
     return view('login');
@@ -16,6 +17,10 @@ Route::get('/input', function () {
 Route::get('/dau', function () {
     return view('up.dau');
 });
+Route::get('/input', [ArsipController::class, 'create'])->name('arsip.create');
+Route::post('/arsip/store', [ArsipController::class, 'store'])->name('arsip.store'); // jika pakai store
+Route::get('/dau', [ArsipController::class, 'index'])->name('arsip.index');
+Route::delete('/arsip/{id}', [ArsipController::class, 'destroy'])->name('arsip.destroy');
 
 // PPID
 Route::get('/ppidstatis', function () {
