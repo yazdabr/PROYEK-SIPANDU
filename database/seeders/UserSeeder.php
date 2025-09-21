@@ -1,6 +1,5 @@
 <?php
 
-// database/seeders/UserSeeder.php
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
@@ -9,28 +8,29 @@ use App\Models\User;
 
 class UserSeeder extends Seeder
 {
-    public function run(): void
+    public function run()
     {
         $users = [
-            ['name' => 'TMB', 'email' => 'tmb@sipandu.local', 'role' => 'TMB'],
-            ['name' => 'SIARAN', 'email' => 'siaran@sipandu.local', 'role' => 'SIARAN'],
-            ['name' => 'KMB', 'email' => 'kmb@sipandu.local', 'role' => 'KMB'],
-            ['name' => 'LPU', 'email' => 'lpu@sipandu.local', 'role' => 'LPU'],
-            ['name' => 'Tata Usaha Keuangan', 'email' => 'tuk@sipandu.local', 'role' => 'TATA USAHA KEUANGAN'],
-            ['name' => 'Tata Usaha Umum', 'email' => 'tuu@sipandu.local', 'role' => 'TATA USAHA UMUM'],
-            ['name' => 'Tata Usaha SDM', 'email' => 'tusdm@sipandu.local', 'role' => 'TATA USAHA SDM'],
-            ['name' => 'Operator PPID', 'email' => 'ppid@sipandu.local', 'role' => 'Operator PPID'],
-            ['name' => 'Manajemen', 'email' => 'manajemen@sipandu.local', 'role' => 'Manajemen'],
+            ['name' => 'TMB', 'email' => 'tmb@example.com', 'role' => 'TMB'],
+            ['name' => 'SIARAN', 'email' => 'siaran@example.com', 'role' => 'SIARAN'],
+            ['name' => 'LPU', 'email' => 'lpu@example.com', 'role' => 'LPU'],
+            ['name' => 'KMB', 'email' => 'kmb@example.com', 'role' => 'KMB'],
+            ['name' => 'TATA USAHA KEUANGAN', 'email' => 'tuk@example.com', 'role' => 'TATA USAHA KEUANGAN'],
+            ['name' => 'TATA USAHA UMUM', 'email' => 'tuu@example.com', 'role' => 'TATA USAHA UMUM'],
+            ['name' => 'TATA USAHA SDM', 'email' => 'tusdm@example.com', 'role' => 'TATA USAHA SDM'],
+            ['name' => 'Operator PPID', 'email' => 'ppid@example.com', 'role' => 'Operator PPID'],
+            ['name' => 'Manajemen', 'email' => 'manajemen@example.com', 'role' => 'Manajemen'],
         ];
 
-        foreach ($users as $u) {
-            User::create([
-                'name' => $u['name'],
-                'email' => $u['email'],
-                'role' => $u['role'],
-                'password' => Hash::make('password123'), // default password
-            ]);
+        foreach ($users as $data) {
+            User::updateOrCreate(
+                ['email' => $data['email']], // cek kalau sudah ada email tidak duplikat
+                [
+                    'name' => $data['name'],
+                    'password' => Hash::make('password123'), // default password
+                    'role' => $data['role']
+                ]
+            );
         }
     }
 }
-

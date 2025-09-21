@@ -41,24 +41,6 @@
                 <img src="/images/daftar.png" alt="" class="w-7 h-7 transition-transform duration-300 group-hover:scale-110">
                 <span class="transition-transform duration-300 group-hover:translate-x-1">Daftar Arsip Publik</span>
             </a>
-
-            <!-- <a href="#"
-               class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] transition-all duration-300 ease-in-out">
-                <img src="/images/panahputih.png" alt="" class="w-4 h-4 transition-transform duration-300 group-hover:scale-110">
-                <span class="transition-transform duration-300 group-hover:translate-x-1">Pemberkasan Arsip</span>
-            </a>
-
-            <a href="#"
-               class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] transition-all duration-300 ease-in-out">
-                <img src="/images/panahputih.png" alt="" class="w-4 h-4 transition-transform duration-300 group-hover:scale-110">
-                <span class="transition-transform duration-300 group-hover:translate-x-1">Pencarian Arsip Unit</span>
-            </a>
-
-            <a href="#"
-               class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] transition-all duration-300 ease-in-out">
-                <img src="/images/panahputih.png" alt="" class="w-4 h-4 transition-transform duration-300 group-hover:scale-110">
-                <span class="transition-transform duration-300 group-hover:translate-x-1">Laporan Arsip Unit</span>
-            </a> -->
         </nav>
     </aside>
 
@@ -82,37 +64,47 @@
                 <h2 class="font-bold text-lg text-[#003B69] mb-4">Verifikasi</h2>
                 
                 <!-- Wrapper scroll -->
-                <div class="overflow-x-auto">
+                <div x-data="{ showModal: false, selected: null }">
+
                     <table class="min-w-full border border-gray-300 text-sm">
                         <thead>
                             <tr class="bg-gray-200 text-gray-700">
                                 <th class="px-3 py-2 border">No</th>
                                 <th class="px-3 py-2 border">Data</th>
-                                <th class="px-3 py-2 border">Aksi</th>
+                                <!-- <th class="px-3 py-2 border">Aksi</th> -->
                                 <th class="px-3 py-2 border">Data Publik/Tidak</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @forelse ($arsip as $key => $item)
                             <tr>
-                                <td class="px-3 py-2 border text-center">1</td>
-                                <td class="px-3 py-2 border"></td>
-                                <td class="px-3 py-2 border">Lihat Selengkapnya</td>
+                                <td class="px-3 py-2 border text-center">{{ $key + 1 }}</td>
                                 <td class="px-3 py-2 border">
-                                <div class="flex justify-center space-x-3 font-semibold">
-                                    <!-- Tombol YA -->
-                                    <button class="bg-[#68778B] text-white px-4 py-2 rounded border border-gray-400 shadow-md 
-                                                hover:bg-[#4A5A6B] hover:border-[#003B69] transition">
-                                    Ya
-                                    </button>
-
-                                    <!-- Tombol TIDAK -->
-                                    <button class="bg-[#8B6869] text-white px-4 py-2 rounded border border-gray-400 shadow-md 
-                                                hover:bg-[#6A4A4B] hover:border-[#5A2C2C] transition">
-                                    Tidak
-                                    </button>
-                                </div>
+                                    <div class="flex flex-col space-y-1">
+                                        <span><strong>Judul:</strong> {{ $item->judul }}</span>
+                                        <span><strong>Nomor Arsip:</strong> {{ $item->nomor_arsip }}</span>
+                                        <span><strong>Unit:</strong> {{ $item->unitPengolah->nama_unit ?? '-' }}</span>
+                                        @if ($item->upload_dokumen)
+                                            <a href="{{ asset('storage/'.$item->upload_dokumen) }}" target="_blank" class="text-blue-500 underline">
+                                                Lihat File
+                                            </a>
+                                        @else
+                                            <span class="text-gray-500">Tidak ada file</span>
+                                        @endif
+                                    </div>
+                                </td>
+                                <td class="px-3 py-2 border">
+                                    <div class="flex justify-center space-x-3 font-semibold">
+                                        <button class="bg-[#68778B] text-white px-4 py-2 rounded hover:bg-[#4A5A6B] transition">Ya</button>
+                                        <button class="bg-[#8B6869] text-white px-4 py-2 rounded hover:bg-[#6A4A4B] transition">Tidak</button>
+                                    </div>
                                 </td>
                             </tr>
+                            @empty
+                            <tr>
+                                <td colspan="4" class="px-3 py-2 border text-center text-gray-500">Tidak ada data</td>
+                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>

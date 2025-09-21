@@ -1,115 +1,178 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>DAFTAR ARSIP UNIT - SIPANDU</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Alpine.js + collapse plugin -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body class="flex min-h-screen bg-[#EDF2F9]">
 
     <!-- Sidebar -->
     <aside class="w-64 bg-[#8E9BAB] text-white flex flex-col">
-        <!-- Logo -->
         <div class="px-3 py-2 bg-[#68778B] flex items-center">
-            <img src="/images/logo.png" class="h-16">
+            <img src="/images/logo.png" class="h-16" alt="logo">
         </div>
 
-        <!-- Navigation -->
         <nav class="flex-1 p-4 space-y-2">
-            <div class="text-xs font-bold uppercase tracking-wide text-white rounded [letter-spacing:4px] p-4 mb-3">
-                Selamat Datang
-            </div>
+            <div class="text-xs font-bold uppercase tracking-wide text-white p-4 mb-3">Selamat Datang</div>
 
-            <a href="{{ url('/upstatis') }}"
+            <a href="{{ url('/ppidstatis') }}"
                class="flex items-center space-x-2 p-3 rounded bg-[#68778B] hover:bg-gray-500 transition-all duration-300 ease-in-out">
                 <img src="/images/dash.png" alt="Dashboard" class="w-5 h-5">
                 <span>Dashboard</span>
             </a>
 
             <a href="{{ url('/verifikasi') }}"
-               class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] transition-all duration-300 ease-in-out font-semibold">
-                <img src="/images/input.png" alt="" class="w-7 h-7 transition-transform duration-300 group-hover:scale-110">
+               class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] transition-all duration-300 ease-in-out  font-semibold">
+                <img src="/images/verif.png" alt="" class="w-6 h-6 transition-transform duration-300 group-hover:scale-110">
                 <span class="transition-transform duration-300 group-hover:translate-x-1">Verifikasi Arsip</span>
             </a>
 
             <a href="{{ url('/dap') }}"
-               class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] transition-all duration-300 ease-in-out  text-[#003B69] font-semibold">
+               class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] transition-all duration-300 ease-in-out text-[#003B69] font-semibold">
                 <img src="/images/daftarbiru.png" alt="" class="w-7 h-7 transition-transform duration-300 group-hover:scale-110">
                 <span class="transition-transform duration-300 group-hover:translate-x-1">Daftar Arsip Publik</span>
             </a>
         </nav>
     </aside>
 
-    <!-- Main Content -->
+    <!-- Main -->
     <div class="flex-1 flex flex-col">
-        <!-- Header -->
         <header class="flex justify-between items-center bg-[#E3E8EE] px-6 py-4">
-            <div class="px-3 py-3 bg-[#CBD2DA] text-[#003B69] font-bold rounded [letter-spacing:1px]">
-                Opererator PPID
-            </div>
-            <button class="flex items-center space-x-2 bg-[#CBD2DA] text-[#003B69] font-bold px-3 py-3 rounded [letter-spacing:1px] rounded hover:bg-gray-300">
-                <img src="/images/user.png" alt="User" class="w-5 h-5">
-                <span>Log Out</span>
+            <div class="px-3 py-3 bg-[#CBD2DA] text-[#003B69] font-bold rounded">Unit Pengolah TMB</div>
+            <button class="flex items-center space-x-2 bg-[#CBD2DA] text-[#003B69] font-bold px-3 py-3 rounded hover:bg-gray-300">
+                <img src="/images/user.png" class="w-5 h-5" alt="user"><span>Log Out</span>
             </button>
         </header>
 
-        <!-- Content -->
-        <main class="p-6 space-y-6">
-            <!-- Judul -->
+        <main class="p-6 space-y-6" x-data="{ showModal: false, selected: null }">
             <div class="bg-white p-5 rounded shadow">
-                <h2 class="font-bold text-lg text-[#003B69] mb-4">Daftar Arsip Publik</h2>
-                
-                <!-- Wrapper scroll -->
-                <div class="overflow-x-auto">
-                    <table class="min-w-full border border-gray-300 text-sm">
-                        <thead>
-                            <tr class="bg-gray-200 text-gray-700">
+                <h2 class="font-bold text-lg text-[#003B69] mb-4">Daftar Arsip Unit</h2>
+
+                <!-- Filter Unit Pengolah -->
+                <form class="mb-4 flex items-center space-x-2">
+                    <div class="relative">
+                        <select class="w-96 border rounded px-3 py-2 text-gray-700 pr-8 appearance-none">
+                            <option value="">Cari Judul...</option>
+                            <option value="Arsip A">Arsip A</option>
+                            <option value="Arsip B">Arsip B</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-2 flex items-center text-gray-500">▼</div>
+                    </div>
+
+                    <button type="button" class="bg-[#003B69] text-white px-3 py-2 rounded hover:bg-[#00509E]">Cari</button>
+                    <button type="button" class="bg-gray-400 text-white px-3 py-2 rounded hover:bg-gray-500">Reset</button>
+                </form>
+
+                <!-- Tabel -->
+                <div class="overflow-auto max-h-[56vh] border border-gray-200 rounded">
+                    <table class="min-w-full text-sm">
+                        <thead class="bg-gray-200 text-gray-700 sticky top-0 z-10">
+                            <tr>
                                 <th class="px-3 py-2 border">No</th>
-                                <th class="px-3 py-2 border">Kode Klasifikasi</th>
+                                <th class="px-3 py-2 border">No Kode Klasifikasi</th>
+                                <th class="px-3 py-2 border">Kategori</th>
+                                <th class="px-3 py-2 border">Judul Berkas</th>
                                 <th class="px-3 py-2 border">Indeks</th>
-                                <th class="px-3 py-2 border">No Item Arsip</th>
                                 <th class="px-3 py-2 border">Uraian Informasi</th>
                                 <th class="px-3 py-2 border">Tanggal</th>
                                 <th class="px-3 py-2 border">Jumlah</th>
-                                <th class="px-3 py-2 border">Unit Pengolah Arsip</th>
-                                <th class="px-3 py-2 border">Lokasi Arsip</th>
+                                <th class="px-3 py-2 border">Tingkat Perkembangan</th>
                                 <th class="px-3 py-2 border">Ruangan</th>
-                                <th class="px-3 py-2 border">No Filling</th>
-                                <th class="px-3 py-2 border">No Laci</th>
-                                <th class="px-3 py-2 border">No Folder</th>
-                                <th class="px-3 py-2 border">Keterangan</th>
-                                <th class="px-3 py-2 border">Arsip Digital (Link)</th>
-                                <th class="px-3 py-2 border">Kategori</th>
+                                <th class="px-3 py-2 border">SKKAAD</th>
+                                <th class="px-3 py-2 border">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td class="px-3 py-2 border text-center">1</td>
-                                <td class="px-3 py-2 border">A-001</td>
-                                <td class="px-3 py-2 border">IDX-01</td>
+                                <td class="px-3 py-2 border">PR.01.01</td>
+                                <td class="px-3 py-2 border">Program</td>
+                                <td class="px-3 py-2 border">Arsip A</td>
                                 <td class="px-3 py-2 border">001</td>
-                                <td class="px-3 py-2 border">Contoh uraian arsip</td>
-                                <td class="px-3 py-2 border">2025-09-12</td>
-                                <td class="px-3 py-2 border text-center">2</td>
-                                <td class="px-3 py-2 border">Unit A</td>
-                                <td class="px-3 py-2 border">Rak 1</td>
-                                <td class="px-3 py-2 border">Ruang 101</td>
-                                <td class="px-3 py-2 border">F-001</td>
-                                <td class="px-3 py-2 border">L-01</td>
-                                <td class="px-3 py-2 border">FD-01</td>
-                                <td class="px-3 py-2 border">Lengkap</td>
-                                <td class="px-3 py-2 border text-blue-600 underline cursor-pointer">Link</td>
-                                <td class="px-3 py-2 border">Rahasia</td>
+                                <td class="px-3 py-2 border">Uraian contoh</td>
+                                <td class="px-3 py-2 border">2025-09-21</td>
+                                <td class="px-3 py-2 border">10</td>
+                                <td class="px-3 py-2 border">Aktif</td>
+                                <td class="px-3 py-2 border">Ruang A</td>
+                                <td class="px-3 py-2 border">Terbatas</td>
+                                <td class="px-3 py-2 border text-center">
+                                    <div class="flex justify-center items-center space-x-2">
+                                        <button 
+                                            class="bg-gray-600 text-white px-2 py-1 rounded hover:bg-gray-400 transition font-semibold"
+                                            @click="showModal = true; selected = { 
+                                                kode_klasifikasi: 'PR.01.01', kategori: 'Program', judul: 'Arsip A',
+                                                indeks: '001', uraian_informasi: 'Uraian contoh', tanggal: '2025-09-21',
+                                                tingkat_perkembangan: 'Aktif', jumlah: '10', satuan: 'lembar',
+                                                unit_pengolah_arsip: 'Unit TMB', ruangan: 'Ruang A',
+                                                no_filling: 'F001', no_laci: 'L001', no_folder: 'D001',
+                                                keterangan: 'Keterangan contoh', skkaad: 'Terbatas', upload_dokumen: 'dokumen.pdf'
+                                            }">
+                                            Selengkapnya
+                                        </button>
+                                        <button class="bg-[#BB5456] text-white px-2 py-1 rounded hover:bg-[#8B6869] transition font-semibold">Hapus</button>
+                                    </div>
+                                </td>
                             </tr>
-                            <!-- Tambahkan baris data lainnya di sini -->
+                            <!-- Tambahkan baris contoh lain sesuai kebutuhan -->
                         </tbody>
                     </table>
                 </div>
             </div>
+
+            <!-- Modal detail -->
+            <div
+                class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center px-4 z-50"
+                x-show="showModal"
+                x-cloak
+                x-transition:enter="transition transform ease-out duration-300"
+                x-transition:enter-start="opacity-0 -translate-y-6"
+                x-transition:enter-end="opacity-100 translate-y-0"
+                x-transition:leave="transition transform ease-in duration-200"
+                x-transition:leave-start="opacity-100 translate-y-0"
+                x-transition:leave-end="opacity-0 -translate-y-6"
+                >
+                <div class="bg-white rounded-lg shadow-lg w-full max-w-4xl p-6 relative">
+                    <button class="absolute top-3 right-3 text-gray-600 hover:text-gray-900" @click="showModal = false">&times;</button>
+                    <h3 class="text-lg font-bold text-[#003B69] mb-4">Detail Arsip</h3>
+
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full border border-gray-300 text-sm">
+                            <tbody>
+                                <tr><th class="px-3 py-2 border text-left w-48">No Kode Klasifikasi</th><td class="px-3 py-2 border" x-text="selected?.kode_klasifikasi ?? '-'"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">Kategori</th><td class="px-3 py-2 border" x-text="selected?.kategori ?? '-'"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">Judul</th><td class="px-3 py-2 border" x-text="selected?.judul ?? '-'"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">Indeks</th><td class="px-3 py-2 border" x-text="selected?.indeks ?? '-'"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">Uraian Informasi</th><td class="px-3 py-2 border" x-text="selected?.uraian_informasi ?? '-'"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">Tanggal</th><td class="px-3 py-2 border" x-text="selected?.tanggal ?? '-'"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">Tingkat Perkembangan</th><td class="px-3 py-2 border" x-text="selected?.tingkat_perkembangan ?? '-'"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">Jumlah</th><td class="px-3 py-2 border" x-text="selected?.jumlah ?? '-'"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">Satuan</th><td class="px-3 py-2 border" x-text="selected?.satuan ?? '-'"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">Unit Pengolah Arsip</th><td class="px-3 py-2 border" x-text="selected?.unit_pengolah_arsip ?? '-'"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">Ruangan</th><td class="px-3 py-2 border" x-text="selected?.ruangan ?? '-'"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">No Filling</th><td class="px-3 py-2 border" x-text="selected?.no_filling ?? '-'"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">No Laci</th><td class="px-3 py-2 border" x-text="selected?.no_laci ?? '-'"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">No Folder</th><td class="px-3 py-2 border" x-text="selected?.no_folder ?? '-'"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">Keterangan</th><td class="px-3 py-2 border" x-text="selected?.keterangan ?? '-'"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">SKKAAD</th><td class="px-3 py-2 border" x-text="selected?.skkaad ?? '-'"></td></tr>
+                                <tr>
+                                    <th class="px-3 py-2 border text-left">Dokumen</th>
+                                    <td class="px-3 py-2 border">
+                                        <template x-if="selected?.upload_dokumen">
+                                            <a :href="'/storage/' + selected.upload_dokumen" target="_blank" class="text-blue-600 underline">Lihat</a>
+                                        </template>
+                                        <template x-if="!selected?.upload_dokumen">-</template>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
         </main>
     </div>
 </body>

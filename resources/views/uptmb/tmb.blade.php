@@ -176,7 +176,7 @@
                 x-transition:leave="transition transform ease-in duration-200"
                 x-transition:leave-start="opacity-100 translate-y-0"
                 x-transition:leave-end="opacity-0 -translate-y-6"
-            >
+                >
                 <div class="bg-white rounded-lg shadow-lg w-full max-w-4xl p-6 relative">
                     <button class="absolute top-3 right-3 text-gray-600 hover:text-gray-900" @click="showModal = false">&times;</button>
                     <h3 class="text-lg font-bold text-[#003B69] mb-4">Detail Arsip</h3>

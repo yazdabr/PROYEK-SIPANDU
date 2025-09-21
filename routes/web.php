@@ -1,28 +1,27 @@
 <?php
 
+use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArsipController;
 use App\Http\Controllers\TmbController;
 
-
+// Redirect root ke login
 Route::get('/', function () {
-    return view('login');
+    return redirect()->route('login'); // arahkan ke route login
 });
 
-// UP
-Route::get('/upstatis', function () {
-    return view('up.upstatis');
+
+// Login
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login.post');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+// TMB
+Route::middleware(['auth', 'role:TMB'])->prefix('uptmb')->group(function () {
+    Route::view('/tmb', 'uptmb.tmb')->name('uptmb.tmb');
+    Route::view('/tmbinput', 'uptmb.tmbinput')->name('uptmb.input');
+    Route::view('/tmbdashboard', 'uptmb.tmbdashboard')->name('uptmb.dashboard');
 });
-Route::get('/input', function () {
-    return view('up.input');
-});
-Route::get('/dau', function () {
-    return view('up.dau');
-});
-Route::get('/input', [ArsipController::class, 'create'])->name('arsip.create');
-Route::post('/arsip/store', [ArsipController::class, 'store'])->name('arsip.store'); // jika pakai store
-Route::get('/dau', [ArsipController::class, 'index'])->name('arsip.index');
-Route::delete('/arsip/{id}', [ArsipController::class, 'destroy'])->name('arsip.destroy');
 
 // UPTMB
 Route::get('/tmb', function () {
@@ -43,8 +42,6 @@ Route::resource('tmb', TmbController::class);
 
 
 
-
-
 // PPID
 Route::get('/ppidstatis', function () {
     return view('ppid.ppidstatis');
@@ -55,6 +52,8 @@ Route::get('/verifikasi', function () {
 Route::get('/dap', function () {
     return view('ppid.dap');
 });
+Route::get('/verifikasi', [App\Http\Controllers\VerifikasiController::class, 'index'])->name('verifikasi.index');
+
 
 // Manajemen
 Route::get('/mastatis', function () {
