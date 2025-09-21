@@ -68,15 +68,13 @@
                 <!-- Filter Unit Pengolah (GET) -->
                 <form action="{{ url()->current() }}" method="GET" class="mb-4 flex items-center space-x-2">
                     <div class="relative">
-                        <select name="unit_pengolah_arsip" class="border rounded px-3 py-2 text-gray-700 pr-8 appearance-none" >
-                            <option value="">-- Semua Unit --</option>
-                            <option value="TMB" {{ request('unit_pengolah_arsip')=='TMB' ? 'selected' : '' }}>TMB</option>
-                            <option value="SIARAN" {{ request('unit_pengolah_arsip')=='SIARAN' ? 'selected' : '' }}>SIARAN</option>
-                            <option value="KMB" {{ request('unit_pengolah_arsip')=='KMB' ? 'selected' : '' }}>KMB</option>
-                            <option value="LPU" {{ request('unit_pengolah_arsip')=='LPU' ? 'selected' : '' }}>LPU</option>
-                            <option value="TATA USAHA KEUANGAN" {{ request('unit_pengolah_arsip')=='TATA USAHA KEUANGAN' ? 'selected' : '' }}>TATA USAHA KEUANGAN</option>
-                            <option value="TATA USAHA UMUM" {{ request('unit_pengolah_arsip')=='TATA USAHA UMUM' ? 'selected' : '' }}>TATA USAHA UMUM</option>
-                            <option value="TATA USAHA SDM" {{ request('unit_pengolah_arsip')=='TATA USAHA SDM' ? 'selected' : '' }}>TATA USAHA SDM</option>
+                        <select name="judul" class="w-96 border rounded px-3 py-2 text-gray-700 pr-8 appearance-none">
+                            <option value="">Cari Judul...</option>
+                            @foreach($judulList as $judul)
+                                <option value="{{ $judul }}" {{ request('judul') == $judul ? 'selected' : '' }}>
+                                    {{ $judul }}
+                                </option>
+                            @endforeach
                         </select>
                         <div class="pointer-events-none absolute inset-y-0 right-2 flex items-center text-gray-500">▼</div>
                     </div>
@@ -156,7 +154,6 @@
                             Hapus
                         </button>
                     </form>
-
                 </div>
             </td>
         </tr>

@@ -8,40 +8,37 @@ use App\Models\KodeKlasifikasi;
 
 class TmbController extends Controller
 {
-    public function index(Request $request)
-    {
-        // tampilkan semua arsip milik TMB
-        $arsip = ArsipUnit::whereHas('unitPengolah', function($q){
+public function index(Request $request)
+{
+    // query arsip khusus unit TMB
+    $query = ArsipUnit::with('unitPengolah', 'kodeKlasifikasi')
+        ->whereHas('unitPengolah', function($q){
             $q->where('nama_unit', 'TMB');
-        })
-        ->with('kodeKlasifikasi')
-        ->orderBy('created_at','desc')
-        ->get();
+        });
 
-        return view('uptmb.tmb', compact('arsip'));
-
-            $query = ArsipUnit::with('unitPengolah');
-
-            // Filter berdasarkan judul
-            if ($request->filled('judul')) {
-                $query->where('judul', 'like', '%'.$request->judul.'%');
-            }
-
-            // Filter berdasarkan indeks
-            if ($request->filled('indeks')) {
-                $query->where('indeks', 'like', '%'.$request->indeks.'%');
-            }
-
-            // Filter berdasarkan uraian informasi
-            if ($request->filled('uraian_informasi')) {
-                $query->where('uraian_informasi', 'like', '%'.$request->uraian_informasi.'%');
-            }
-
-            $arsip = $query->paginate(10);
-
-            return view('tmb.index', compact('arsip'));
-            
+    // Filter berdasarkan judul
+    if ($request->filled('judul')) {
+        $query->where('judul', $request->judul);
     }
+
+    // Filter berdasarkan indeks
+    if ($request->filled('indeks')) {
+        $query->where('indeks', 'like', '%'.$request->indeks.'%');
+    }
+
+    // Filter berdasarkan uraian informasi
+    if ($request->filled('uraian_informasi')) {
+        $query->where('uraian_informasi', 'like', '%'.$request->uraian_informasi.'%');
+    }
+
+    // ambil data hasil filter
+    $arsip = $query->orderBy('created_at','desc')->paginate(10);
+
+    // ambil daftar judul unik untuk dropdown
+    $judulList = ArsipUnit::select('judul')->distinct()->pluck('judul');
+
+    return view('uptmb.tmb', compact('arsip','judulList'));
+}
 
     public function create()
     {
