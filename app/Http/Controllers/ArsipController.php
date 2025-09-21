@@ -2,20 +2,41 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Arsipunit;
 use App\Models\KodeKlasifikasi;
 use Illuminate\Http\Request;
+use App\Models\ArsipUnit;
+use Illuminate\Support\Facades\DB;
 
 class ArsipController extends Controller
 {
     public function index()
     {
-        // ambil semua data arsipunit terbaru
-        $arsipunit = Arsipunit::latest()->get();
+        $arsip = ArsipUnit::all();
+        return view('uptmb.tmb', compact('arsip'));
 
-        // kirim ke view up/dau.blade.php
-        return view('up.dau', compact('arsipunit'));
+        $arsip = ArsipUnit::with('kodeKlasifikasi')->get();
+        return view('uptmb.tmb', compact('arsip'));
     }
+
+public function indexTmb()
+{
+    $arsip = DB::table('arsip_unit')
+        ->join('unit_pengolah', 'arsip_unit.unit_pengolah_id', '=', 'unit_pengolah.id')
+        ->leftJoin('kode_klasifikasi', 'arsip_unit.kode_klasifikasi_id', '=', 'kode_klasifikasi.id')
+        ->where('unit_pengolah.nama_unit', 'TMB')
+        ->select(
+            'arsip_unit.*',
+            'unit_pengolah.nama_unit as unit_pengolah_arsip',
+            'kode_klasifikasi.kode as kode_klasifikasi_kode'
+        )
+        ->orderBy('arsip_unit.created_at', 'desc')
+        ->get();
+
+    return view('uptmb.tmb', compact('arsip'));
+}
+
+
+
 
     public function create()
     {
@@ -93,9 +114,10 @@ class ArsipController extends Controller
 
     public function destroy($id)
     {
-        $arsip = Arsipunit::findOrFail($id);
+        $arsip = ArsipUnit::findOrFail($id);
         $arsip->delete();
 
-        return redirect()->route('arsip.index')->with('success', 'Data berhasil dihapus!');
+        return redirect()->route('arsipunit.index')->with('success', 'Data berhasil dihapus');
     }
+    
 }

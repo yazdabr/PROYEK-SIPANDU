@@ -88,90 +88,8 @@
 
                         <!-- Nomor -->
                         <div class="flex items-center">
-                            <label class="w-48 font-medium">Nomor :</label>
+                            <label class="w-48 font-medium">Nomor Berkas :</label>
                             <input type="text" name="nomor" class="flex-1 border rounded px-3 py-2">
-                        </div>
-
-                        <!-- Kategori -->
-                        <div class="flex items-center">
-                            <label class="w-48 font-medium">Kategori :</label>
-                            <div class="relative">
-                                <select name="kategori" class="w-96 border rounded text-gray-500 px-3 py-2 appearance-none pr-8">
-                                    <option value="">- Pilih Kategori -</option>
-                                    <option value="Keputusan LPP RRI dan Pertimbangannya (Tersedia setiap saat)">Keputusan LPP RRI dan Pertimbangannya (Tersedia setiap saat)</option>
-                                    <option value="Kebijakan LPP RRI dan Dokumen Pendukungnya (Tersedia setiap saat)">Kebijakan LPP RRI dan Dokumen Pendukungnya (Tersedia setiap saat)</option>
-                                    <option value="Rencana Proyek dan Anggaran Tahunnya (Tersedia setiap saat)">Rencana Proyek dan Anggaran Tahunnya (Tersedia setiap saat)</option>
-                                    <option value="Rencana Strategis LPP RRI (Tersedia setiap saat)">Rencana Strategis LPP RRI (Tersedia setiap saat)</option>
-                                    <option value="Informasi tentang PPID LPP RRI (Tersedia setiap saat)">Informasi tentang PPID LPP RRI (Tersedia setiap saat)</option>
-                                    <option value="Informasi tentang Penindakan atas Pelanggaran yang dilakukan oleh Pegawai LPP RRI (Tersedia setiap saat)">Informasi tentang Penindakan atas Pelanggaran yang dilakukan oleh Pegawai LPP RRI (Tersedia setiap saat)</option>
-                                    <option value="Informasi Daftar dan Hasil Penelitian LPP RRI (Tersedia setiap saat)">Informasi Daftar dan Hasil Penelitian LPP RRI (Tersedia setiap saat)</option>
-                                    <option value="Informasi Laporan Harta Kekayaan Pejabat Negara di LPP RRI yang telah diverifikasi oleh KPK (Tersedia setiap saat)">Informasi Laporan Harta Kekayaan Pejabat Negara di LPP RRI yang telah diverifikasi oleh KPK (Tersedia setiap saat)</option>
-                                    <option value="Perjanjian LPP RRI dengan Pihak Ketiga (Tersedia setiap saat)">Perjanjian LPP RRI dengan Pihak Ketiga (Tersedia setiap saat)</option>
-                                    <option value="Informasi dalam pertemuan yang bersifat untuk umum (Tersedia setiap saat)">Informasi dalam pertemuan yang bersifat untuk umum (Tersedia setiap saat)</option>
-                                    <option value="Prosedur Kerja yang Berkaitan dengan Publik (Tersedia setiap saat)">Prosedur Kerja yang Berkaitan dengan Publik (Tersedia setiap saat)</option>
-                                    <option value="Laporan Layanan Akses Informasi (Tersedia setiap saat)">Laporan Layanan Akses Informasi (Tersedia setiap saat)</option>
-                                    <option value="Profil Lengkap Pimpinan dan Pegawai (Tersedia setiap saat)">Profil Lengkap Pimpinan dan Pegawai (Tersedia setiap saat)</option>
-                                    <option value="Informasi Berkaitan dengan Profile LPP RRI (Berkala)">Informasi Berkaitan dengan Profile LPP RRI (Berkala)</option>
-                                    <option value="Alamat LPP RRI (Berkala)">Alamat LPP RRI (Berkala)</option>
-                                    <option value="Struktur Organisasi (Berkala)">Struktur Organisasi (Berkala)</option>
-                                    <option value="Sejarah Singkat LPP RRI (Berkala)">Sejarah Singkat LPP RRI (Berkala)</option>
-                                    <option value="Profil Pejabat LPP RRI (Berkala)">Profil Pejabat LPP RRI (Berkala)</option>
-                                    <option value="RKAKL LPP RRI (Berkala)">RKAKL LPP RRI (Berkala)</option>
-                                    <option value="Informasi Agenda Terkait Pelaksanaan Tugas LPP RRI (Berkala)">Informasi Agenda Terkait Pelaksanaan Tugas LPP RRI (Berkala)</option>
-                                    <option value="DIPA (Berkala)">DIPA (Berkala)</option>
-                                    <option value="Informasi Penerimaan Calon Pegawai LPP RRI (Berkala)">Informasi Penerimaan Calon Pegawai LPP RRI (Berkala)</option>
-                                    <option value="Laporan Keuangan Audited (Berkala)">Laporan Keuangan Audited (Berkala)</option>
-                                    <option value="Rencana dan LRA (Berkala)">Rencana dan LRA (Berkala)</option>
-                                    <option value="Neraca Keuangan (Berkala)">Neraca Keuangan (Berkala)</option>
-                                    <option value="Laporan Arus Kas dan CaLK (Berkala)">Laporan Arus Kas dan CaLK (Berkala)</option>
-                                    <option value="Daftar Investasi dan Asset (Administrasi BMN) (Berkala)">Daftar Investasi dan Asset (Administrasi BMN) (Berkala)</option>
-                                    <option value="Acara Siaran (Berkala)">Acara Siaran (Berkala)</option>
-                                    <option value="Laporan Bidang TMB (Berkala)">Laporan Bidang TMB (Berkala)</option>
-                                    <option value="Laporan Bidang Pemberitaan/Tim Penyiaran (Berkala)">Laporan Bidang Pemberitaan/Tim Penyiaran (Berkala)</option>
-                                    <option value="Laporan Bidang Siaran/Tim Konten Media Baru (Berkala)">Laporan Bidang Siaran/Tim Konten Media Baru (Berkala)</option>
-                                    <option value="Laporan Bidang LPU (Berkala)">Laporan Bidang LPU (Berkala)</option>
-                                    <option value="Laporan Bidang SDM dan Umum (Berkala)">Laporan Bidang SDM dan Umum (Berkala)</option>
-                                    <option value="Daftar Informasi Publik LPP RRI (Berkala)">Daftar Informasi Publik LPP RRI (Berkala)</option>
-                                    <option value="Laporan Akuntabilitas (Berkala)">Laporan Akuntabilitas (Berkala)</option>
-                                    <option value="ELHKPN LPP RRI (Berkala)">ELHKPN LPP RRI (Berkala)</option>
-                                    <option value="Regulasi dan Rancangan Keterbukaan Informasi Publik (Berkala)">Regulasi dan Rancangan Keterbukaan Informasi Publik (Berkala)</option>
-                                    <option value="Rancangan Peraturan di LPP RRI (Berkala)">Rancangan Peraturan di LPP RRI (Berkala)</option>
-                                    <option value="Regulasi LPP RRI (Berkala)">Regulasi LPP RRI (Berkala)</option>
-                                    <option value="SOP (Berkala)">SOP (Berkala)</option>
-                                    <option value="Pengadaan Barang dan Jasa (Berkala)">Pengadaan Barang dan Jasa (Berkala)</option>
-                                    <option value="Standar Pelayanan (Berkala)">Standar Pelayanan (Berkala)</option>
-                                    <option value="Maklumat Pelayanan (Berkala)">Maklumat Pelayanan (Berkala)</option>
-                                    <option value="Ringkasan Program Strategis LPP RRI (Berkala)">Ringkasan Program Strategis LPP RRI (Berkala)</option>
-                                    <option value="Dokumen Surat Menyurat (Berkala)">Dokumen Surat Menyurat (Berkala)</option>
-                                    <option value="Informasi Terkait Penanganan Covid-19 (Berkala)">Informasi Terkait Penanganan Covid-19 (Berkala)</option>
-                                    <option value="Opini BPK RI atas Laporan Keuangan LPP RRI (Berkala)">Opini BPK RI atas Laporan Keuangan LPP RRI (Berkala)</option>
-                                    <option value="Penyelenggaraan Satu Data Indonesia (Berkala)">Penyelenggaraan Satu Data Indonesia (Berkala)</option>
-                                    <option value="Bintang Radio RRI Tingkat Nasional (Berkala)">Bintang Radio RRI Tingkat Nasional (Berkala)</option>
-                                    <option value="Formulir Pendaftaran PTQ RRI ke-53 Tahun 2023 (Berkala)">Formulir Pendaftaran PTQ RRI ke-53 Tahun 2023 (Berkala)</option>
-                                    <option value="Informasi Publik dalam Bahasa Isyarat Indonesia (BISINDO) (Berkala)">Informasi Publik dalam Bahasa Isyarat Indonesia (BISINDO) (Berkala)</option>
-                                    <option value="LHKPN Kepala RRI Seluruh Indonesia (Berkala)">LHKPN Kepala RRI Seluruh Indonesia (Berkala)</option>
-                                    <option value="Press Release (Berkala)">Press Release (Berkala)</option>
-                                    <option value="Formulir Pendaftaran PTQ RRI ke-54 Tahun 2024 (Berkala)">Formulir Pendaftaran PTQ RRI ke-54 Tahun 2024 (Berkala)</option>
-                                    <option value="Laporan Tahunan LPP RRI (Berkala)">Laporan Tahunan LPP RRI (Berkala)</option>
-                                    <option value="Rencana Umum Pengadaan (Berkala)">Rencana Umum Pengadaan (Berkala)</option>
-                                    <option value="Peraturan, Keputusan dan Kebijakan (Berkala)">Peraturan, Keputusan dan Kebijakan (Berkala)</option>
-                                    <option value="Regulasi Pedoman Pengelolaan Informasi (Berkala)">Regulasi Pedoman Pengelolaan Informasi (Berkala)</option>
-                                    <option value="Regulasi Pedoman Pengelolaan Administrasi (Berkala)">Regulasi Pedoman Pengelolaan Administrasi (Berkala)</option>
-                                    <option value="Regulasi Pedoman Pengelolaan Personil (Berkala)">Regulasi Pedoman Pengelolaan Personil (Berkala)</option>
-                                    <option value="Rancangan Peraturan (Berkala)">Rancangan Peraturan (Berkala)</option>
-                                    <option value="Masukan dari Berbagai Pihak atas Peraturan, Keputusan atau Kebijakan (Berkala)">Masukan dari Berbagai Pihak atas Peraturan, Keputusan atau Kebijakan (Berkala)</option>
-                                    <option value="Risalah Rapat dari Proses Pembentukan Peraturan, Keputusan atau Kebijakan (Berkala)">Risalah Rapat dari Proses Pembentukan Peraturan, Keputusan atau Kebijakan (Berkala)</option>
-                                    <option value="Dokumen Rancangan Peraturan, Keputusan Kebijakan yang dibentuk (Berkala)">Dokumen Rancangan Peraturan, Keputusan Kebijakan yang dibentuk (Berkala)</option>
-                                    <option value="Dokumen Penghargaan (Berkala)">Dokumen Penghargaan (Berkala)</option>
-                                    <option value="LHKPN Dewas dan Direksi (Berkala)">LHKPN Dewas dan Direksi (Berkala)</option>
-                                    <option value="Hasil Monitoring dan Evaluasi KIP (Berkala)">Hasil Monitoring dan Evaluasi KIP (Berkala)</option>
-                                    <option value="Pedoman HUT LPP RRI 80th (Berkala)">Pedoman HUT LPP RRI 80th (Berkala)</option>
-                                    <option value="Informasi yang Wajib Diumumkan Tanpa Penundaan (Serta Merta)">Informasi yang Wajib Diumumkan Tanpa Penundaan (Serta Merta)</option>
-                                    <option value="Menyangkut Ancaman Terhadap Hajat Hidup Orang Banyak dan Ketertiban Umum (Serta Merta)">Menyangkut Ancaman Terhadap Hajat Hidup Orang Banyak dan Ketertiban Umum (Serta Merta)</option>
-                                    <option value="Pasal 17 UU 14 Tahun 2008 (Dikecualikan)">Pasal 17 UU 14 Tahun 2008 (Dikecualikan)</option>
-                                </select>
-                                <div class="pointer-events-none absolute inset-y-0 right-2 flex items-center text-gray-500">▼</div>
-                            </div>
                         </div>
 
                         <!-- Kode Klasifikasi -->
@@ -188,7 +106,17 @@
                             </div>
                         </div>
 
-
+                        <!-- Kategori -->
+                        <div class="flex items-center">
+                            <label class="w-48 font-medium">Kategori :</label>
+                            <div class="relative">
+                                <select name="kategori" class="w-96 border rounded text-gray-500 px-3 py-2 appearance-none pr-8">
+                                    <option value="">-</option>
+                                    <option value="">PPID</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-2 flex items-center text-gray-500">▼</div>
+                            </div>
+                        </div>
 
                         <!-- Indeks -->
                         <div class="flex items-center">
@@ -215,7 +143,9 @@
                                 <select name="tingkat_perkembangan" class="w-96 border rounded px-3 py-2 appearance-none pr-8">
                                     <option>-</option>
                                     <option>Asli</option>
-                                    <option>Copy</option>
+                                    <option>Fotocopy</option>
+                                    <option>Asli & Fotocopy</option>
+                                    <option>Softcopy</option>
                                 </select>
                                 <div class="pointer-events-none absolute inset-y-0 right-2 flex items-center text-gray-500">▼</div>
                             </div>
@@ -230,7 +160,7 @@
                             <!-- Tambah margin kiri -->
                             <div class="relative ml-3">
                                 <select name="satuan" class="w-32 border rounded text-gray-500 px-3 py-2 appearance-none pr-8 text-center" required>
-                                    <option value="" disabled selected>Satuan</option>
+                                    
                                     <option value="lembar">Lembar</option>
                                     <option value="jilid">Jilid</option>
                                     <option value="bundle">Bundle</option>
@@ -267,6 +197,12 @@
                         <!-- Ruangan -->
                         <div class="flex items-center">
                             <label class="w-48 font-medium">Ruangan :</label>
+                            <input type="text" name="ruangan" class="w-96 border rounded px-3 py-2">
+                        </div>
+
+                        <!-- Ruangan -->
+                        <div class="flex items-center">
+                            <label class="w-48 font-medium">No Box :</label>
                             <input type="text" name="ruangan" class="w-96 border rounded px-3 py-2">
                         </div>
 

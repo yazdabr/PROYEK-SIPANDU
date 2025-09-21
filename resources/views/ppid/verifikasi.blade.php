@@ -88,6 +88,7 @@
                             <tr class="bg-gray-200 text-gray-700">
                                 <th class="px-3 py-2 border">No</th>
                                 <th class="px-3 py-2 border">Data</th>
+                                <th class="px-3 py-2 border">Aksi</th>
                                 <th class="px-3 py-2 border">Data Publik/Tidak</th>
                             </tr>
                         </thead>
@@ -95,6 +96,7 @@
                             <tr>
                                 <td class="px-3 py-2 border text-center">1</td>
                                 <td class="px-3 py-2 border"></td>
+                                <td class="px-3 py-2 border">Lihat Selengkapnya</td>
                                 <td class="px-3 py-2 border">
                                 <div class="flex justify-center space-x-3 font-semibold">
                                     <!-- Tombol YA -->

@@ -1,18 +1,17 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class KodeKlasifikasi extends Model
+class UnitPengolah extends Model
 {
     use HasFactory;
 
-    protected $table = 'kode_klasifikasi';
-
+    protected $table = 'unit_pengolah'; // tabel sesuai db
     protected $fillable = [
-        'kode', // kolom kode_klasifikasi_kode
-        'uraian'
+        'nama_unit',
+        'keterangan',
     ];
 }
-

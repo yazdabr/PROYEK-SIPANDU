@@ -5,34 +5,53 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Arsipunit extends Model
+class ArsipUnit extends Model
 {
     use HasFactory;
 
-    // Nama tabel
-    protected $table = 'arsipunit';
+    // Pakai tabel arsip_unit
+    protected $table = 'arsip_unit';
 
-    // Field yang bisa diisi
+    // kalau primary key bukan 'id', sesuaikan
+    protected $primaryKey = 'id';
+
+    // kalau tidak ada timestamps (created_at, updated_at), matikan
+    public $timestamps = false;
+
+    // field yang bisa diisi
     protected $fillable = [
-        'judul',
-        'nomor',
+        'no_kode_klasifikasi',
         'kategori',
-        'kode_klasifikasi',
+        'judul',
         'indeks',
         'uraian_informasi',
         'tanggal',
-        'tingkat_perkembangan',
         'jumlah',
+        'tingkat',
+        'perkembangan',
+        'ruangan',
+        'skkaad',
         'satuan',
         'unit_pengolah_arsip',
-        'ruangan',
         'no_filling',
         'no_laci',
         'no_folder',
         'keterangan',
-        'upload_dokumen'
+        'upload_dokumen',
+        'nomor_arsip',
     ];
 
-    // pastikan tidak ada kolom yang di-hidden:
-    protected $hidden = [];
+    // Relasi: ArsipUnit belongsTo KodeKlasifikasi
+    public function kodeKlasifikasi()
+    {
+        return $this->belongsTo(KodeKlasifikasi::class, 'kode_klasifikasi_id');
+    }
+
+    public function unitPengolah()
+    {
+        return $this->belongsTo(UnitPengolah::class, 'unit_pengolah_id');
+    }
+
+
+
 }

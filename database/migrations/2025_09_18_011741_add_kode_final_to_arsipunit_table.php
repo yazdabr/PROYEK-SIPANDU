@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('arsipunit', function (Blueprint $table) {
-            $table->string('kode_final')->after('kode_klasifikasi')->nullable();
+        Schema::table('arsip_unit', function (Blueprint $table) {
+            $table->string('kode_final')->nullable()->after('kode_klasifikasi');
         });
     }
 
@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('arsipunit', function (Blueprint $table) {
+        Schema::table('arsip_unit', function (Blueprint $table) {
             //
         });
     }

@@ -77,6 +77,29 @@
             <!-- Judul -->
             <div class="bg-white p-5 rounded shadow">
                 <h2 class="font-bold text-lg text-[#003B69] mb-4">Daftar Arsip Unit</h2>
+                <!-- Filter Unit Pengolah -->
+                <div class="mb-4 flex items-center space-x-2 relative">
+                    <form action="{{ route('arsip.index') }}" method="GET" class="flex items-center space-x-2 w-full">
+                        <div class="relative">
+                            <select name="unit_pengolah_arsip" class="border rounded px-3 py-2 text-gray-700 pr-8 appearance-none" required>
+                                <option value="" disabled selected>Pilih Unit Pengolah</option>
+                                @foreach($unitPengolahList as $unit)
+                                    <option value="{{ $unit }}" {{ request('unit_pengolah_arsip') == $unit ? 'selected' : '' }}>
+                                        {{ $unit }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <!-- Custom dragdown icon -->
+                            <div class="pointer-events-none absolute inset-y-0 right-2 flex items-center text-gray-500">▼</div>
+                        </div>
+                        <button type="submit" class="bg-[#003B69] text-white px-3 py-2 rounded hover:bg-[#00509E] transition">
+                            Cari
+                        </button>
+                        <a href="{{ route('arsip.index') }}" class="bg-gray-400 text-white px-3 py-2 rounded hover:bg-gray-500 transition">
+                            Reset
+                        </a>
+                    </form>
+                </div>
                 
                 <div class="w-full overflow-x-auto">
                     <table class="border border-gray-300 text-sm w-full table-auto">
