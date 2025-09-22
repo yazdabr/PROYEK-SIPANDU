@@ -2,61 +2,70 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\ArsipUnit;
+use App\Models\Arsip;
+use Illuminate\Http\Request;
+use App\Models\ArsipVerifikasi;
 use App\Models\ArsipPublik;
+
 
 class VerifikasiController extends Controller
 {
-
+    // Menampilkan arsip dari arsip_unit yang kategori PPID
     public function index()
     {
-        // Ambil data arsip yang belum diverifikasi
-        $arsip = ArsipUnit::whereNull('status_verifikasi')->get();
+        $arsip = \App\Models\ArsipVerifikasi::with(['unitPengolah', 'kodeKlasifikasi'])
+            ->orderBy('created_at', 'desc')->get();
 
-        // Kirim ke view
+        // panggil view ppid/verifikasi
         return view('ppid.verifikasi', compact('arsip'));
     }
-
-public function publik($id)
-{
-    $arsip = ArsipUnit::with(['unitPengolah', 'kodeKlasifikasi'])->findOrFail($id);
-
-    ArsipPublik::create([
-        'judul'              => $arsip->judul,
-        'nomor_arsip'        => $arsip->nomor_arsip,
-        'kategori'           => $arsip->kategori,
-        'kode_klasifikasi_id'=> $arsip->kode_klasifikasi_id,
-        'indeks'             => $arsip->indeks,
-        'uraian_informasi'   => $arsip->uraian_informasi,
-        'tanggal'            => $arsip->tanggal,
-        'tingkat_perkembangan'=> $arsip->tingkat_perkembangan,
-        'jumlah'             => $arsip->jumlah,
-        'satuan'             => $arsip->satuan,
-        'unit_pengolah_id'   => $arsip->unit_pengolah_id,
-        'ruangan'            => $arsip->ruangan,
-        'no_filling'         => $arsip->no_filling,
-        'no_laci'            => $arsip->no_laci,
-        'no_folder'          => $arsip->no_folder,
-        'keterangan'         => $arsip->keterangan,
-        'skkaad'             => $arsip->skkaad,
-        'upload_dokumen'     => $arsip->upload_dokumen,
-    ]);
-
-    // Update status agar tidak tampil lagi di verifikasi
-    $arsip->update(['status_verifikasi' => 'publik']);
-
-    return redirect()->back()->with('success', 'Arsip berhasil dipindahkan ke arsip publik.');
-}
-
-
-    public function tolak($id)
+        // Tombol YA
+    public function publik($id)
     {
-        $arsip = ArsipUnit::findOrFail($id);
+        $item = ArsipVerifikasi::findOrFail($id);
 
-        // Tandai sebagai ditolak, jadi hilang dari view verifikasi
-        $arsip->update(['status_verifikasi' => 'ditolak']); 
+        // Copy ke arsip_publik
+        ArsipPublik::create([
+            'judul' => $item->judul,
+            'nomor_arsip' => $item->nomor_arsip,
+            'kode_klasifikasi_id' => $item->kode_klasifikasi_id,
+            'kategori' => $item->kategori,
+            'status_verifikasi' => 'publik',
+            'indeks' => $item->indeks,
+            'uraian_informasi' => $item->uraian_informasi,
+            'tanggal' => $item->tanggal,
+            'tingkat_perkembangan' => $item->tingkat_perkembangan,
+            'jumlah' => $item->jumlah,
+            'satuan' => $item->satuan,
+            'unit_pengolah_id' => $item->unit_pengolah_id,
+            'ruangan' => $item->ruangan,
+            'no_box' => $item->no_box,
+            'no_filling' => $item->no_filling,
+            'no_laci' => $item->no_laci,
+            'no_folder' => $item->no_folder,
+            'keterangan' => $item->keterangan,
+            'skkaad' => $item->skkaad,
+            'upload_dokumen' => $item->upload_dokumen,
+            'created_at' => $item->created_at,
+            'updated_at' => $item->updated_at
+        ]);
 
-        return back()->with('info', 'Arsip ditolak.');
+        // Hapus dari arsip_verifikasi
+        $item->delete();
+
+        return redirect()->back()->with('success', 'Data berhasil dipublikasikan.');
     }
+
+    // Tombol TIDAK
+    public function tidak($id)
+    {
+        $item = ArsipVerifikasi::findOrFail($id);
+
+        // Hapus saja
+        $item->delete();
+
+        return redirect()->back()->with('warning', 'Data tidak dipublikasikan.');
+    }
+
 }

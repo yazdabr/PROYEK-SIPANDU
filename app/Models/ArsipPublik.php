@@ -33,11 +33,13 @@ class ArsipPublik extends Model
         'upload_dokumen',
     ];
 
+    // Relasi ke unit pengolah
     public function unitPengolah()
     {
         return $this->belongsTo(UnitPengolah::class, 'unit_pengolah_id');
     }
 
+    // Relasi ke kode klasifikasi
     public function kodeKlasifikasi()
     {
         return $this->belongsTo(KodeKlasifikasi::class, 'kode_klasifikasi_id');

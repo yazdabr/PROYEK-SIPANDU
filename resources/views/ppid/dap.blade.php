@@ -86,37 +86,58 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="px-3 py-2 border text-center">1</td>
-                                <td class="px-3 py-2 border">PR.01.01</td>
-                                <td class="px-3 py-2 border">Program</td>
-                                <td class="px-3 py-2 border">Arsip A</td>
-                                <td class="px-3 py-2 border">001</td>
-                                <td class="px-3 py-2 border">Uraian contoh</td>
-                                <td class="px-3 py-2 border">2025-09-21</td>
-                                <td class="px-3 py-2 border">10</td>
-                                <td class="px-3 py-2 border">Aktif</td>
-                                <td class="px-3 py-2 border">Ruang A</td>
-                                <td class="px-3 py-2 border">Terbatas</td>
-                                <td class="px-3 py-2 border text-center">
-                                    <div class="flex justify-center items-center space-x-2">
-                                        <button 
-                                            class="bg-gray-600 text-white px-2 py-1 rounded hover:bg-gray-400 transition font-semibold"
-                                            @click="showModal = true; selected = { 
-                                                kode_klasifikasi: 'PR.01.01', kategori: 'Program', judul: 'Arsip A',
-                                                indeks: '001', uraian_informasi: 'Uraian contoh', tanggal: '2025-09-21',
-                                                tingkat_perkembangan: 'Aktif', jumlah: '10', satuan: 'lembar',
-                                                unit_pengolah_arsip: 'Unit TMB', ruangan: 'Ruang A',
-                                                no_filling: 'F001', no_laci: 'L001', no_folder: 'D001',
-                                                keterangan: 'Keterangan contoh', skkaad: 'Terbatas', upload_dokumen: 'dokumen.pdf'
-                                            }">
-                                            Selengkapnya
-                                        </button>
+                        @forelse ($arsipPublik as $key => $item)
+                        <tr>
+                            <td class="px-3 py-2 border text-center">{{ $key + 1 }}</td>
+                            <td class="px-3 py-2 border">{{ $item->kodeKlasifikasi->kode ?? '-' }}</td>
+                            <td class="px-3 py-2 border">{{ $item->kategori }}</td>
+                            <td class="px-3 py-2 border">{{ $item->judul }}</td>
+                            <td class="px-3 py-2 border">{{ $item->indeks }}</td>
+                            <td class="px-3 py-2 border">{{ $item->uraian_informasi }}</td>
+                            <td class="px-3 py-2 border">{{ $item->tanggal }}</td>
+                            <td class="px-3 py-2 border">{{ $item->jumlah }}</td>
+                            <td class="px-3 py-2 border">{{ $item->tingkat_perkembangan }}</td>
+                            <td class="px-3 py-2 border">{{ $item->ruangan }}</td>
+                            <td class="px-3 py-2 border">{{ $item->skkaad }}</td>
+                            <td class="px-3 py-2 border text-center">
+                                <div class="flex justify-center items-center space-x-2">
+                                    <button 
+                                        class="bg-gray-600 text-white px-2 py-1 rounded hover:bg-gray-400 transition font-semibold"
+                                        @click="showModal = true; selected = { 
+                                            kode_klasifikasi: '{{ $item->kodeKlasifikasi->kode ?? '-' }}',
+                                            kategori: '{{ $item->kategori }}',
+                                            judul: '{{ $item->judul }}',
+                                            indeks: '{{ $item->indeks }}',
+                                            uraian_informasi: '{{ $item->uraian_informasi }}',
+                                            tanggal: '{{ $item->tanggal }}',
+                                            tingkat_perkembangan: '{{ $item->tingkat_perkembangan }}',
+                                            jumlah: '{{ $item->jumlah }}',
+                                            satuan: '{{ $item->satuan }}',
+                                            unit_pengolah_arsip: '{{ $item->unitPengolah->nama_unit ?? '-' }}',
+                                            ruangan: '{{ $item->ruangan }}',
+                                            no_filling: '{{ $item->no_filling }}',
+                                            no_laci: '{{ $item->no_laci }}',
+                                            no_folder: '{{ $item->no_folder }}',
+                                            keterangan: '{{ $item->keterangan }}',
+                                            skkaad: '{{ $item->skkaad }}',
+                                            upload_dokumen: '{{ $item->upload_dokumen }}'
+                                        }">
+                                        Selengkapnya
+                                    </button>
+
+                                    <form action="{{ route('arsip.publik.hapus', $item->id) }}" method="POST" onsubmit="return confirm('Hapus arsip ini?');">
+                                        @csrf
+                                        @method('DELETE')
                                         <button class="bg-[#BB5456] text-white px-2 py-1 rounded hover:bg-[#8B6869] transition font-semibold">Hapus</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!-- Tambahkan baris contoh lain sesuai kebutuhan -->
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="12" class="px-3 py-2 border text-center text-gray-500">Tidak ada data</td>
+                        </tr>
+                        @endforelse
                         </tbody>
                     </table>
                 </div>
