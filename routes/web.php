@@ -4,6 +4,7 @@ use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArsipController;
 use App\Http\Controllers\TmbController;
+use App\Http\Controllers\VerifikasiController;
 
 // Redirect root ke login
 Route::get('/', function () {
@@ -53,6 +54,8 @@ Route::get('/dap', function () {
     return view('ppid.dap');
 });
 Route::get('/verifikasi', [App\Http\Controllers\VerifikasiController::class, 'index'])->name('verifikasi.index');
+Route::post('/verifikasi/publik/{id}', [VerifikasiController::class, 'publik'])->name('verifikasi.publik');
+Route::delete('/verifikasi/{id}/tolak', [VerifikasiController::class, 'tolak'])->name('verifikasi.tolak');
 
 
 // Manajemen

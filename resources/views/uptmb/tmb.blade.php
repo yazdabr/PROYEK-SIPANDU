@@ -132,8 +132,9 @@
                             tingkat_perkembangan: '{{ $item->tingkat_perkembangan }}',
                             jumlah: '{{ $item->jumlah }}',
                             satuan: '{{ $item->satuan }}',
-                            unit_pengolah_arsip: '{{ $item->unit_pengolah_arsip }}',
+                            unit_pengolah_arsip: '{{ $item->unitPengolah->nama_unit ?? '-' }}',
                             ruangan: '{{ $item->ruangan }}',
+                            no_box: '{{ $item->no_box }}',
                             no_filling: '{{ $item->no_filling }}',
                             no_laci: '{{ $item->no_laci }}',
                             no_folder: '{{ $item->no_folder }}',
@@ -198,6 +199,7 @@
                                 <tr><th class="px-3 py-2 border text-left">Satuan</th><td class="px-3 py-2 border" x-text="selected?.satuan ?? '-'"></td></tr>
                                 <tr><th class="px-3 py-2 border text-left">Unit Pengolah Arsip</th><td class="px-3 py-2 border" x-text="selected?.unit_pengolah_arsip ?? '-'"></td></tr>
                                 <tr><th class="px-3 py-2 border text-left">Ruangan</th><td class="px-3 py-2 border" x-text="selected?.ruangan ?? '-'"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">No Box</th><td class="px-3 py-2 border" x-text="selected?.no_box ?? '-'"></td></tr>
                                 <tr><th class="px-3 py-2 border text-left">No Filling</th><td class="px-3 py-2 border" x-text="selected?.no_filling ?? '-'"></td></tr>
                                 <tr><th class="px-3 py-2 border text-left">No Laci</th><td class="px-3 py-2 border" x-text="selected?.no_laci ?? '-'"></td></tr>
                                 <tr><th class="px-3 py-2 border text-left">No Folder</th><td class="px-3 py-2 border" x-text="selected?.no_folder ?? '-'"></td></tr>
