@@ -13,11 +13,27 @@ class ArsipVerifikasi extends Model
     protected $table = 'arsip_verifikasi';
 
     protected $fillable = [
-        'judul', 'nomor_arsip', 'kode_klasifikasi_id', 'kategori', 'status_verifikasi',
-        'indeks', 'uraian_informasi', 'tanggal', 'tingkat_perkembangan', 'jumlah',
-        'satuan', 'unit_pengolah_id', 'ruangan', 'no_box', 'no_filling', 'no_laci',
-        'no_folder', 'keterangan', 'skkaad', 'upload_dokumen'
+        'judul',
+        'nomor_arsip',
+        'kode_klasifikasi_id',
+        'kategori',
+        'kategori_berita', // ✅ tambahkan
+        'indeks',
+        'uraian_informasi',
+        'tanggal',
+        'tingkat_perkembangan',
+        'jumlah',
+        'satuan',
+        'unit_pengolah_id',
+        'ruangan',
+        'no_box',
+        'no_filling',
+        'no_laci',
+        'no_folder',
+        'keterangan',
+        'upload_dokumen',
     ];
+
 
     public function unitPengolah()
     {

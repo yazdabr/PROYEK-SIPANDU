@@ -47,6 +47,7 @@ public function store(Request $request)
         'judul'                 => 'required',
         'nomor_arsip'           => 'required',
         'kategori'              => 'required',
+        'kategori_berita'              => 'required',
         'kode_klasifikasi_id'   => 'required',
         'tingkat_perkembangan'  => 'required',
         'unit_pengolah_id'      => 'required',
@@ -75,6 +76,7 @@ $arsip = ArsipUnit::create([
     'judul'                 => $request->judul,
     'nomor_arsip'           => $request->nomor_arsip,
     'kategori'              => $request->kategori,
+    'kategori_berita'       => $request->kategori_berita ?? null,
     'kode_klasifikasi_id'   => $request->kode_klasifikasi_id,
     'kode_final'            => $newCode,
     'indeks'                => $request->indeks ?? null,
@@ -96,7 +98,8 @@ $arsip = ArsipUnit::create([
                                : null,
 ]);
 
-dd($arsip->kategori);
+dd($arsip->kategori, $arsip->kategori_berita);
+
 
 // Copy ke arsip_verifikasi jika PPID
 if (strtoupper(trim($arsip->kategori)) === 'PPID') {
@@ -104,6 +107,7 @@ if (strtoupper(trim($arsip->kategori)) === 'PPID') {
         'judul'                 => $arsip->judul,
         'nomor_arsip'           => $arsip->nomor_arsip,
         'kategori'              => $arsip->kategori,
+        'kategori_berita'       => $arsip->kategori_berita,
         'kode_klasifikasi_id'   => $arsip->kode_klasifikasi_id,
         'indeks'                => $arsip->indeks,
         'uraian_informasi'      => $arsip->uraian_informasi,

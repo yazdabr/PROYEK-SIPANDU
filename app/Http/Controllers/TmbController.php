@@ -38,6 +38,7 @@ public function index(Request $request)
     $judulList = ArsipUnit::select('judul')->distinct()->pluck('judul');
 
     return view('uptmb.tmb', compact('arsip','judulList'));
+    
 }
 
     public function create()
@@ -61,6 +62,7 @@ public function index(Request $request)
             'nomor'                 => 'nullable|string|max:255',
             'kode_klasifikasi'      => 'required|integer', // harus id dari tabel kode_klasifikasi
             'kategori'              => 'required|string',
+            'kategori_berita'       => 'required|string',
             'indeks'                => 'nullable|string',
             'uraian_informasi'      => 'nullable|string',
             'tanggal'               => 'nullable|date',
@@ -86,6 +88,7 @@ public function index(Request $request)
         $arsip->nomor_arsip          = $nomor;
         $arsip->kode_klasifikasi_id  = (int) $validated['kode_klasifikasi'];
         $arsip->kategori             = $validated['kategori'];
+        $arsip->kategori_berita      = $validated['kategori_berita'];
         $arsip->indeks               = $validated['indeks'] ?? null;
         $arsip->uraian_informasi     = $validated['uraian_informasi'] ?? null;
         $arsip->tanggal              = $validated['tanggal'] ?? null;

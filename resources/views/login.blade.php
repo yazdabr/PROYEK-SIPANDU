@@ -28,8 +28,18 @@
             <div class="mx-auto mt-4 w-40 border-b-3 border-gray-400"></div>
         </div>
 
-            <!-- Form Login -->
-        <form method="POST" action="{{ route('login.post') }}" class="space-y-5">
+        @if ($errors->any())
+            <div class="mb-4 text-red-600 text-sm">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>• {{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+
+        <form method="POST" action="{{ route('login.process') }}" class="space-y-5">
             @csrf
             <!-- Email -->
             <div>

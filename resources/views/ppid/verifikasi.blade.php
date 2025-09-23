@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unit Pengelola - SIPANDU</title>
+    <title>Operator PPID - SIPANDU</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -24,19 +24,19 @@
             </div>
 
             <!-- Menu langsung tampil -->
-            <a href="{{ url('/ppidstatis') }}"
+            <a href="{{ url('/ppid/ppidstatis') }}"
                class="flex items-center space-x-2 p-3 rounded bg-[#68778B] hover:bg-gray-500 transition-all duration-300 ease-in-out">
                 <img src="/images/dash.png" alt="Dashboard" class="w-5 h-5">
                 <span>Dashboard</span>
             </a>
 
-            <a href="{{ url('/verifikasi') }}"
+            <a href="{{ url('/ppid/verifikasi') }}"
                class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] transition-all duration-300 ease-in-out text-[#003B69] font-semibold">
                 <img src="/images/verifbiru.png" alt="" class="w-6 h-6 transition-transform duration-300 group-hover:scale-110">
                 <span class="transition-transform duration-300 group-hover:translate-x-1">Verifikasi Arsip</span>
             </a>
 
-            <a href="{{ url('/dap') }}"
+            <a href="{{ url('/ppid/dap') }}"
                class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] transition-all duration-300 ease-in-out font-semibold">
                 <img src="/images/daftar.png" alt="" class="w-7 h-7 transition-transform duration-300 group-hover:scale-110">
                 <span class="transition-transform duration-300 group-hover:translate-x-1">Daftar Arsip Publik</span>
@@ -49,12 +49,16 @@
         <!-- Header -->
         <header class="flex justify-between items-center bg-[#E3E8EE] px-6 py-4">
             <div class="px-3 py-3 bg-[#CBD2DA] text-[#003B69] font-bold rounded [letter-spacing:1px]">
-                Oprerator PPID
+                Operator PPID
             </div>
-            <button class="flex items-center space-x-2 bg-[#CBD2DA] text-[#003B69] font-bold px-3 py-3 rounded hover:bg-gray-300">
-                <img src="/images/user.png" alt="User" class="w-5 h-5">
-                <span>Log Out</span>
-            </button>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" 
+                        class="flex items-center space-x-2 bg-[#CBD2DA] text-[#003B69] font-bold px-3 py-3 rounded hover:bg-gray-300">
+                    <img src="/images/user.png" class="w-5 h-5" alt="user">
+                    <span>Log Out</span>
+                </button>
+            </form>
         </header>
 
         <!-- Content -->
@@ -84,7 +88,6 @@
                             <tr class="bg-gray-200 text-gray-700">
                                 <th class="px-3 py-2 border">No</th>
                                 <th class="px-3 py-2 border">Data</th>
-                                <th class="px-3 py-2 border">Aksi</th>
                                 <th class="px-3 py-2 border">Data Publik/Tidak</th>
                             </tr>
                         </thead>
@@ -93,46 +96,51 @@
                             <tr id="row-{{ $item->id }}">
                                 <td class="px-3 py-2 border text-center">{{ $key + 1 }}</td>
                                 <td class="px-3 py-2 border">
-                                    <div class="flex flex-col space-y-1">
+                                <div class="flex flex-col space-y-1">
+                                    <div class="flex flex-col space-y-1 mb-2">
                                         <span><strong>Judul:</strong> {{ $item->judul }}</span>
-                                        <span><strong>Nomor Arsip:</strong> {{ $item->nomor_arsip }}</span>
+                                        <span><strong>Nomor:</strong> {{ $item->nomor_arsip }}</span>
                                         <span><strong>Unit:</strong> {{ $item->unitPengolah->nama_unit ?? '-' }}</span>
+                                    </div>
+                                    <div class="gap-3 mt-2 flex items-center">
+                                        <!-- Tombol Selengkapnya -->
+                                        <button 
+                                            class="bg-gray-600 text-white px-2 py-1 rounded hover:bg-gray-400 transition font-semibold flex items-center"
+                                            @click="showModal = true; selected = {
+                                                judul: '{{ $item->judul }}',
+                                                nomor: '{{ $item->nomor_arsip }}',
+                                                kategori_berita: '{{ $item->kategori_berita }}',
+                                                kategori: '{{ $item->kategori }}',
+                                                kode_klasifikasi: '{{ $item->kodeKlasifikasi->kode ?? '-' }}',
+                                                indeks: '{{ $item->indeks }}',
+                                                uraian_informasi: '{{ $item->uraian_informasi }}',
+                                                tanggal: '{{ $item->tanggal }}',
+                                                tingkat_perkembangan: '{{ $item->tingkat_perkembangan }}',
+                                                jumlah: '{{ $item->jumlah }}',
+                                                satuan: '{{ $item->satuan }}',
+                                                unit_pengolah_arsip: '{{ $item->unitPengolah->nama_unit ?? '-' }}',
+                                                ruangan: '{{ $item->ruangan }}',
+                                                no_box: '{{ $item->no_box }}',
+                                                no_filling: '{{ $item->no_filling }}',
+                                                no_laci: '{{ $item->no_laci }}',
+                                                no_folder: '{{ $item->no_folder }}',
+                                                keterangan: '{{ $item->keterangan }}',
+                                                skkaad: '{{ $item->skkaad }}',
+                                                upload_dokumen: '{{ $item->upload_dokumen }}'
+                                            }">
+                                            <img src="{{ asset('images/more.png') }}" alt="Detail" class="w-6 h-7 object-contain">
+                                        </button>
+                                        <!-- Lihat File -->
                                         @if ($item->upload_dokumen)
-                                            <a href="{{ asset('storage/'.$item->upload_dokumen) }}" target="_blank" class="text-blue-500 underline">
+                                            <a href="{{ asset('storage/'.$item->upload_dokumen) }}" target="_blank" class="bg-[#7592BA] text-white px-2 py-1 rounded hover:bg-[#B4D0F6] transition font-semibold">
                                                 Lihat File
                                             </a>
                                         @else
                                             <span class="text-gray-500">Tidak ada file</span>
                                         @endif
                                     </div>
-                                </td>
-                                <td class="px-3 py-2 border text-center">
-                                    <!-- Tombol Detail -->
-                                    <button 
-                                        class="bg-gray-600 text-white px-2 py-1 rounded hover:bg-gray-400 transition font-semibold"
-                                        @click="showModal = true; selected = {
-                                            judul: '{{ $item->judul }}',
-                                            nomor: '{{ $item->nomor_arsip }}',
-                                            kategori: '{{ $item->kategori }}',
-                                            kode_klasifikasi: '{{ $item->kodeKlasifikasi->kode ?? '-' }}',
-                                            indeks: '{{ $item->indeks }}',
-                                            uraian_informasi: '{{ $item->uraian_informasi }}',
-                                            tanggal: '{{ $item->tanggal }}',
-                                            tingkat_perkembangan: '{{ $item->tingkat_perkembangan }}',
-                                            jumlah: '{{ $item->jumlah }}',
-                                            satuan: '{{ $item->satuan }}',
-                                            unit_pengolah_arsip: '{{ $item->unitPengolah->nama_unit ?? '-' }}',
-                                            ruangan: '{{ $item->ruangan }}',
-                                            no_box: '{{ $item->no_box }}',
-                                            no_filling: '{{ $item->no_filling }}',
-                                            no_laci: '{{ $item->no_laci }}',
-                                            no_folder: '{{ $item->no_folder }}',
-                                            keterangan: '{{ $item->keterangan }}',
-                                            skkaad: '{{ $item->skkaad }}',
-                                            upload_dokumen: '{{ $item->upload_dokumen }}'
-                                        }">
-                                        Selengkapnya
-                                    </button>
+                                </div>
+
                                 </td>
                                 <td class="px-3 py-2 border">
                                     <div class="flex justify-center space-x-3 font-semibold">
@@ -176,8 +184,8 @@
                         x-transition:leave="transition transform ease-in duration-200"
                         x-transition:leave-start="opacity-100 translate-y-0"
                         x-transition:leave-end="opacity-0 -translate-y-6"
-                    >
-                        <div class="bg-white rounded-lg shadow-lg w-full max-w-4xl p-6 relative">
+                        >
+                <div class="bg-white rounded-lg shadow-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto p-6 relative my-auto">
                             <button class="absolute top-3 right-3 text-gray-600 hover:text-gray-900" @click="showModal = false">&times;</button>
                             <h3 class="text-lg font-bold text-[#003B69] mb-4">Detail Arsip</h3>
 
@@ -185,7 +193,8 @@
                                 <table class="min-w-full border border-gray-300 text-sm">
                                     <tbody>
                                         <tr><th class="px-3 py-2 border text-left w-48">No Kode Klasifikasi</th><td class="px-3 py-2 border" x-text="selected?.kode_klasifikasi ?? '-'"></td></tr>
-                                        <tr><th class="px-3 py-2 border text-left">Kategori</th><td class="px-3 py-2 border" x-text="selected?.kategori ?? '-'"></td></tr>
+                                        <tr><th class="px-3 py-2 border text-left">Kategori</th><td class="px-3 py-2 border" x-text="selected?.kategori_berita ?? '-'"></td></tr>
+                                        <tr><th class="px-3 py-2 border text-left">Data Publik/Tidak</th><td class="px-3 py-2 border" x-text="selected?.kategori ?? '-'"></td></tr>
                                         <tr><th class="px-3 py-2 border text-left">Judul</th><td class="px-3 py-2 border" x-text="selected?.judul ?? '-'"></td></tr>
                                         <tr><th class="px-3 py-2 border text-left">Indeks</th><td class="px-3 py-2 border" x-text="selected?.indeks ?? '-'"></td></tr>
                                         <tr><th class="px-3 py-2 border text-left">Uraian Informasi</th><td class="px-3 py-2 border" x-text="selected?.uraian_informasi ?? '-'"></td></tr>
@@ -213,7 +222,6 @@
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
                     </div>
                 </div>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unit Pengelola - SIPANDU</title>
+    <title>Operator PPID - SIPANDU</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -24,19 +24,19 @@
             </div>
 
             <!-- Menu langsung tampil -->
-            <a href="{{ url('/ppidstatis') }}"
+            <a href="{{ url('/ppid/ppidstatis') }}"
                class="flex items-center space-x-2 p-3 rounded bg-[#68778B] hover:bg-gray-500 transition-all duration-300 ease-in-out">
                 <img src="/images/dash.png" alt="Dashboard" class="w-5 h-5">
                 <span>Dashboard</span>
             </a>
 
-            <a href="{{ url('/verifikasi') }}"
+            <a href="{{ url('/ppid/verifikasi') }}"
                class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] transition-all duration-300 ease-in-out font-semibold">
                 <img src="/images/verif.png" alt="" class="w-6 h-6 transition-transform duration-300 group-hover:scale-110">
                 <span class="transition-transform duration-300 group-hover:translate-x-1">Verifikasi Arsip</span>
             </a>
 
-            <a href="{{ url('/dap') }}"
+            <a href="{{ url('/ppid/dap') }}"
                class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] transition-all duration-300 ease-in-out font-semibold">
                 <img src="/images/daftar.png" alt="" class="w-7 h-7 transition-transform duration-300 group-hover:scale-110">
                 <span class="transition-transform duration-300 group-hover:translate-x-1">Daftar Arsip Publik</span>
@@ -67,12 +67,16 @@
         <!-- Header -->
         <header class="flex justify-between items-center bg-[#E3E8EE] px-6 py-4">
             <div class="px-3 py-3 bg-[#CBD2DA] text-[#003B69] font-bold rounded [letter-spacing:1px]">
-                Oprerator PPID
+                Operator PPID
             </div>
-            <button class="flex items-center space-x-2 bg-[#CBD2DA] text-[#003B69] font-bold px-3 py-3 rounded hover:bg-gray-300">
-                <img src="/images/user.png" alt="User" class="w-5 h-5">
-                <span>Log Out</span>
-            </button>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" 
+                        class="flex items-center space-x-2 bg-[#CBD2DA] text-[#003B69] font-bold px-3 py-3 rounded hover:bg-gray-300">
+                    <img src="/images/user.png" class="w-5 h-5" alt="user">
+                    <span>Log Out</span>
+                </button>
+            </form>
         </header>
 
         <!-- Content -->

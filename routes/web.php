@@ -6,60 +6,64 @@ use App\Http\Controllers\ArsipController;
 use App\Http\Controllers\TmbController;
 use App\Http\Controllers\VerifikasiController;
 use App\Http\Controllers\ArsipPublikController;
+use App\Http\Controllers\AuthController;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\TmbDashboardController;
 
-// Redirect root ke login
-Route::get('/', function () {
-    return redirect()->route('login'); // arahkan ke route login
-});
+// // Redirect root ke login
+// Route::get('/', function () {
+//     return view('login'); // arahkan ke route login
+// });
 
+// Login dan Logout
+Route::get('/', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'processLogin'])->name('login.process');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Login
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [LoginController::class, 'login'])->name('login.post');
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-
-// TMB
-Route::middleware(['auth', 'role:TMB'])->prefix('uptmb')->group(function () {
-    Route::view('/tmb', 'uptmb.tmb')->name('uptmb.tmb');
-    Route::view('/tmbinput', 'uptmb.tmbinput')->name('uptmb.input');
-    Route::view('/tmbdashboard', 'uptmb.tmbdashboard')->name('uptmb.dashboard');
-});
+Route::post('/logout', function () {
+    Auth::logout();
+    request()->session()->invalidate();
+    request()->session()->regenerateToken();
+    return redirect('/'); // kembali ke halaman login
+})->name('logout');
 
 // UPTMB
-Route::get('/tmb', function () {
-    return view('uptmb.tmb');
-});
-Route::get('/tmbinput', function () {
-    return view('uptmb.tmbinput');
-});
-Route::get('/tmbdashboard', function () {
+Route::get('/uptmb/tmbdashboard', function () {
     return view('uptmb.tmbdashboard');
 });
-Route::get('/tmb', [App\Http\Controllers\ArsipController::class, 'index'])->name('arsipunit.index');
-Route::delete('/arsipunit/{id}', [App\Http\Controllers\ArsipController::class, 'destroy'])->name('arsipunit.destroy');
-Route::get('/tmb', [ArsipController::class, 'indexTmb'])->name('tmb.index');
-Route::get('/tmbinput', [TmbController::class, 'create'])->name('tmb.create');
-Route::post('/tmbinput', [TmbController::class, 'store'])->name('tmb.store');
-Route::resource('tmb', TmbController::class);
+Route::get('/uptmb/tmb', function () {
+    return view('uptmb.tmb');
+});
+Route::get('/uptmb/tmbinput', function () {
+    return view('uptmb.tmbinput');
+});
+
+Route::get('/uptmb/tmb', [App\Http\Controllers\ArsipController::class, 'index'])->name('arsipunit.index');
+Route::delete('/uptmb/arsipunit/{id}', [App\Http\Controllers\ArsipController::class, 'destroy'])->name('arsipunit.destroy');
+Route::get('/uptmb/tmb', [ArsipController::class, 'indexTmb'])->name('tmb.index');
+Route::get('/uptmb/tmbinput', [TmbController::class, 'create'])->name('tmb.create');
+Route::post('/uptmb/tmbinput', [TmbController::class, 'store'])->name('tmb.store');
+Route::resource('uptmb/tmb', TmbController::class);
+Route::get('/uptmb/tmbdashboard', [TmbDashboardController::class, 'index'])
+    ->name('uptmb.dashboard');
 
 
 
 // PPID
-Route::get('/ppidstatis', function () {
+Route::get('/ppid/ppidstatis', function () {
     return view('ppid.ppidstatis');
 });
-Route::get('/verifikasi', function () {
+Route::get('/ppid/verifikasi', function () {
     return view('ppid.verifikasi');
 });
-Route::get('/dap', function () {
+Route::get('/ppid/dap', function () {
     return view('ppid.dap');
 });
-Route::get('/verifikasi', [VerifikasiController::class, 'index'])->name('verifikasi.index');
-Route::post('/verifikasi/publik/{id}', [VerifikasiController::class, 'publik'])->name('verifikasi.publik');
-Route::post('/verifikasi/tidak/{id}', [VerifikasiController::class, 'tidak'])->name('verifikasi.tidak');
-
-Route::get('/dap', [ArsipPublikController::class, 'index'])->name('arsip.publik');
-Route::delete('/dap/{id}', [ArsipPublikController::class, 'destroy'])->name('arsip.publik.hapus');
+Route::get('/ppid/verifikasi', [VerifikasiController::class, 'index'])->name('verifikasi.index');
+Route::post('/ppid/verifikasi/publik/{id}', [VerifikasiController::class, 'publik'])->name('verifikasi.publik');
+Route::post('/ppid/verifikasi/tidak/{id}', [VerifikasiController::class, 'tidak'])->name('verifikasi.tidak');
+Route::get('/ppid/dap', [ArsipPublikController::class, 'index'])->name('arsip.publik');
+Route::delete('/ppid/dap/{id}', [ArsipPublikController::class, 'destroy'])->name('arsip.publik.hapus');
 
 
 

@@ -11,27 +11,29 @@ class ArsipPublik extends Model
 
     protected $table = 'arsip_publik';
 
-    protected $fillable = [
-        'judul',
-        'nomor_arsip',
-        'kode_klasifikasi_id',
-        'kategori',
-        'indeks',
-        'uraian_informasi',
-        'tanggal',
-        'tingkat_perkembangan',
-        'jumlah',
-        'satuan',
-        'unit_pengolah_id',
-        'ruangan',
-        'no_box',
-        'no_filling',
-        'no_laci',
-        'no_folder',
-        'keterangan',
-        'skkaad',
-        'upload_dokumen',
-    ];
+protected $fillable = [
+    'judul',
+    'nomor_arsip',
+    'kategori',
+    'kategori_berita', // ✅ tambahkan
+    'kode_klasifikasi_id',
+    'indeks',
+    'uraian_informasi',
+    'tanggal',
+    'tingkat_perkembangan',
+    'jumlah',
+    'satuan',
+    'unit_pengolah_id',
+    'ruangan',
+    'no_box',
+    'no_filling',
+    'no_laci',
+    'no_folder',
+    'keterangan',
+    'skkaad',
+    'upload_dokumen',
+];
+
 
     // Relasi ke unit pengolah
     public function unitPengolah()

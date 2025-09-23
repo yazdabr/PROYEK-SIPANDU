@@ -31,6 +31,7 @@ class VerifikasiController extends Controller
             'nomor_arsip' => $item->nomor_arsip,
             'kode_klasifikasi_id' => $item->kode_klasifikasi_id,
             'kategori' => $item->kategori,
+            'kategori_berita' => $item->kategori_berita,
             'status_verifikasi' => 'publik',
             'indeks' => $item->indeks,
             'uraian_informasi' => $item->uraian_informasi,

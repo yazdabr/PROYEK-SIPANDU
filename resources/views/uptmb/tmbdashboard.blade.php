@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unit Pengelola - SIPANDU</title>
+    <title>Unit Pengolah - SIPANDU</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="flex min-h-screen bg-[#EDF2F9]">
@@ -20,19 +20,19 @@
                 Selamat Datang
             </div>
 
-            <a href="{{ url('/tmbdashboard') }}"
+            <a href="{{ url('/uptmb/tmbdashboard') }}"
                class="flex items-center space-x-2 p-3 rounded bg-[#68778B] hover:bg-gray-500 transition-all duration-300 ease-in-out">
                 <img src="/images/dash.png" alt="Dashboard" class="w-5 h-5">
                 <span>Dashboard</span>
             </a>
 
-            <a href="{{ url('/tmbinput') }}"
+            <a href="{{ url('/uptmb/tmbinput') }}"
                class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] transition-all duration-300 ease-in-out font-semibold">
                 <img src="/images/input.png" alt="" class="w-7 h-7 transition-transform duration-300 group-hover:scale-110">
                 <span class="transition-transform duration-300 group-hover:translate-x-1">Input Arsip</span>
             </a>
 
-            <a href="{{ url('/tmb') }}"
+            <a href="{{ url('/uptmb/tmb') }}"
                class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] transition-all duration-300 ease-in-out font-semibold">
                 <img src="/images/daftar.png" alt="" class="w-7 h-7 transition-transform duration-300 group-hover:scale-110">
                 <span class="transition-transform duration-300 group-hover:translate-x-1">Daftar Arsip Unit</span>
@@ -44,13 +44,19 @@
     <div class="flex-1 flex flex-col">
         <!-- Header -->
         <header class="flex justify-between items-center bg-[#E3E8EE] px-6 py-4">
-            <div class="px-3 py-3 bg-[#CBD2DA] text-[#003B69] font-bold rounded [letter-spacing:1px]">
+            <div class="px-3 py-3 bg-[#CBD2DA] text-[#003B69] font-bold rounded">
                 Unit Pengolah TMB
             </div>
-            <button class="flex items-center space-x-2 bg-[#CBD2DA] text-[#003B69] font-bold px-3 py-3 rounded hover:bg-gray-300">
-                <img src="/images/user.png" alt="User" class="w-5 h-5">
-                <span>Log Out</span>
-            </button>
+
+            <!-- Tombol Logout -->
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" 
+                        class="flex items-center space-x-2 bg-[#CBD2DA] text-[#003B69] font-bold px-3 py-3 rounded hover:bg-gray-300">
+                    <img src="/images/user.png" class="w-5 h-5" alt="user">
+                    <span>Log Out</span>
+                </button>
+            </form>
         </header>
 
         <!-- Content -->
@@ -62,25 +68,26 @@
                     <!-- Total Arsip Unit -->
                     <div class="bg-[#F9FAFB] p-6 rounded-lg shadow text-center">
                         <h3 class="font-semibold text-gray-600 mb-2">Total Arsip Unit</h3>
-                        <p class="text-3xl font-bold text-[#003B69]">1,024</p>
+                        <p class="text-3xl font-bold text-[#003B69]">{{ $totalArsipUnit }}</p>
                     </div>
 
-                    <!-- Total Arsip PPID -->
+                                        <!-- Total Arsip PPID -->
                     <div class="bg-[#F9FAFB] p-6 rounded-lg shadow text-center">
                         <h3 class="font-semibold text-gray-600 mb-2">Total Arsip PPID</h3>
-                        <p class="text-3xl font-bold text-[#003B69]">350</p>
+                        <p class="text-3xl font-bold text-[#003B69]">{{ $totalArsipPPID }}</p>
                     </div>
 
-                    <!-- Total Arsip Belum Verif -->
+
+                                        <!-- Total Arsip Belum Verif -->
                     <div class="bg-[#F9FAFB] p-6 rounded-lg shadow text-center">
                         <h3 class="font-semibold text-gray-600 mb-2">Total Arsip Belum Verif</h3>
-                        <p class="text-3xl font-bold text-red-600">120</p>
+                        <p class="text-3xl font-bold text-red-600">{{ $totalBelumVerif }}</p>
                     </div>
 
-                    <!-- Total Arsip Sudah Verif -->
+                                        <!-- Total Arsip Sudah Verif -->
                     <div class="bg-[#F9FAFB] p-6 rounded-lg shadow text-center">
                         <h3 class="font-semibold text-gray-600 mb-2">Total Arsip Sudah Verif</h3>
-                        <p class="text-3xl font-bold text-green-600">230</p>
+                        <p class="text-3xl font-bold text-green-600">{{ $totalSudahVerif }}</p>
                     </div>
                 </div>
             </div>

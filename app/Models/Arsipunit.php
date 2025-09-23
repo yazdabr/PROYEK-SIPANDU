@@ -22,6 +22,7 @@ class ArsipUnit extends Model
     protected $fillable = [
         'no_kode_klasifikasi',
         'kategori',
+        'kategori_berita',
         'judul',
         'indeks',
         'uraian_informasi',
