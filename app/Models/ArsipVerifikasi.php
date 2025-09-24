@@ -18,6 +18,7 @@ class ArsipVerifikasi extends Model
         'kode_klasifikasi_id',
         'kategori',
         'kategori_berita', // ✅ tambahkan
+        'status_verifikasi',
         'indeks',
         'uraian_informasi',
         'tanggal',

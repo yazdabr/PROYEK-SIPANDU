@@ -56,25 +56,7 @@
         </header>
 
         <main class="p-6 space-y-6" x-data="{ showModal: false, selected: null }">
-            <!-- Notifikasi sukses -->
-            @if(session('success'))
-                <div 
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-init="setTimeout(() => show = false, 3000)"
-                    x-transition:enter="transform transition ease-out duration-500"
-                    x-transition:enter-start="-translate-y-6 opacity-0"
-                    x-transition:enter-end="translate-y-0 opacity-100"
-                    x-transition:leave="transform transition ease-in duration-300"
-                    x-transition:leave-start="translate-y-0 opacity-100"
-                    x-transition:leave-end="-translate-y-6 opacity-0"
-                    class="fixed top-5 left-1/2 -translate-x-1/2 z-[9999] pointer-events-none"
-                >
-                    <div class="bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg text-center pointer-events-auto">
-                        {{ session('success') }}
-                    </div>
-                </div>
-            @endif
+
             <div class="bg-white p-5 rounded shadow">
                 <h2 class="font-bold text-lg text-[#003B69] mb-4">Daftar Arsip Unit</h2>
 
@@ -261,6 +243,26 @@
 
         </main>
     </div>
+<!-- Notifikasi sukses -->
+@if(session('success'))
+    <div 
+        x-data="{ show: true }"
+        x-show="show"
+        x-init="setTimeout(() => show = false, 3000)"
+        x-transition:enter="transform transition ease-out duration-500"
+        x-transition:enter-start="translate-y-6 opacity-0"
+        x-transition:enter-end="translate-y-0 opacity-100"
+        x-transition:leave="transform transition ease-in duration-300"
+        x-transition:leave-start="translate-y-0 opacity-100"
+        x-transition:leave-end="translate-y-6 opacity-0"
+        class="fixed bottom-5 left-1/2 -translate-x-1/2 z-[9999] pointer-events-none"
+    >
+        <div class="bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg text-center pointer-events-auto">
+            {{ session('success') }}
+        </div>
+    </div>
+@endif
+
         <script>
             let modal = document.getElementById('deleteModal');
             let modalContent = document.getElementById('modalContent');

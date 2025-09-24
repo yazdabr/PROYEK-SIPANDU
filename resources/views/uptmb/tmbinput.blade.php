@@ -4,9 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unit Pengolah - SIPANDU</title>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
+<style>
+/* Hilangkan tombol "x" (clear) */
+.select2-selection__clear {
+    display: none !important;
+}
+
+/* Hilangkan icon dropdown panah */
+.select2-selection__arrow {
+    display: none !important;
+}
+
+/* Biar teks tetap rata kiri penuh */
+.select2-container .select2-selection--single {
+    padding-right: 0 !important;
+}
+.select2-container .select2-selection--single {
+    height: 45px !important;       /* atur tinggi */
+    line-height: 45px !important;  /* biar teks di tengah */
+    font-size: 16px;               /* opsional: perbesar font */
+}
+
+/* Supaya tulisan di dalam tidak nempel ke tepi */
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 45px !important;
+    padding-left: 10px !important;
+}
+</style>
+
 <body class="flex min-h-screen bg-[#EDF2F9]">
 
     <!-- Sidebar -->
@@ -20,19 +50,22 @@
                 Selamat Datang
             </div>
 
-            <a href="{{ url('/uptmb/tmbdashboard') }}" class="flex items-center space-x-2 p-3 rounded bg-[#68778B] hover:bg-gray-500 transition">
+            <a href="{{ url('/uptmb/tmbdashboard') }}"
+               class="flex items-center space-x-2 p-3 rounded bg-[#68778B] hover:bg-gray-500 transition-all duration-300 ease-in-out">
                 <img src="/images/dash.png" alt="Dashboard" class="w-5 h-5">
                 <span>Dashboard</span>
             </a>
 
-            <a href="{{ route('tmb.create') }}" class="group flex items-center space-x-2 p-3 rounded bg-[#CBD2DA] text-[#003B69] font-semibold">
-                <img src="/images/inputbiru.png" class="w-7 h-7">
-                <span>Input Arsip</span>
+            <a href="{{ url('/uptmb/tmbinput') }}"
+               class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] transition-all duration-300 ease-in-out font-semibold text-[#003B69]">
+                <img src="/images/inputbiru.png" alt="" class="w-7 h-7 transition-transform duration-300 group-hover:scale-110">
+                <span class="transition-transform duration-300 group-hover:translate-x-1">Input Arsip</span>
             </a>
 
-            <a href="{{ route('tmb.index') }}" class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] font-semibold">
-                <img src="/images/daftar.png" class="w-7 h-7">
-                <span>Daftar Arsip Unit</span>
+            <a href="{{ url('/uptmb/tmb') }}"
+               class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] transition-all duration-300 ease-in-out font-semibold">
+                <img src="/images/daftar.png" alt="" class="w-7 h-7 transition-transform duration-300 group-hover:scale-110">
+                <span class="transition-transform duration-300 group-hover:translate-x-1">Daftar Arsip Unit</span>
             </a>
         </nav>
     </aside>
@@ -80,21 +113,23 @@
                         <div class="w-full max-w-5xl">
                             <label class="font-medium mb-1 block">Kode Klasifikasi</label>
                             <div class="relative w-full">
-                                <select name="kode_klasifikasi" class="w-full border rounded px-3 py-2 appearance-none text-gray-500" required>
+                                <select id="kode_klasifikasi" name="kode_klasifikasi" class="w-full border rounded px-3 py-2 text-gray-500" required>
                                     <option value="">-</option>
                                     @foreach($kodeKlasifikasi as $kode)
                                         <option value="{{ $kode->id }}">{{ $kode->kode }} - {{ $kode->uraian }}</option>
                                     @endforeach
                                 </select>
+                                
                                 <div class="pointer-events-none absolute inset-y-0 right-2 flex items-center text-gray-500">▼</div>
                             </div>
                         </div>
 
                         <!-- Kategori Berita -->
                         <div class="w-full max-w-5xl">
-                            <label class="font-medium mb-1 block">Kategori Berita</label>
+                            <label class="font-medium mb-1 block">Kategori</label>
                             <div class="relative w-full">
-                                <select id="kategoriBerita" name="kategori_berita" class="w-full border rounded px-3 py-2 appearance-none text-gray-500">
+                                <select id="kategori_berita" name="kategori_berita" 
+                                    class="w-full border rounded px-3 py-2 text-gray-500 appearance-none">
                                         <option value="-">-</option>
                                         <option value="Keputusan LPP RRI dan Pertimbangannya (Tersedia setiap saat)">Keputusan LPP RRI dan Pertimbangannya (Tersedia setiap saat)</option>
                                         <option value="Kebijakan LPP RRI dan Dokumen Pendukungnya (Tersedia setiap saat)">Kebijakan LPP RRI dan Dokumen Pendukungnya (Tersedia setiap saat)</option>
@@ -173,7 +208,7 @@
                         </div>
 
                         <!-- Hidden input kategori -->
-                        <input type="hidden" id="kategoriHidden" name="kategori" value="-">
+                        <input type="hidden" id="kategori" name="kategori" value="-">
 
                         <!-- Aktifkan kembali select kategori
                         <div class="w-full max-w-5xl">
@@ -210,7 +245,6 @@
                             <label class="font-medium mb-1 block">Tingkat Perkembangan</label>
                             <div class="relative w-full">
                                 <select name="tingkat_perkembangan" class="w-full border rounded px-3 py-2 text-gray-500 appearance-none" required>
-                                    
                                     <option value="Asli">Asli</option>
                                     <option value="Fotocopy">Fotocopy</option>
                                     <option value="Asli & Fotocopy">Asli & Fotocopy</option>
@@ -224,6 +258,8 @@
                         <div class="w-full max-w-2xl">
                             <label class="font-medium mb-1 block">Jumlah</label>
                             <div class="flex items-center gap-3">
+                                
+                                <!-- Input jumlah -->
                                 <input 
                                     type="number" 
                                     name="jumlah" 
@@ -231,17 +267,26 @@
                                     class="w-32 border rounded px-3 py-2 text-center" 
                                     placeholder="0"
                                 >
-                                <select 
-                                    name="satuan" 
-                                    class="w-40 border rounded px-3 py-2 text-center text-gray-500 appearance-none" 
-                                    required
-                                >
-                                    <option value="lembar">Lembar</option>
-                                    <option value="jilid">Jilid</option>
-                                    <option value="bundle">Bundle</option>
-                                </select>
+
+                                <!-- Select + icon dropdown -->
+                                <div class="relative w-40">
+                                    <select 
+                                        name="satuan" 
+                                        class="w-full border rounded px-3 py-2 text-center text-gray-500 appearance-none" 
+                                        required
+                                    >
+                                        <option value="lembar">Lembar</option>
+                                        <option value="jilid">Jilid</option>
+                                        <option value="bundle">Bundle</option>
+                                    </select>
+                                    <div class="pointer-events-none absolute inset-y-0 right-2 flex items-center text-gray-500">
+                                        ▼
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
+
 
 
                         <!-- SKKAAD
@@ -381,20 +426,42 @@
         }
     });
     </script>
-<script>
-    // Ambil elemen
-    const kategoriBerita = document.getElementById('kategoriBerita');
-    const kategoriHidden = document.getElementById('kategoriHidden');
 
-    // Saat kategori_berita berubah
-    kategoriBerita.addEventListener('change', function() {
-        if (this.value === "-") {
-            kategoriHidden.value = "-";
-        } else {
-            kategoriHidden.value = "PPID";
-        }
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- JS Select2 -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#kategori_berita').select2({
+            
+        });
     });
 </script>
+
+<script>
+document.getElementById('kategori_berita').addEventListener('change', function () {
+    let val = this.value;
+    let kategoriInput = document.getElementById('kategori');
+
+    kategoriInput.value = (val === '-') ? '-' : 'PPID';
+
+    console.log("Kategori Berita:", val, "=> Kategori:", kategoriInput.value);
+});
+</script>
+
+<script>
+    $(document).ready(function() {
+        // kategori_berita pakai select2
+        $('#kategori_berita').select2();
+
+        // kode_klasifikasi juga pakai select2
+        $('#kode_klasifikasi').select2();
+    });
+</script>
+
+
 
 </body>
 </html>

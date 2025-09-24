@@ -8,21 +8,21 @@ use App\Models\ArsipVerifikasi;
 
 class PpidController extends Controller
 {
-    public function ppidStatis()
+    public function ppidstatis()
     {
-        // total semua data di arsip_publik
+        // Total semua arsip verifikasi
         $totalPublik = ArsipPublik::count();
 
-        // total arsip di arsip_verifikasi (belum verif)
-        // jika kamu memakai status_verifikasi NULL untuk menandai belum verif:
-        $totalBelumVerif = ArsipVerifikasi::whereNull('status_verifikasi')->count();
-        // jika arsip_verifikasi tidak pakai status_verifikasi, cukup count():
-        // $totalBelumVerif = ArsipVerifikasi::count();
+        // Total arsip sudah verifikasi (publik + tidak_publik)
+        $totalSudahVerif = ArsipPublik::whereIn('status_verifikasi', ['publik', 'tidak_publik'])->count();
 
-        // total arsip di arsip_publik yang punya status_verifikasi = 'publik'
-        // (sesuaikan kolom kalau berbeda)
-        $totalSudahVerif = ArsipPublik::where('status_verifikasi', 'publik')->count();
+        // Total arsip belum verifikasi (pending)
+        $totalBelumVerif = ArsipVerifikasi::count();
 
-        return view('ppid.ppidstatis', compact('totalPublik', 'totalBelumVerif', 'totalSudahVerif'));
+        return view('ppid.ppidstatis', compact(
+            'totalPublik',
+            'totalSudahVerif',
+            'totalBelumVerif'
+        ));
     }
 }

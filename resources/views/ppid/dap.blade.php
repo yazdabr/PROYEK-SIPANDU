@@ -233,7 +233,7 @@
     <!-- Blade file, misal setelah layout utama -->
 @if(session('success'))
     <div id="toast" 
-         class="fixed top-5 left-1/2 transform -translate-x-1/2 z-50">
+         class="fixed bottom-5 left-1/2 transform -translate-x-1/2 z-50">
         <div class="bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg opacity-0 transition-opacity duration-500">
             {{ session('success') }}
         </div>
@@ -250,6 +250,7 @@
         }, 3000); // durasi tampil 3 detik
     </script>
 @endif
+
 
 <script>
     let modal = document.getElementById('deleteModal');
