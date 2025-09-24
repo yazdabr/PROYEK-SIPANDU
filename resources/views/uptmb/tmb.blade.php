@@ -6,6 +6,8 @@
     <title>Unit Pengolah - SIPANDU</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
 </head>
 <body class="flex min-h-screen bg-[#EDF2F9]">
 
@@ -54,30 +56,32 @@
         </header>
 
         <main class="p-6 space-y-6" x-data="{ showModal: false, selected: null }">
-            <!-- Notifikasi sukses (opsional, kalau pake session('success')) -->
+            <!-- Notifikasi sukses -->
             @if(session('success'))
-                <div
+                <div 
                     x-data="{ show: true }"
                     x-show="show"
-                    x-init="setTimeout(()=> show=false, 3000)"
+                    x-init="setTimeout(() => show = false, 3000)"
                     x-transition:enter="transform transition ease-out duration-500"
                     x-transition:enter-start="-translate-y-6 opacity-0"
                     x-transition:enter-end="translate-y-0 opacity-100"
-                    class="fixed top-5 left-1/2 transform -translate-x-1/2 z-50"
+                    x-transition:leave="transform transition ease-in duration-300"
+                    x-transition:leave-start="translate-y-0 opacity-100"
+                    x-transition:leave-end="-translate-y-6 opacity-0"
+                    class="fixed top-5 left-1/2 -translate-x-1/2 z-[9999] pointer-events-none"
                 >
-                    <div class="bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg text-center">
+                    <div class="bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg text-center pointer-events-auto">
                         {{ session('success') }}
                     </div>
                 </div>
             @endif
-
             <div class="bg-white p-5 rounded shadow">
                 <h2 class="font-bold text-lg text-[#003B69] mb-4">Daftar Arsip Unit</h2>
 
                 <!-- Filter Unit Pengolah (GET) -->
                 <form action="{{ url()->current() }}" method="GET" class="mb-4 flex items-center space-x-2">
-                    <div class="relative">
-                        <select name="judul" class="w-96 border rounded px-3 py-2 text-gray-700 pr-8 appearance-none">
+                    <div class="relative w-96">
+                        <select id="judulSelect" name="judul" class="w-full border rounded px-3 py-2 text-gray-700">
                             <option value="">Cari Judul...</option>
                             @foreach($judulList as $judul)
                                 <option value="{{ $judul }}" {{ request('judul') == $judul ? 'selected' : '' }}>
@@ -85,12 +89,22 @@
                                 </option>
                             @endforeach
                         </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-2 flex items-center text-gray-500">▼</div>
                     </div>
 
-                    <button type="submit" class="bg-[#003B69] text-white px-3 py-2 rounded hover:bg-[#00509E]">Cari</button>
-                    <a href="{{ url()->current() }}" class="bg-gray-400 text-white px-3 py-2 rounded hover:bg-gray-500">Reset</a>
+                    <button type="submit" class="bg-[#003B69] text-white px-3 py-2 rounded hover:bg-[#00509E]">
+                        Cari
+                    </button>
+                    <button type="button" onclick="window.location.href='{{ url('/uptmb/tmb') }}'" 
+                            class="bg-gray-400 text-white px-3 py-2 rounded hover:bg-gray-500">
+                        Reset
+                    </button>
                 </form>
+
+                <!-- Styling biar dropdown tidak ketutupan tabel -->
+                <style>
+                    .ts-wrapper { z-index: 50; }
+                    .ts-dropdown { z-index: 9999 !important; }
+                </style>
 
                 <!-- Tabel (scroll hanya tabel) -->
                 <div class="overflow-auto max-h-[56vh] border border-gray-200 rounded">
@@ -156,14 +170,27 @@
                                             </button>
 
                                             <!-- Tombol Hapus -->
-                                            <form action="{{ route('tmb.destroy', $item->id) }}" method="POST" 
-                                                onsubmit="return confirm('Apakah Anda yakin ingin menghapus arsip ini?');" class="inline">
+                                            <form action="{{ route('tmb.destroy', $item->id) }}" method="POST" class="inline deleteForm">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="bg-[#BB5456] text-white px-2 py-1 rounded hover:bg-[#8B6869] transition font-semibold">
+                                                <button type="button" class="bg-[#BB5456] text-white px-2 py-1 rounded hover:bg-[#8B6869] transition font-semibold deleteBtn">
                                                     <img src="{{ asset('images/trash.png') }}" alt="Hapus" class="w-7 h-5 object-contain">
                                                 </button>
                                             </form>
+
+                                            <!-- Popup Modal -->
+                                            <div id="deleteModal" 
+                                                class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 opacity-0 transition-opacity duration-300">
+                                                <div id="modalContent"
+                                                    class="bg-white p-6 rounded-lg shadow-lg w-80 text-center transform scale-90 opacity-0 transition-all duration-300">
+                                                    <h3 class="text-lg font-bold mb-4">Konfirmasi Hapus</h3>
+                                                    <p class="mb-6">Apakah Anda Ingin Menghapus Arsip Ini?</p>
+                                                    <div class="flex justify-between">
+                                                        <button id="cancelBtn" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Batal</button>
+                                                        <button id="confirmBtn" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Hapus</button>
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                         </div>
                                     </td>
@@ -234,5 +261,54 @@
 
         </main>
     </div>
+        <script>
+            let modal = document.getElementById('deleteModal');
+            let modalContent = document.getElementById('modalContent');
+            let confirmBtn = document.getElementById('confirmBtn');
+            let cancelBtn = document.getElementById('cancelBtn');
+            let currentForm;
+
+            // Buka modal
+            document.querySelectorAll('.deleteBtn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    currentForm = this.closest('form');
+                    modal.classList.remove('hidden');
+                    modal.classList.add('flex');
+
+                    // efek animasi muncul
+                    setTimeout(() => {
+                        modal.classList.add('opacity-100');
+                        modalContent.classList.remove('scale-90', 'opacity-0');
+                        modalContent.classList.add('scale-100', 'opacity-100');
+                    }, 50);
+                });
+            });
+
+            // Tutup modal
+            function closeModal() {
+                modal.classList.remove('opacity-100');
+                modalContent.classList.remove('scale-100', 'opacity-100');
+                modalContent.classList.add('scale-90', 'opacity-0');
+
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                }, 300);
+            }
+
+            cancelBtn.addEventListener('click', closeModal);
+
+            confirmBtn.addEventListener('click', function() {
+                if(currentForm) currentForm.submit();
+                closeModal();
+            });
+        </script>
+        <script>
+            new TomSelect("#judulSelect", {
+                create: false,
+                sortField: { field: "text", direction: "asc" },
+                placeholder: "Cari Judul..."
+            });
+        </script>
 </body>
 </html>

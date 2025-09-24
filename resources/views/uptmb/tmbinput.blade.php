@@ -210,7 +210,7 @@
                             <label class="font-medium mb-1 block">Tingkat Perkembangan</label>
                             <div class="relative w-full">
                                 <select name="tingkat_perkembangan" class="w-full border rounded px-3 py-2 text-gray-500 appearance-none" required>
-                                    <option value="">-</option>
+                                    
                                     <option value="Asli">Asli</option>
                                     <option value="Fotocopy">Fotocopy</option>
                                     <option value="Asli & Fotocopy">Asli & Fotocopy</option>

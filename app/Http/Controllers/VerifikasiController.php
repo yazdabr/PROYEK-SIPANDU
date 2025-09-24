@@ -54,8 +54,8 @@ class VerifikasiController extends Controller
 
         // Hapus dari arsip_verifikasi
         $item->delete();
+        return redirect('ppid/dap')->with('success', 'Data berhasil dipublikasikan.');
 
-        return redirect()->back()->with('success', 'Data berhasil dipublikasikan.');
     }
 
     // Tombol TIDAK

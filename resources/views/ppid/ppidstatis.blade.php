@@ -79,39 +79,33 @@
             </form>
         </header>
 
-        <!-- Content -->
-        <main class="p-6 space-y-6">
-            <div class="bg-white p-6 rounded shadow">
-                <h2 class="font-bold text-lg text-[#003B69] mb-4">Statistik Arsip Publik</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Pencarian -->
-                    <div class="bg-white p-4 rounded shadow">
-                        <h2 class="font-semibold text-lg mb-3">Pencarian</h2>
-                        <div class="space-y-3">
-                            <div class="h-5 bg-gray-200 rounded"></div>
-                            <div class="h-5 bg-gray-200 rounded"></div>
-                            <div class="h-5 bg-gray-200 rounded"></div>
-                        </div>
-                    </div>
-
-                    <!-- Total Arsip Unit -->
-                    <div class="bg-white p-4 rounded shadow flex flex-col justify-center items-center">
-                        <h2 class="font-semibold text-lg mb-2">Total Arsip Publik</h2>
-                        <p class="text-3xl font-bold text-gray-800">1,024</p>
-                    </div>
-                </div>
+<!-- Content -->
+<main class="p-6 space-y-6">
+    <div class="bg-white p-6 rounded shadow">
+        <h2 class="font-bold text-lg text-[#003B69] mb-4">Statistik Arsip</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Total Arsip Publik-->
+            <div class="bg-[#F9FAFB] p-6 rounded-lg shadow text-center">
+                <h3 class="font-semibold text-gray-600 mb-2">Total Arsip Publik</h3>
+                <p class="text-3xl font-bold text-[#003B69]">{{ $totalPublik ?? 0 }}</p>
             </div>
 
-
-
-            <!-- Statistik Arsip Unit -->
-            <div class="bg-white p-4 rounded shadow">
-                <h2 class="font-semibold text-center mb-3">Grapik Arsip Publik</h2>
-                <div class="h-64 flex items-center justify-center text-gray-400">
-                    <p>[Grafik Dummy]</p>
-                </div>
+            <!-- Total Arsip Belum Verif -->
+            <div class="bg-[#F9FAFB] p-6 rounded-lg shadow text-center">
+                <h3 class="font-semibold text-gray-600 mb-2">Total Arsip Belum Verif</h3>
+                <p class="text-3xl font-bold text-red-600">{{ $totalBelumVerif ?? 0 }}</p>
             </div>
-        </main>
+
+            <!-- Total Arsip Sudah Verif -->
+            <div class="bg-[#F9FAFB] p-6 rounded-lg shadow text-center">
+                <h3 class="font-semibold text-gray-600 mb-2">Total Arsip Sudah Verif</h3>
+                <p class="text-3xl font-bold text-green-600">{{ $totalSudahVerif ?? 0 }}</p>
+            </div>
+        </div>
+    </div>
+</main>
+
     </div>
 
 </body>

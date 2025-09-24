@@ -19,7 +19,7 @@ class ArsipPublikController extends Controller
     {
         $item = ArsipPublik::findOrFail($id);
         $item->delete();
-        return redirect()->back()->with('warning', 'Arsip publik berhasil dihapus.');
+        return redirect()->back()->with('success', 'Data berhasil dihapus!');
     }
 
 }

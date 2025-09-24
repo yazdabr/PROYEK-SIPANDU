@@ -88,7 +88,7 @@
                             <tr class="bg-gray-200 text-gray-700">
                                 <th class="px-3 py-2 border">No</th>
                                 <th class="px-3 py-2 border">Data</th>
-                                <th class="px-3 py-2 border">Data Publik/Tidak</th>
+                                <th class="px-3 py-2 border">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -144,24 +144,59 @@
                                 </td>
                                 <td class="px-3 py-2 border">
                                     <div class="flex justify-center space-x-3 font-semibold">
-                                        <!-- Tombol YA → Publikasi -->
-                                        <form action="{{ route('verifikasi.publik', $item->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin mempublikasikan arsip ini?');">
-                                            @csrf
-                                            <button type="submit" class="bg-[#68778B] text-white px-4 py-2 rounded hover:bg-[#4A5A6B] transition font-semibold">
-                                                Ya
-                                            </button>
-                                        </form>
+                                        <!-- Modal Overlay -->
+                                        <div x-data="{ showModal: false }">
+                                            <button @click="showModal = true" class="bg-[#7592BA] text-white px-4 py-2 rounded hover:bg-[#B4D0F6] transition font-semibold">Verifikasi</button>
 
-                                        <!-- Tombol TIDAK → Hapus -->
-                                        <form action="{{ route('verifikasi.tidak', $item->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus arsip ini dari verifikasi?');">
-                                            @csrf
-                                            <button type="submit" class="bg-[#8B6869] text-white px-4 py-2 rounded hover:bg-[#6A4A4B] transition font-semibold">
-                                                Tidak
-                                            </button>
-                                        </form>
+                                            <!-- Modal -->
+                                            <div 
+                                                x-show="showModal" 
+                                                x-transition:enter="transition ease-out duration-300"
+                                                x-transition:enter-start="opacity-0"
+                                                x-transition:enter-end="opacity-100"
+                                                x-transition:leave="transition ease-in duration-200"
+                                                x-transition:leave-start="opacity-100"
+                                                x-transition:leave-end="opacity-0"
+                                                class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+                                            >
+                                                <div 
+                                                    x-show="showModal"
+                                                    x-transition:enter="transition ease-out duration-300 transform"
+                                                    x-transition:enter-start="opacity-0 scale-90"
+                                                    x-transition:enter-end="opacity-100 scale-100"
+                                                    x-transition:leave="transition ease-in duration-200 transform"
+                                                    x-transition:leave-start="opacity-100 scale-100"
+                                                    x-transition:leave-end="opacity-0 scale-90"
+                                                    class="bg-white rounded-lg shadow-lg w-96 p-6 text-center"
+                                                >
+                                                    <h3 class="text-lg font-semibold mb-4">Apakah Data Termasuk Publik?</h3>
+
+                                                    <div class="flex justify-center gap-4">
+                                                        <!-- Tombol YA → Publikasi -->
+                                                        <form action="{{ route('verifikasi.publik', $item->id) }}" method="POST">
+                                                            @csrf
+                                                            <button type="submit" class="bg-[#68778B] text-white px-4 py-2 rounded hover:bg-[#4A5A6B] transition font-semibold">
+                                                                YA
+                                                            </button>
+                                                        </form>
+
+                                                        <!-- Tombol TIDAK → Hapus -->
+                                                        <form action="{{ route('verifikasi.tidak', $item->id) }}" method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
+                                                                TIDAK
+                                                            </button>
+                                                        </form>
+                                                    </div>
+
+                                                    <!-- Close Button -->
+                                                    <button @click="showModal = false" class="mt-4 text-gray-500 hover:text-gray-700">Batal</button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </td>
-
                                     </div>
                                 </td>
                             </tr>
@@ -238,6 +273,35 @@
                 setTimeout(() => notif.remove(), 500);
             }, 3000);
         }
+    });
+</script>
+<script>
+    const modal = document.getElementById('verifModal');
+    const modalYes = document.getElementById('modalYes');
+    const modalNo = document.getElementById('modalNo');
+
+    let currentForm = null;
+
+    document.querySelectorAll('.verifBtn').forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            const action = button.getAttribute('data-action');
+            if (button.innerText.trim() === 'Ya') {
+                currentForm = document.getElementById('verifForm');
+            } else {
+                currentForm = document.getElementById('verifFormTidak');
+            }
+            currentForm.action = action;
+            modal.classList.remove('hidden');
+        });
+    });
+
+    modalYes.addEventListener('click', () => {
+        if(currentForm) currentForm.submit();
+    });
+
+    modalNo.addEventListener('click', () => {
+        modal.classList.add('hidden');
     });
 </script>
 

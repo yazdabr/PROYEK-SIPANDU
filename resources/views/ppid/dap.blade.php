@@ -4,8 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Operator PPID - SIPANDU</title>
+        <!-- Tambahkan Tom Select -->
+    <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
 </head>
 <body class="flex min-h-screen bg-[#EDF2F9]">
 
@@ -41,8 +45,8 @@
     <!-- Main -->
     <div class="flex-1 flex flex-col">
         <header class="flex justify-between items-center bg-[#E3E8EE] px-6 py-4">
-            <div class="px-3 py-3 bg-[#CBD2DA] text-[#003B69] font-bold rounded">
-                Unit Pengolah TMB
+            <div class="px-3 py-3 bg-[#CBD2DA] text-[#003B69] font-bold rounded [letter-spacing:1px]">
+                Operator PPID
             </div>
 
             <!-- Tombol Logout -->
@@ -60,20 +64,28 @@
             <div class="bg-white p-5 rounded shadow">
                 <h2 class="font-bold text-lg text-[#003B69] mb-4">Operator PPID</h2>
 
-                <!-- Filter Unit Pengolah -->
+                <!-- Filter PPID -->
                 <form class="mb-4 flex items-center space-x-2">
                     <div class="relative">
-                        <select class="w-96 border rounded px-3 py-2 text-gray-700 pr-8 appearance-none">
+                        <select id="judulSelect" name="judul" class="w-96 border rounded px-3 py-2 text-gray-700">
                             <option value="">Cari Judul...</option>
-                            <option value="Arsip A">Arsip A</option>
-                            <option value="Arsip B">Arsip B</option>
+                            @foreach($arsipPublik as $arsip)
+                                <option value="{{ $arsip->id }}">{{ $arsip->judul }}</option>
+                            @endforeach
                         </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-2 flex items-center text-gray-500">▼</div>
                     </div>
 
-                    <button type="button" class="bg-[#003B69] text-white px-3 py-2 rounded hover:bg-[#00509E]">Cari</button>
-                    <button type="button" class="bg-gray-400 text-white px-3 py-2 rounded hover:bg-gray-500">Reset</button>
+                    <button type="submit" class="bg-[#003B69] text-white px-3 py-2 rounded hover:bg-[#00509E]">Cari</button>
+                    <button type="button" 
+                            onclick="window.location.href='{{ url('/ppid/dap') }}'" 
+                            class="bg-gray-400 text-white px-3 py-2 rounded hover:bg-gray-500">
+                        Reset
+                    </button> 
                 </form>
+                <style>
+                    .ts-wrapper { z-index: 50; }
+                    .ts-dropdown { z-index: 9999 !important; }
+                </style>
 
                 <!-- Tabel -->
                 <div class="overflow-auto max-h-[56vh] border border-gray-200 rounded">
@@ -134,13 +146,26 @@
                                         }">
                                         <img src="{{ asset('images/more.png') }}" alt="Detail" class="w-5 h-5 object-contain">
                                     </button>
-                                    <form action="{{ route('arsip.publik.hapus', $item->id) }}" method="POST" onsubmit="return confirm('Hapus arsip ini?');">
+                                    <form action="{{ route('arsip.publik.hapus', $item->id) }}" method="POST" class="deleteForm">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="bg-[#BB5456] text-white px-2 py-1 rounded hover:bg-[#8B6869] transition font-semibold">
+                                        <button type="button" class="deleteBtn bg-[#BB5456] text-white px-2 py-1 rounded hover:bg-[#8B6869] transition font-semibold">
                                             <img src="{{ asset('images/trash.png') }}" alt="Hapus" class="w-7 h-5 object-contain">
                                         </button>
                                     </form>
+                                    <!-- Popup Modal -->
+                                    <div id="deleteModal" 
+                                        class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 opacity-0 transition-opacity duration-300">
+                                        <div id="modalContent"
+                                            class="bg-white p-6 rounded-lg shadow-lg w-80 text-center transform scale-90 opacity-0 transition-all duration-300">
+                                            <h3 class="text-lg font-bold mb-4">Konfirmasi Hapus</h3>
+                                            <p class="mb-6">Apakah Anda Ingin Menghapus Arsip Ini?</p>
+                                            <div class="flex justify-between">
+                                                <button id="cancelBtn" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Batal</button>
+                                                <button id="confirmBtn" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Hapus</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -203,8 +228,79 @@
                     </div>
                 </div>
             </div>
-
         </main>
     </div>
+    <!-- Blade file, misal setelah layout utama -->
+@if(session('success'))
+    <div id="toast" 
+         class="fixed top-5 left-1/2 transform -translate-x-1/2 z-50">
+        <div class="bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg opacity-0 transition-opacity duration-500">
+            {{ session('success') }}
+        </div>
+    </div>
+
+    <script>
+        const toast = document.querySelector('#toast > div');
+        toast.classList.remove('opacity-0'); // tampilkan
+        toast.classList.add('opacity-100');
+
+        setTimeout(() => {
+            toast.classList.add('opacity-0'); // hilangkan otomatis
+            setTimeout(() => document.getElementById('toast').remove(), 500); 
+        }, 3000); // durasi tampil 3 detik
+    </script>
+@endif
+
+<script>
+    let modal = document.getElementById('deleteModal');
+    let modalContent = document.getElementById('modalContent');
+    let confirmBtn = document.getElementById('confirmBtn');
+    let cancelBtn = document.getElementById('cancelBtn');
+    let currentForm;
+
+    // Buka modal
+    document.querySelectorAll('.deleteBtn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            currentForm = this.closest('form');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+
+            // efek animasi muncul
+            setTimeout(() => {
+                modal.classList.add('opacity-100');
+                modalContent.classList.remove('scale-90', 'opacity-0');
+                modalContent.classList.add('scale-100', 'opacity-100');
+            }, 50);
+        });
+    });
+
+    // Tutup modal
+    function closeModal() {
+        modal.classList.remove('opacity-100');
+        modalContent.classList.remove('scale-100', 'opacity-100');
+        modalContent.classList.add('scale-90', 'opacity-0');
+
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }, 300);
+    }
+
+    cancelBtn.addEventListener('click', closeModal);
+
+    confirmBtn.addEventListener('click', function() {
+        if(currentForm) currentForm.submit();
+        closeModal();
+    });
+</script>
+<script>
+    new TomSelect("#judulSelect",{
+        create: false,
+        sortField: {
+            field: "text",
+            direction: "asc"
+        }
+    });
+</script>
 </body>
 </html>
