@@ -156,9 +156,17 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="button" class="bg-[#BB5456] text-white px-2 py-1 rounded hover:bg-[#8B6869] transition font-semibold deleteBtn">
-                                                    <img src="{{ asset('images/trash.png') }}" alt="Hapus" class="w-7 h-5 object-contain">
+                                                    <img src="{{ asset('images/trash.png') }}" alt="Hapus" class="w-10 h-5 object-contain">
                                                 </button>
                                             </form>
+
+                                            <a href="{{ route('tmbedit.edit', $item->id) }}" 
+                                            class="inline bg-[#4A90E2] text-white px-2 py-1 rounded hover:bg-[#357ABD] transition font-semibold">
+                                                <img src="{{ asset('images/edit.png') }}" alt="Edit" class="w-6 h-5 object-contain">
+                                            </a>
+
+
+
 
                                             <!-- Popup Modal -->
                                             <div id="deleteModal" 
@@ -211,6 +219,7 @@
                                 <tr><th class="px-3 py-2 border text-left">Kategori</th><td class="px-3 py-2 border" x-text="selected?.kategori_berita ?? '-'"></td></tr>
                                 <tr><th class="px-3 py-2 border text-left">Data Publik/Tidak</th><td class="px-3 py-2 border" x-text="selected?.kategori ?? '-'"></td></tr>
                                 <tr><th class="px-3 py-2 border text-left">Judul</th><td class="px-3 py-2 border" x-text="selected?.judul ?? '-'"></td></tr>
+                                <tr><th class="px-3 py-2 border text-left">Nomor</th><td class="px-3 py-2 border" x-text="selected?.nomor ?? '-'"></td></tr>
                                 <tr><th class="px-3 py-2 border text-left">Indeks</th><td class="px-3 py-2 border" x-text="selected?.indeks ?? '-'"></td></tr>
                                 <tr><th class="px-3 py-2 border text-left">Uraian Informasi</th><td class="px-3 py-2 border" x-text="selected?.uraian_informasi ?? '-'"></td></tr>
                                 <tr><th class="px-3 py-2 border text-left">Tanggal</th><td class="px-3 py-2 border" x-text="selected?.tanggal ?? '-'"></td></tr>
@@ -224,7 +233,6 @@
                                 <tr><th class="px-3 py-2 border text-left">No Laci</th><td class="px-3 py-2 border" x-text="selected?.no_laci ?? '-'"></td></tr>
                                 <tr><th class="px-3 py-2 border text-left">No Folder</th><td class="px-3 py-2 border" x-text="selected?.no_folder ?? '-'"></td></tr>
                                 <tr><th class="px-3 py-2 border text-left">Keterangan</th><td class="px-3 py-2 border" x-text="selected?.keterangan ?? '-'"></td></tr>
-                                <tr><th class="px-3 py-2 border text-left">SKKAAD</th><td class="px-3 py-2 border" x-text="selected?.skkaad ?? '-'"></td></tr>
                                 <tr>
                                     <th class="px-3 py-2 border text-left">Dokumen</th>
                                     <td class="px-3 py-2 border">

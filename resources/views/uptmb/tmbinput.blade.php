@@ -35,6 +35,8 @@
     line-height: 45px !important;
     padding-left: 10px !important;
 }
+
+
 </style>
 
 <body class="flex min-h-screen bg-[#EDF2F9]">
@@ -99,7 +101,7 @@
 
                         <!-- Nama Berkas -->
                         <div class="w-full max-w-5xl">
-                            <label class="font-medium mb-1 block">Nama Berkas</label>
+                            <label class="font-medium mb-1 block">Judul</label>
                             <input type="text" name="judul" class="w-full border rounded px-3 py-2" required>
                         </div>
 

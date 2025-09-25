@@ -10,7 +10,7 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\TmbDashboardController;
 use App\Http\Controllers\PpidController;
-
+use App\Http\Controllers\TmbEditController;
 // // Redirect root ke login
 // Route::get('/', function () {
 //     return view('login'); // arahkan ke route login
@@ -38,6 +38,9 @@ Route::get('/uptmb/tmb', function () {
 Route::get('/uptmb/tmbinput', function () {
     return view('uptmb.tmbinput');
 });
+// Route::get('/uptmb/tmbedit', function () {
+//     return view('uptmb.tmbedit');
+// });
 
 Route::get('/uptmb/tmb', [App\Http\Controllers\ArsipController::class, 'index'])->name('arsipunit.index');
 Route::get('/uptmb/tmb', [ArsipController::class, 'indexTmb'])->name('tmb.index');
@@ -46,6 +49,19 @@ Route::post('/uptmb/tmbinput', [TmbController::class, 'store'])->name('tmb.store
 Route::resource('uptmb/tmb', TmbController::class);
 Route::get('/uptmb/tmbdashboard', [TmbDashboardController::class, 'index'])
     ->name('uptmb.dashboard');
+
+// Edit TMB
+Route::prefix('uptmb')->group(function () {
+    // View daftar TMB
+    Route::get('/tmb', [TmbController::class, 'index'])->name('tmb.index');
+
+    // Form edit
+    Route::get('/tmb/{id}/edit', [TmbEditController::class, 'edit'])->name('tmbedit.edit');
+
+    // Update data
+    Route::put('/tmb/{id}', [TmbEditController::class, 'update'])->name('tmbedit.update');
+});
+
 
 
 

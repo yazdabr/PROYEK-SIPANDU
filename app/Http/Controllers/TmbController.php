@@ -120,4 +120,75 @@ public function store(Request $request)
 
         return redirect()->route('tmb.index')->with('success', 'Data berhasil dihapus');
     }
+
+        public function edit($id)
+    {
+        $tmb = ArsipUnit::findOrFail($id);
+        $kodeKlasifikasi = KodeKlasifikasi::all();
+        $unitTmb = (object)['id' => 1, 'nama' => 'TMB'];
+
+        return view('uptmb.tmbedit', compact('tmb', 'kodeKlasifikasi', 'unitTmb'));
+    }
+
+public function update(Request $request, $id)
+{
+    $tmb = ArsipUnit::findOrFail($id);
+
+    $validated = $request->validate([
+        'judul'                 => 'required|string|max:255',
+        'nomor_arsip'           => 'nullable|string|max:255',
+        'nomor'                 => 'nullable|string|max:255',
+        'kode_klasifikasi'      => 'required|integer',
+        'kategori_berita'       => 'required|string',
+        'indeks'                => 'nullable|string',
+        'uraian_informasi'      => 'nullable|string',
+        'tanggal'               => 'nullable|date',
+        'tingkat_perkembangan'  => 'required|string',
+        'jumlah'                => 'nullable|integer',
+        'satuan'                => 'nullable|string',
+        'unit_pengolah_id'      => 'required|integer',
+        'ruangan'               => 'nullable|string',
+        'no_box'                => 'nullable|string',
+        'no_filling'            => 'nullable|string',
+        'no_laci'               => 'nullable|string',
+        'no_folder'             => 'nullable|string',
+        'skkaad'                => 'nullable|string',
+        'keterangan'            => 'nullable|string',
+        'upload_dokumen'        => 'nullable|file|max:10240',
+    ]);
+
+    // Tentukan kategori otomatis
+    $kategori = ($validated['kategori_berita'] === '-') ? '-' : 'PPID';
+
+    $nomor = $request->input('nomor_arsip', $request->input('nomor', null));
+
+    $tmb->judul                = $validated['judul'];
+    $tmb->nomor_arsip          = $nomor;
+    $tmb->kode_klasifikasi_id  = (int) $validated['kode_klasifikasi'];
+    $tmb->kategori             = $kategori;
+    $tmb->kategori_berita      = $validated['kategori_berita'];
+    $tmb->indeks               = $validated['indeks'] ?? null;
+    $tmb->uraian_informasi     = $validated['uraian_informasi'] ?? null;
+    $tmb->tanggal              = $validated['tanggal'] ?? null;
+    $tmb->tingkat_perkembangan = $validated['tingkat_perkembangan'];
+    $tmb->jumlah               = $validated['jumlah'] ?? null;
+    $tmb->satuan               = $validated['satuan'] ?? null;
+    $tmb->unit_pengolah_id     = $validated['unit_pengolah_id'];
+    $tmb->ruangan              = $validated['ruangan'] ?? null;
+    $tmb->no_box               = $validated['no_box'] ?? null;
+    $tmb->no_filling           = $validated['no_filling'] ?? null;
+    $tmb->no_laci              = $validated['no_laci'] ?? null;
+    $tmb->no_folder            = $validated['no_folder'] ?? null;
+    $tmb->skkaad               = $validated['skkaad'] ?? null;
+    $tmb->keterangan           = $validated['keterangan'] ?? null;
+
+    if ($request->hasFile('upload_dokumen')) {
+        $tmb->upload_dokumen = $request->file('upload_dokumen')->store('arsip', 'public');
+    }
+
+    $tmb->save();
+
+    return redirect()->route('tmb.index')->with('success', 'Data berhasil diperbarui');
+}
+
 }
