@@ -7,7 +7,7 @@ use App\Models\Arsip;
 use Illuminate\Http\Request;
 use App\Models\ArsipVerifikasi;
 use App\Models\ArsipPublik;
-
+use Illuminate\Support\Facades\Auth;
 
 class VerifikasiController extends Controller
 {
@@ -17,6 +17,9 @@ class VerifikasiController extends Controller
         $arsip = \App\Models\ArsipVerifikasi::with(['unitPengolah', 'kodeKlasifikasi'])
             ->orderBy('created_at', 'desc')->get();
 
+                if (Auth::user()->email !== 'ppid@gmail.com') {
+            abort(403, 'Akses Ditolak. Anda tidak memiliki izin untuk melihat halaman ini.');
+        }
         // panggil view ppid/verifikasi
         return view('ppid.verifikasi', compact('arsip'));
     }

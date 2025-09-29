@@ -8,6 +8,8 @@ use App\Models\ArsipVerifikasi;
 use App\Models\ArsipPublik;
 use App\Models\UnitPengolah;
 use App\Models\Arsip;
+use Illuminate\Support\Facades\Auth;
+
 
 class TmbDashboardController extends Controller
 {
@@ -26,7 +28,11 @@ public function index()
 
     // Total arsip belum verifikasi -> ambil langsung dari tabel arsip_verifikasi
     $totalBelumVerif = ArsipVerifikasi::where('unit_pengolah_id', $tmbUnitId)->count();
-
+    
+            // Pengecekan Akses Manual untuk UPTMB
+        if (Auth::user()->email !== 'uptmb@gmail.com') {
+            abort(403, 'Akses Ditolak. Anda tidak memiliki izin untuk melihat halaman ini.');
+        }
 
     return view('uptmb.tmbdashboard', compact(
         'totalArsipUnit',

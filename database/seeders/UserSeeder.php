@@ -23,5 +23,13 @@ class UserSeeder extends Seeder
             'password' => Hash::make('ppid123'),
             'role' => 'ppid',
         ]);
+
+                // User Manajemen (BARU)
+        User::create([
+            'name' => 'Admin Manajemen',
+            'email' => 'manajemen@gmail.com',
+            'password' => Hash::make('manajemen123'), // Kata sandi: manajemen123
+            'role' => 'manajemen',
+        ]);
     }
 }

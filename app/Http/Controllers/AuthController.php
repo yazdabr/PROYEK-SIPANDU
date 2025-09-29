@@ -4,51 +4,91 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use App\Models\User;
 
 class AuthController extends Controller
 {
-    // Tampilkan form login
+    /**
+     * Menampilkan form login.
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function showLogin()
     {
-        return view('login');
+        // Pastikan user yang sudah login tidak bisa mengakses form login
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            // Pengecekan 1: Manajemen
+            if ($user->email === 'manajemen@gmail.com') {
+                return redirect()->route('manajemen.dashboard'); 
+            // Pengecekan 2: UPTMB
+            } elseif ($user->email === 'uptmb@gmail.com') {
+                return redirect()->route('uptmb.dashboard');
+            // Pengecekan 3: PPID
+            } elseif ($user->email === 'ppid@gmail.com') {
+                return redirect()->route('ppid.ppidstatis');
+            }
+        }
+        
+        return view('login'); 
     }
 
-    // Proses login
+    /**
+     * Memproses permintaan login.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function processLogin(Request $request)
     {
-        $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required',
-        ]);
-
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
+            $email = $user->email;
 
-            // Redirect sesuai role
-            if ($user->role === 'tmb') {
-                return redirect()->to('uptmb/tmbdashboard');
-            } elseif ($user->role === 'ppid') {
-                return redirect()->to('ppid/ppidstatis');
+            // Memastikan sesi diregenerasi untuk keamanan
+            $request->session()->regenerate();
+
+            // Logika Pembatasan Akses Berdasarkan Email
+            if ($email === 'manajemen@gmail.com') {
+                // Arahkan ke dashboard Manajemen
+                return redirect()->route('manajemen.dashboard'); 
+            } elseif ($email === 'uptmb@gmail.com') {
+                // Arahkan ke dashboard UPTMB
+                return redirect()->route('uptmb.dashboard');
+            } elseif ($email === 'ppid@gmail.com') {
+                // Arahkan ke halaman PPID Statis
+                return redirect()->route('ppid.ppidstatis');
             } else {
+                // User berhasil login, tapi tidak memiliki email yang diizinkan
                 Auth::logout();
-                return back()->withErrors(['role' => 'Role tidak dikenali']);
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+                return redirect('/')->withErrors(['email' => 'Akun Anda tidak memiliki izin akses ke sistem.']);
             }
         }
 
-        return back()->withErrors(['email' => 'Email atau password salah']);
+        // Jika Autentikasi gagal
+        return back()->withErrors([
+            'email' => 'Email atau Kata Sandi salah.',
+        ])->onlyInput('email');
     }
 
-    // Logout
+    /**
+     * Keluar (Logout) dari sistem.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function logout(Request $request)
     {
         Auth::logout();
+
         $request->session()->invalidate();
+
         $request->session()->regenerateToken();
 
-        return redirect()->route('login');
+        return redirect('/');
     }
 }

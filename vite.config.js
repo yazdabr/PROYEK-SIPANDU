@@ -10,4 +10,7 @@ export default defineConfig({
         }),
         tailwindcss(),
     ],
+    server: {
+        host: true, // Vite akan mengikat ke 0.0.0.0, yang mengizinkan akses dari perangkat lain
+    }
 });
