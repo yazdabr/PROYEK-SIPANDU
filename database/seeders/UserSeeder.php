@@ -31,5 +31,12 @@ class UserSeeder extends Seeder
             'password' => Hash::make('manajemen123'), // Kata sandi: manajemen123
             'role' => 'manajemen',
         ]);
+
+        User::create([
+            'name' => 'Admin KMB',
+            'email' => 'upkmb@gmail.com',
+            'password' => Hash::make('upkmb123'), // Kata sandi: manajemen123
+            'role' => 'kmb',
+        ]);
     }
 }

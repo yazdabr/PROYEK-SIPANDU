@@ -9,6 +9,8 @@ use App\Http\Controllers\VerifikasiController;
 use App\Http\Controllers\ArsipPublikController;
 use App\Http\Controllers\ArsipController;
 use App\Http\Controllers\ManajemenController;
+use App\Http\Controllers\KmbController;           // ✅ Tambahkan
+use App\Http\Controllers\KmbDashboardController; 
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -71,6 +73,17 @@ Route::middleware('auth')->group(function () {
 
         Route::post('/uptmb/tmbinput', [TmbController::class, 'store'])->name('tmb.store');
         Route::get('/uptmb/tmb', [TmbController::class, 'index'])->name('tmb.index'); 
+    });
+
+    // 2.2. Rute UPKMB ✅ (Baru Ditambahkan)
+    Route::prefix('upkmb')->group(function () {
+        Route::get('/kmbdashboard', [KmbDashboardController::class, 'index'])->name('upkmb.dashboard');
+        Route::get('/kmb', [KmbController::class, 'index'])->name('kmb.index');
+        Route::get('/kmbinput', [KmbController::class, 'create'])->name('kmb.create');
+        Route::post('/kmbinput', [KmbController::class, 'store'])->name('kmb.store');
+        Route::get('/kmb/{id}/edit', [KmbController::class, 'edit'])->name('kmbedit.edit');
+        Route::put('/kmb/{id}', [KmbController::class, 'update'])->name('kmbedit.update');
+        Route::delete('/kmb/{id}', [KmbController::class, 'destroy'])->name('kmb.destroy');
     });
 
 

@@ -3,65 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unit Pengolah TMB - PORTAL DATA TERPADU</title>
+    <title>Unit Pengolah KMB - PORTAL DATA TERPADU</title>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        /* Hilangkan tombol "x" (clear) */
-        .select2-selection__clear {
-            display: none !important;
-        }
-
-        /* Hilangkan icon dropdown panah */
-        .select2-selection__arrow {
-            display: none !important;
-        }
-
-        /* Biar teks tetap rata kiri penuh */
-        .select2-container .select2-selection--single {
-            padding-right: 0 !important;
-        }
-        .select2-container .select2-selection--single {
-            height: 45px !important;       /* atur tinggi */
-            line-height: 45px !important;  /* biar teks di tengah */
-            font-size: 16px;               /* opsional: perbesar font */
-        }
-
-        /* Supaya tulisan di dalam tidak nempel ke tepi */
+        .select2-selection__clear { display: none !important; }
+        .select2-selection__arrow { display: none !important; }
+        .select2-container .select2-selection--single { height: 45px !important; line-height: 45px !important; font-size: 16px; }
         .select2-container--default .select2-selection--single .select2-selection__rendered {
-            line-height: 45px !important;
-            padding-left: 10px !important;
+            line-height: 45px !important; padding-left: 10px !important;
         }
-        
-        /* Select2 diutamakan di mobile */
-
-        /* Pastikan sidebar muncul di desktop */
-        @media (min-width: 1024px) {
-            #sidebar {
-                transform: translateX(0) !important;
-            }
-        }
+        @media (min-width: 1024px) { #sidebar { transform: translateX(0) !important; } }
+        [x-cloak] { display: none !important; }
     </style>
-    <style>
-    [x-cloak] { display: none !important; }
-    </style>
-
 </head>
 
 <body class="flex bg-[#EDF2F9]" x-data="layout">
-    
+
 <!-- Sidebar -->
-<aside 
-    id="sidebar"
+<aside id="sidebar"
     x-cloak
     class="fixed inset-y-0 left-0 z-50 w-64 bg-[#8E9BAB] text-white flex flex-col 
            transition-transform duration-300 transform 
            lg:translate-x-0 lg:min-h-screen overflow-y-auto"
     :class="{ 'translate-x-0 ease-out': sidebarOpen, '-translate-x-full ease-in': !sidebarOpen }"
 >
-    <!-- Logo -->
     <div class="px-3 py-2 bg-[#68778B] flex items-center sticky top-0 z-10 shadow-md">
         <img src="/images/logo.png" class="h-16">
         <button @click="sidebarOpen = false" class="lg:hidden ml-auto p-2 text-white hover:text-gray-200">
@@ -69,112 +37,94 @@
         </button>
     </div>
 
-    <!-- Menu -->
     <nav class="flex-1 p-4 space-y-2">
         <div class="text-xs font-bold uppercase tracking-wide text-white rounded [letter-spacing:4px] p-4 mb-3">
             Selamat Datang
         </div>
-        <a href="{{ url('/uptmb/tmbdashboard') }}" class="flex items-center space-x-2 p-3 rounded bg-[#68778B] hover:bg-gray-500 transition-all duration-300 ease-in-out">
+        <a href="{{ url('/upkmb/kmbdashboard') }}" class="flex items-center space-x-2 p-3 rounded bg-[#68778B] hover:bg-gray-500 transition">
             <img src="/images/dash.png" alt="Dashboard" class="w-5 h-5">
             <span>Dashboard</span>
         </a>
-        <a href="{{ url('/uptmb/tmbinput') }}" class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] transition-all duration-300 ease-in-out font-semibold text-[#003B69]">
-            <img src="/images/inputbiru.png" alt="" class="w-7 h-7 transition-transform duration-300 group-hover:scale-110">
-            <span class="transition-transform duration-300 group-hover:translate-x-1">Input Arsip</span>
+        <a href="{{ url('/upkmb/kmbinput') }}" class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] font-semibold text-[#003B69]">
+            <img src="/images/inputbiru.png" alt="" class="w-7 h-7 transition-transform group-hover:scale-110">
+            <span class="group-hover:translate-x-1">Input Arsip</span>
         </a>
-        <a href="{{ url('/uptmb/tmb') }}" class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] transition-all duration-300 ease-in-out font-semibold ">
-            <img src="/images/daftar.png" alt="" class="w-7 h-7 transition-transform duration-300 group-hover:scale-110">
-            <span class="transition-transform duration-300 group-hover:translate-x-1">Daftar Arsip Unit</span>
+        <a href="{{ url('/upkmb/kmb') }}" class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] font-semibold">
+            <img src="/images/daftar.png" alt="" class="w-7 h-7 transition-transform group-hover:scale-110">
+            <span class="group-hover:translate-x-1">Daftar Arsip Unit</span>
         </a>
     </nav>
 
-    <!-- Logout (hanya mobile) -->
     <form action="{{ route('logout') }}" method="POST" class="p-4 mt-auto lg:hidden">
         @csrf
-        <button type="submit" class="w-full flex items-center justify-center space-x-2 bg-[#CBD2DA] text-[#003B69] font-bold px-3 py-3 rounded hover:bg-gray-400 transition-all duration-200">
+        <button type="submit" class="w-full flex items-center justify-center space-x-2 bg-[#CBD2DA] text-[#003B69] font-bold px-3 py-3 rounded hover:bg-gray-400">
             <img src="/images/user.png" class="w-5 h-5" alt="user">
             <span>Log Out</span>
         </button>
     </form>
 </aside>
 
+<!-- Overlay -->
+<div x-show="sidebarOpen" @click="sidebarOpen = false" x-cloak
+    class="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden"></div>
 
-<!-- Overlay (mobile) -->
-<div 
-    x-show="sidebarOpen" 
-    @click="sidebarOpen = false" 
-    x-cloak
-    class="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden"
-    x-transition:enter="transition ease-out duration-300"
-    x-transition:leave="transition ease-in duration-200"
-></div>
-
-    <div class="flex-1 flex flex-col lg:ml-64">
+<div class="flex-1 flex flex-col lg:ml-64">
 <header class="flex items-center bg-[#E3E8EE] px-6 py-4 sticky top-0 z-30 shadow-md">
-    <!-- Tombol buka sidebar (mobile) -->
     <button @click="sidebarOpen = true" class="lg:hidden p-2 text-[#003B69] hover:text-gray-600">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
         </svg>
     </button>
-
-    <!-- Unit Pengolah TMB -->
     <div class="ml-auto lg:ml-0 px-3 py-3 bg-[#CBD2DA] text-[#003B69] font-bold rounded">
-        Unit Pengolah TMB
+        Unit Pengolah KMB
     </div>
-
-    <!-- Logout hanya muncul di desktop -->
     <form action="{{ route('logout') }}" method="POST" class="hidden lg:flex ml-auto">
         @csrf
-        <button type="submit" class="flex items-center space-x-2 bg-[#CBD2DA] text-[#003B69] font-bold px-3 py-3 rounded hover:bg-gray-400 transition-all duration-200">
+        <button type="submit" class="flex items-center space-x-2 bg-[#CBD2DA] text-[#003B69] font-bold px-3 py-3 rounded hover:bg-gray-400">
             <img src="/images/user.png" class="w-5 h-5" alt="user">
             <span>Log Out</span>
         </button>
     </form>
 </header>
 
-        <main class="p-4 sm:p-6 space-y-6">
-            
-            <form action="{{ route('tmb.store') }}" method="POST" enctype="multipart/form-data">
-                @csrf
+<main class="p-4 sm:p-6 space-y-6">
+    <form action="{{ route('kmb.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
 
-                <div class="bg-white p-4 sm:p-6 rounded shadow">
-                    <h2 class="font-bold text-xl text-[#003B69] mb-4">Input Arsip</h2>
-                    <div class="space-y-4">
+        <div class="bg-white p-4 sm:p-6 rounded shadow">
+            <h2 class="font-bold text-xl text-[#003B69] mb-4">Input Arsip</h2>
+            <div class="space-y-4">
+                {{-- Judul --}}
+                <div>
+                    <label class="font-medium mb-1 block">Judul</label>
+                    <input type="text" name="judul" class="w-full border rounded px-3 py-2" required>
+                </div>
 
-                        <div class="w-full">
-                            <label class="font-medium mb-1 block">Judul</label>
-                            <input type="text" name="judul" class="w-full border rounded px-3 py-2" required>
+                {{-- Nomor --}}
+                <div>
+                    <label class="font-medium mb-1 block">Nomor</label>
+                    <input type="text" name="nomor" class="w-full border rounded px-3 py-2">
+                </div>
+
+                {{-- Kode Klasifikasi --}}
+                <div>
+                    <label class="font-medium mb-1 block">Kode Klasifikasi</label>
+                    <div class="relative w-full">
+                    <select id="kode_klasifikasi" name="kode_klasifikasi" class="w-full border rounded px-3 py-2 text-gray-500" required>
+                        <option value="">-</option>
+                        @foreach($kodeKlasifikasi as $kode)
+                            <option value="{{ $kode->id }}">{{ $kode->kode }} - {{ $kode->uraian }}</option>
+                        @endforeach
+                    </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-2 flex items-center text-gray-500">▼</div>
                         </div>
+                </div>
 
-                        <div class="w-full">
-                            <label class="font-medium mb-1 block">Nomor</label>
-                            <input type="text" name="nomor" class="w-full border rounded px-3 py-2">
-                        </div>
-
-                    <div class="w-full">
-                        <label class="font-medium mb-1 block">Kode Klasifikasi</label>
-                        <div class="relative w-full">
-                            <select 
-                                id="kode_klasifikasi" 
-                                name="kode_klasifikasi" 
-                                class="w-full border rounded px-3 py-2 text-gray-500" 
-                                required>
-                                
-                                <option value="">-</option>
-                                @foreach($kodeKlasifikasi as $kode)
-                                    <option value="{{ $kode->id }}">{{ $kode->kode }} - {{ $kode->uraian }}</option>
-                                @endforeach
-                            </select>
-                            <div class="pointer-events-none absolute inset-y-0 right-2 flex items-center text-gray-500">▼</div> 
-                        </div>
-                    </div>
-
-                        <div class="w-full">
-                            <label class="font-medium mb-1 block">Kategori</label>
-                            <div class="relative w-full">
-                                <select id="kategori_berita" name="kategori_berita" 
-                                        class="w-full border rounded px-3 py-2 text-gray-500 appearance-none">
+                {{-- Kategori --}}
+                <div>
+                    <label class="font-medium mb-1 block">Kategori</label>
+                    <div class="relative w-full">
+                    <select id="kategori_berita" name="kategori_berita" class="w-full border rounded px-3 py-2 text-gray-500">
                                             <option value="-">-</option>
                                             <option value="Keputusan LPP RRI dan Pertimbangannya (Tersedia setiap saat)">Keputusan LPP RRI dan Pertimbangannya (Tersedia setiap saat)</option>
                                             <option value="Kebijakan LPP RRI dan Dokumen Pendukungnya (Tersedia setiap saat)">Kebijakan LPP RRI dan Dokumen Pendukungnya (Tersedia setiap saat)</option>
@@ -247,83 +197,68 @@
                                             <option value="Informasi yang Wajib Diumumkan Tanpa Penundaan (Serta Merta)">Informasi yang Wajib Diumumkan Tanpa Penundaan (Serta Merta)</option>
                                             <option value="Menyangkut Ancaman Terhadap Hajat Hidup Orang Banyak dan Ketertiban Umum (Serta Merta)">Menyangkut Ancaman Terhadap Hajat Hidup Orang Banyak dan Ketertiban Umum (Serta Merta)</option>
                                             <option value="Pasal 17 UU 14 Tahun 2008 (Dikecualikan)">Pasal 17 UU 14 Tahun 2008 (Dikecualikan)</option>
-                                        </select>
-                                <div class="pointer-events-none absolute inset-y-0 right-2 flex items-center text-gray-500">▼</div>
-                            </div>
+                    </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-2 flex items-center text-gray-500">▼</div>
+                    </div>
+                </div>
+                <input type="hidden" id="kategori" name="kategori" value="-">
+
+                {{-- Indeks --}}
+                <div>
+                    <label class="font-medium mb-1 block">Indeks</label>
+                    <input type="text" name="indeks" class="w-full border rounded px-3 py-2">
+                </div>
+
+                {{-- Uraian --}}
+                <div>
+                    <label class="font-medium mb-1 block">Uraian Informasi</label>
+                    <textarea name="uraian_informasi" class="w-full border rounded px-3 py-2"></textarea>
+                </div>
+
+                {{-- Tanggal --}}
+                <div>
+                    <label class="font-medium mb-1 block">Tanggal</label>
+                    <input type="date" name="tanggal" class="w-full border rounded px-3 py-2 text-gray-500">
+                </div>
+
+                {{-- Tingkat Perkembangan --}}
+                <div>
+                    <label class="font-medium mb-1 block">Tingkat Perkembangan</label>
+                    <div class="relative w-full">
+                    <select name="tingkat_perkembangan" class="w-full border rounded px-3 py-2 text-gray-500 appearance-none" required>
+                        <option value="Asli">Asli</option>
+                        <option value="Fotocopy">Fotocopy</option>
+                        <option value="Asli & Fotocopy">Asli & Fotocopy</option>
+                        <option value="Softcopy">Softcopy</option>
+                    </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-2 flex items-center text-gray-500">▼</div>
                         </div>
+                </div>
 
-                        <input type="hidden" id="kategori" name="kategori" value="-">
-
-                        <div class="w-full">
-                            <label class="font-medium mb-1 block">Indeks</label>
-                            <input type="text" name="indeks" class="w-full border rounded px-3 py-2">
-                        </div>
-
-                        <div class="w-full">
-                            <label class="font-medium mb-1 block">Uraian Informasi</label>
-                            <textarea name="uraian_informasi" class="w-full border rounded px-3 py-2"></textarea>
-                        </div>
-
-                        <div class="w-full">
-                            <label class="font-medium mb-1 block">Tanggal</label>
-                            <input type="date" name="tanggal" class="w-full border rounded px-3 py-2 text-gray-500">
-                        </div>
-
-                        <div class="w-full">
-                            <label class="font-medium mb-1 block">Tingkat Perkembangan</label>
-                            <div class="relative w-full">
-                                <select name="tingkat_perkembangan" class="w-full border rounded px-3 py-2 text-gray-500 appearance-none" required>
-                                    <option value="Asli">Asli</option>
-                                    <option value="Fotocopy">Fotocopy</option>
-                                    <option value="Asli & Fotocopy">Asli & Fotocopy</option>
-                                    <option value="Softcopy">Softcopy</option>
-                                </select>
-                                <div class="pointer-events-none absolute inset-y-0 right-2 flex items-center text-gray-500">▼</div>
-                            </div>
-                        </div>
-
-                        <div class="w-full">
-                            <label class="font-medium mb-1 block">Jumlah</label>
-                            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-                                
-                                <input 
-                                    type="number" 
-                                    name="jumlah" 
-                                    min="0" 
-                                    class="w-full sm:w-32 border rounded px-3 py-2 text-center" 
-                                    placeholder="0"
-                                >
-
-                                <div class="relative w-full sm:w-40">
-                                    <select 
-                                        name="satuan" 
-                                        class="w-full border rounded px-3 py-2 text-center text-gray-500 appearance-none" 
-                                        required
-                                    >
-                                        <option value="lembar">Lembar</option>
-                                        <option value="jilid">Jilid</option>
-                                        <option value="bundle">Bundle</option>
-                                    </select>
-                                    <div class="pointer-events-none absolute inset-y-0 right-2 flex items-center text-gray-500">
-                                        ▼
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class="w-full">
-                            <label class="font-medium mb-1 block">Unit Pengolah Arsip</label>
-                            <input 
-                                type="text" 
-                                value="TMB" 
-                                class="w-full border rounded px-3 py-2 bg-gray-100 text-gray-700" 
-                                readonly
-                            >
-                            <input type="hidden" name="unit_pengolah_id" value="{{ $unitTmb->id }}">
+                {{-- Jumlah --}}
+                <div>
+                    <label class="font-medium mb-1 block">Jumlah</label>
+                    <div class="flex gap-3">
+                        <input type="number" name="jumlah" min="0" class="w-32 border rounded px-3 py-2 text-center" placeholder="0">
+                        <div class="relative w-full sm:w-40">
+                        <select name="satuan" class="w-40 border rounded px-3 py-2 text-gray-500 appearance-none" required>
+                            <option value="lembar">Lembar</option>
+                            <option value="jilid">Jilid</option>
+                            <option value="bundle">Bundle</option>
+                        </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-2 flex items-center text-gray-500">▼</div>
                         </div>
                     </div>
                 </div>
+
+                {{-- Unit Pengolah --}}
+                <div>
+                    <label class="font-medium mb-1 block">Unit Pengolah Arsip</label>
+                    <input type="text" value="KMB" class="w-full border rounded px-3 py-2 bg-gray-100 text-gray-700" readonly>
+                    <input type="hidden" name="unit_pengolah_id" value="{{ $unitKmb->id }}">
+                </div>
+            </div>
+        </div>
 
                 <div class="bg-white p-4 sm:p-6 rounded shadow mt-6">
                     <h2 class="font-semibold text-xl text-[#003B69] mb-4">Lokasi Arsip</h2>
@@ -369,11 +304,9 @@
                         <a href="{{ route('tmb.index') }}" class="bg-gray-400 text-white px-4 py-2 rounded shadow hover:bg-gray-500 transition-colors duration-300">Kembali</a>
                         <button type="submit" class="bg-[#003B69] text-white px-4 py-2 rounded shadow hover:bg-blue-900 transition-colors duration-300">Simpan</button>
                     </div>
-                </div>
-            </form>
-        </main>
-    </div>
-
+    </form>
+</main>
+</div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
