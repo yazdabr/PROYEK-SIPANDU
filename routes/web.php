@@ -11,6 +11,8 @@ use App\Http\Controllers\ArsipController;
 use App\Http\Controllers\ManajemenController;
 use App\Http\Controllers\KmbController;           // ✅ Tambahkan
 use App\Http\Controllers\KmbDashboardController; 
+use App\Http\Controllers\SiaranController;           // ✅ Tambahkan
+use App\Http\Controllers\SiaranDashboardController; 
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -85,6 +87,17 @@ Route::middleware('auth')->group(function () {
         Route::put('/kmb/{id}', [KmbController::class, 'update'])->name('kmbedit.update');
         Route::delete('/kmb/{id}', [KmbController::class, 'destroy'])->name('kmb.destroy');
     });
+    // 2.2. Rute UPSIARAN 
+    Route::prefix('upsiaran')->group(function () {
+        Route::get('/siarandashboard', [SiaranDashboardController::class, 'index'])->name('upsiaran.dashboard');
+        Route::get('/siaran', [SiaranController::class, 'index'])->name('siaran.index');
+        Route::get('/siaraninput', [SiaranController::class, 'create'])->name('siaran.create');
+        Route::post('/siaraninput', [SiaranController::class, 'store'])->name('siaran.store');
+        Route::get('/siaran/{id}/edit', [SiaranController::class, 'edit'])->name('siaranedit.edit');
+        Route::put('/siaran/{id}', [SiaranController::class, 'update'])->name('siaranedit.update');
+        Route::delete('/siaran/{id}', [SiaranController::class, 'destroy'])->name('siaran.destroy');
+    });
+
 
 
     // 2.2. Rute PPID

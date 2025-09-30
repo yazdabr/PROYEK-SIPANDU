@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Pengolah SIARAN - PORTAL DATA TERPADU</title>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<style>
+/* Select2 Customization */
+.select2-selection__clear { display: none !important; }
+.select2-selection__arrow { display: none !important; }
+.select2-container .select2-selection--single {
+    padding-right: 0 !important;
+    height: 45px !important;
+    line-height: 45px !important;
+    font-size: 16px;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 45px !important;
+    padding-left: 10px !important;
+}
+.select2-dropdown { z-index: 9999 !important; }
+
+/* Menjamin sidebar full height di desktop */
+@media (min-width: 1024px) {
+    .lg\:min-h-screen {
+        min-height: 100vh;
+    }
+}
+[x-cloak] { display: none !important; }
+</style>
+
+<body class="flex bg-[#EDF2F9]" x-data="layout">
+
+<!-- Sidebar -->
+<aside 
+    id="sidebar"
+    x-cloak
+    class="fixed inset-y-0 left-0 z-50 w-64 bg-[#8E9BAB] text-white flex flex-col 
+           transition-transform duration-300 transform 
+           lg:translate-x-0 lg:min-h-screen overflow-y-auto"
+    :class="{ 'translate-x-0 ease-out': sidebarOpen, '-translate-x-full ease-in': !sidebarOpen }"
+>
+    <!-- Logo -->
+    <div class="px-3 py-2 bg-[#68778B] flex items-center sticky top-0 z-10 shadow-md">
+        <img src="/images/logo.png" class="h-16">
+        <button @click="sidebarOpen = false" class="lg:hidden ml-auto p-2 text-white hover:text-gray-200">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+    </div>
+
+    <!-- Menu -->
+    <nav class="flex-1 p-4 space-y-2">
+        <div class="text-xs font-bold uppercase tracking-wide text-white rounded [letter-spacing:4px] p-4 mb-3">
+            Selamat Datang
+        </div>
+        <a href="{{ url('/upsiaran/siarandashboard') }}" class="flex items-center space-x-2 p-3 rounded bg-[#68778B] hover:bg-gray-500 transition-all duration-300 ease-in-out">
+            <img src="/images/dash.png" alt="Dashboard" class="w-5 h-5">
+            <span>Dashboard</span>
+        </a>
+        <a href="{{ url('/upsiaran/siaraninput') }}" class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] transition-all duration-300 ease-in-out font-semibold">
+            <img src="/images/input.png" alt="" class="w-7 h-7 transition-transform duration-300 group-hover:scale-110">
+            <span class="transition-transform duration-300 group-hover:translate-x-1">Input Arsip</span>
+        </a>
+        <a href="{{ url('/upsiaran/siaran') }}" class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] transition-all duration-300 ease-in-out font-semibold text-[#003B69]">
+            <img src="/images/daftarbiru.png" alt="" class="w-7 h-7 transition-transform duration-300 group-hover:scale-110">
+            <span class="transition-transform duration-300 group-hover:translate-x-1">Daftar Arsip Unit</span>
+        </a>
+    </nav>
+
+    <!-- Logout (hanya mobile) -->
+    <form action="{{ route('logout') }}" method="POST" class="p-4 mt-auto lg:hidden">
+        @csrf
+        <button type="submit" class="w-full flex items-center justify-center space-x-2 bg-[#CBD2DA] text-[#003B69] font-bold px-3 py-3 rounded hover:bg-gray-400 transition-all duration-200">
+            <img src="/images/user.png" class="w-5 h-5" alt="user">
+            <span>Log Out</span>
+        </button>
+    </form>
+</aside>
+
+
+<!-- Overlay (mobile) -->
+<div 
+    x-show="sidebarOpen" 
+    @click="sidebarOpen = false" 
+    x-cloak
+    class="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden"
+    x-transition:enter="transition ease-out duration-300"
+    x-transition:leave="transition ease-in duration-200"
+></div>
+
+        <div class="flex-1 flex flex-col lg:ml-64">
+    <header class="flex items-center bg-[#E3E8EE] px-6 py-4 sticky top-0 z-30 shadow-md">
+        <!-- Tombol buka sidebar (mobile) -->
+        <button @click="sidebarOpen = true" class="lg:hidden p-2 text-[#003B69] hover:text-gray-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
+
+        <!-- Unit Pengolah TMB -->
+        <div class="ml-auto lg:ml-0 px-3 py-3 bg-[#CBD2DA] text-[#003B69] font-bold rounded">
+            Unit Pengolah SIARAN
+        </div>
+
+        <!-- Logout hanya muncul di desktop -->
+        <form action="{{ route('logout') }}" method="POST" class="hidden lg:flex ml-auto">
+            @csrf
+            <button type="submit" class="flex items-center space-x-2 bg-[#CBD2DA] text-[#003B69] font-bold px-3 py-3 rounded hover:bg-gray-400 transition-all duration-200">
+                <img src="/images/user.png" class="w-5 h-5" alt="user">
+                <span>Log Out</span>
+            </button>
+        </form>
+    </header>
+
+
+        <main class="p-4 sm:p-6 space-y-6">
+            <form action="{{ route('siaranedit.update', $siaran->id) }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+
+                <!-- Edit Arsip -->
+                <div class="bg-white p-4 sm:p-6 rounded shadow">
+                    <h2 class="font-bold text-lg text-[#003B69] mb-6">Edit Arsip</h2>
+                    
+                    <div class="grid grid-cols-1 gap-y-4">
+                        <div>
+                            <label class="font-medium mb-1 block">Judul</label>
+                            <input type="text" name="judul" class="w-full border rounded px-3 py-2 focus:ring-[#003B69] focus:border-[#003B69]" value="{{ $siaran->judul }}" required>
+                        </div>
+
+                        <div>
+                            <label class="font-medium mb-1 block">Nomor</label>
+                            <input type="text" name="nomor" class="w-full border rounded px-3 py-2 focus:ring-[#003B69] focus:border-[#003B69]" value="{{ $siaran->nomor_arsip }}">
+                        </div>
+
+
+                            <!-- Kode Klasifikasi -->
+                            <div>
+                                <label class="font-medium mb-1 block">Kode Klasifikasi</label>
+                                <div class="relative w-full">
+                                <select id="kode_klasifikasi" name="kode_klasifikasi"
+                                    class="w-full border rounded px-3 py-2 " required>
+                                    <option value="">-</option>
+                                    @foreach($kodeKlasifikasi as $kode)
+                                        <option value="{{ $kode->id }}" {{ $siaran->kode_klasifikasi_id == $kode->id ? 'selected' : '' }}>
+                                            {{ $kode->kode }} - {{ $kode->uraian }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-2 flex items-center text-gray-500">▼</div>
+                            </div>
+                            </div>
+
+                            <div class="w-full">
+                                <label class="font-medium mb-1 block">Kategori</label>
+                                <div class="relative w-full">
+                                    <select id="kategori_berita" name="kategori_berita" 
+                                        class="w-full border rounded px-3 py-2 appearance-none">
+                                        <option value="-" {{ $siaran->kategori_berita == '-' ? 'selected' : '' }}>-</option>
+                                        <option value="Keputusan LPP RRI dan Pertimbangannya (Tersedia setiap saat)" 
+                                            {{ $siaran->kategori_berita == 'Keputusan LPP RRI dan Pertimbangannya (Tersedia setiap saat)' ? 'selected' : '' }}>
+                                            Keputusan LPP RRI dan Pertimbangannya (Tersedia setiap saat)
+                                        </option>
+                                        <option value="Kebijakan LPP RRI dan Dokumen Pendukungnya (Tersedia setiap saat)" 
+                                            {{ $siaran->kategori_berita == 'Kebijakan LPP RRI dan Dokumen Pendukungnya (Tersedia setiap saat)' ? 'selected' : '' }}>
+                                            Kebijakan LPP RRI dan Dokumen Pendukungnya (Tersedia setiap saat)
+                                        </option>
+                                        <option value="Rencana Proyek dan Anggaran Tahunnya (Tersedia setiap saat)" 
+                                            {{ $siaran->kategori_berita == 'Rencana Proyek dan Anggaran Tahunnya (Tersedia setiap saat)' ? 'selected' : '' }}>
+                                            Rencana Proyek dan Anggaran Tahunnya (Tersedia setiap saat)
+                                        </option>
+                                        <option value="Rencana Strategis LPP RRI (Tersedia setiap saat)" 
+                                            {{ $siaran->kategori_berita == 'Rencana Strategis LPP RRI (Tersedia setiap saat)' ? 'selected' : '' }}>
+                                            Rencana Strategis LPP RRI (Tersedia setiap saat)
+                                        </option>
+                                        <option value="Informasi tentang PPID LPP RRI (Tersedia setiap saat)" 
+                                            {{ $siaran->kategori_berita == 'Informasi tentang PPID LPP RRI (Tersedia setiap saat)' ? 'selected' : '' }}>
+                                            Informasi tentang PPID LPP RRI (Tersedia setiap saat)
+                                        </option>
+                                        <option value="Informasi tentang Penindakan atas Pelanggaran yang dilakukan oleh Pegawai LPP RRI (Tersedia setiap saat)" 
+                                            {{ $siaran->kategori_berita == 'Informasi tentang Penindakan atas Pelanggaran yang dilakukan oleh Pegawai LPP RRI (Tersedia setiap saat)' ? 'selected' : '' }}>
+                                            Informasi tentang Penindakan atas Pelanggaran yang dilakukan oleh Pegawai LPP RRI (Tersedia setiap saat)
+                                        </option>
+                                        <option value="Informasi Daftar dan Hasil Penelitian LPP RRI (Tersedia setiap saat)" 
+                                            {{ $siaran->kategori_berita == 'Informasi Daftar dan Hasil Penelitian LPP RRI (Tersedia setiap saat)' ? 'selected' : '' }}>
+                                            Informasi Daftar dan Hasil Penelitian LPP RRI (Tersedia setiap saat)
+                                        </option>
+                                        <option value="Informasi Laporan Harta Kekayaan Pejabat Negara di LPP RRI yang telah diverifikasi oleh KPK (Tersedia setiap saat)" 
+                                            {{ $siaran->kategori_berita == 'Informasi Laporan Harta Kekayaan Pejabat Negara di LPP RRI yang telah diverifikasi oleh KPK (Tersedia setiap saat)' ? 'selected' : '' }}>
+                                            Informasi Laporan Harta Kekayaan Pejabat Negara di LPP RRI yang telah diverifikasi oleh KPK (Tersedia setiap saat)
+                                        </option>
+                                        <option value="Perjanjian LPP RRI dengan Pihak Ketiga (Tersedia setiap saat)" 
+                                            {{ $siaran->kategori_berita == 'Perjanjian LPP RRI dengan Pihak Ketiga (Tersedia setiap saat)' ? 'selected' : '' }}>
+                                            Perjanjian LPP RRI dengan Pihak Ketiga (Tersedia setiap saat)
+                                        </option>
+                                        <option value="Informasi dalam pertemuan yang bersifat untuk umum (Tersedia setiap saat)" 
+                                            {{ $siaran->kategori_berita == 'Informasi dalam pertemuan yang bersifat untuk umum (Tersedia setiap saat)' ? 'selected' : '' }}>
+                                            Informasi dalam pertemuan yang bersifat untuk umum (Tersedia setiap saat)
+                                        </option>
+                                        <option value="Prosedur Kerja yang Berkaitan dengan Publik (Tersedia setiap saat)" 
+                                            {{ $siaran->kategori_berita == 'Prosedur Kerja yang Berkaitan dengan Publik (Tersedia setiap saat)' ? 'selected' : '' }}>
+                                            Prosedur Kerja yang Berkaitan dengan Publik (Tersedia setiap saat)
+                                        </option>
+                                        <option value="Laporan Layanan Akses Informasi (Tersedia setiap saat)" 
+                                            {{ $siaran->kategori_berita == 'Laporan Layanan Akses Informasi (Tersedia setiap saat)' ? 'selected' : '' }}>
+                                            Laporan Layanan Akses Informasi (Tersedia setiap saat)
+                                        </option>
+                                        <option value="Profil Lengkap Pimpinan dan Pegawai (Tersedia setiap saat)" 
+                                            {{ $siaran->kategori_berita == 'Profil Lengkap Pimpinan dan Pegawai (Tersedia setiap saat)' ? 'selected' : '' }}>
+                                            Profil Lengkap Pimpinan dan Pegawai (Tersedia setiap saat)
+                                        </option>
+                                        <option value="Informasi Berkaitan dengan Profile LPP RRI (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Informasi Berkaitan dengan Profile LPP RRI (Berkala)' ? 'selected' : '' }}>
+                                            Informasi Berkaitan dengan Profile LPP RRI (Berkala)
+                                        </option>
+                                        <option value="Alamat LPP RRI (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Alamat LPP RRI (Berkala)' ? 'selected' : '' }}>
+                                            Alamat LPP RRI (Berkala)
+                                        </option>
+                                        <option value="Struktur Organisasi (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Struktur Organisasi (Berkala)' ? 'selected' : '' }}>
+                                            Struktur Organisasi (Berkala)
+                                        </option>
+                                        <option value="Sejarah Singkat LPP RRI (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Sejarah Singkat LPP RRI (Berkala)' ? 'selected' : '' }}>
+                                            Sejarah Singkat LPP RRI (Berkala)
+                                        </option>
+                                        <option value="Profil Pejabat LPP RRI (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Profil Pejabat LPP RRI (Berkala)' ? 'selected' : '' }}>
+                                            Profil Pejabat LPP RRI (Berkala)
+                                        </option>
+                                        <option value="RKAKL LPP RRI (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'RKAKL LPP RRI (Berkala)' ? 'selected' : '' }}>
+                                            RKAKL LPP RRI (Berkala)
+                                        </option>
+                                        <option value="Informasi Agenda Terkait Pelaksanaan Tugas LPP RRI (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Informasi Agenda Terkait Pelaksanaan Tugas LPP RRI (Berkala)' ? 'selected' : '' }}>
+                                            Informasi Agenda Terkait Pelaksanaan Tugas LPP RRI (Berkala)
+                                        </option>
+                                        <option value="DIPA (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'DIPA (Berkala)' ? 'selected' : '' }}>
+                                            DIPA (Berkala)
+                                        </option>
+                                        <option value="Informasi Penerimaan Calon Pegawai LPP RRI (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Informasi Penerimaan Calon Pegawai LPP RRI (Berkala)' ? 'selected' : '' }}>
+                                            Informasi Penerimaan Calon Pegawai LPP RRI (Berkala)
+                                        </option>
+                                        <option value="Laporan Keuangan Audited (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Laporan Keuangan Audited (Berkala)' ? 'selected' : '' }}>
+                                            Laporan Keuangan Audited (Berkala)
+                                        </option>
+                                        <option value="Rencana dan LRA (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Rencana dan LRA (Berkala)' ? 'selected' : '' }}>
+                                            Rencana dan LRA (Berkala)
+                                        </option>
+                                        <option value="Neraca Keuangan (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Neraca Keuangan (Berkala)' ? 'selected' : '' }}>
+                                            Neraca Keuangan (Berkala)
+                                        </option>
+                                        <option value="Laporan Arus Kas dan CaLK (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Laporan Arus Kas dan CaLK (Berkala)' ? 'selected' : '' }}>
+                                            Laporan Arus Kas dan CaLK (Berkala)
+                                        </option>
+                                        <option value="Daftar Investasi dan Asset (Administrasi BMN) (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Daftar Investasi dan Asset (Administrasi BMN) (Berkala)' ? 'selected' : '' }}>
+                                            Daftar Investasi dan Asset (Administrasi BMN) (Berkala)
+                                        </option>
+                                        <option value="Acara Siaran (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Acara Siaran (Berkala)' ? 'selected' : '' }}>
+                                            Acara Siaran (Berkala)
+                                        </option>
+                                        <option value="Laporan Bidang TMB (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Laporan Bidang TMB (Berkala)' ? 'selected' : '' }}>
+                                            Laporan Bidang TMB (Berkala)
+                                        </option>
+                                        <option value="Laporan Bidang Pemberitaan/Tim Penyiaran (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Laporan Bidang Pemberitaan/Tim Penyiaran (Berkala)' ? 'selected' : '' }}>
+                                            Laporan Bidang Pemberitaan/Tim Penyiaran (Berkala)
+                                        </option>
+                                        <option value="Laporan Bidang Siaran/Tim Konten Media Baru (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Laporan Bidang Siaran/Tim Konten Media Baru (Berkala)' ? 'selected' : '' }}>
+                                            Laporan Bidang Siaran/Tim Konten Media Baru (Berkala)
+                                        </option>
+                                        <option value="Laporan Bidang LPU (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Laporan Bidang LPU (Berkala)' ? 'selected' : '' }}>
+                                            Laporan Bidang LPU (Berkala)
+                                        </option>
+                                        <option value="Laporan Bidang SDM dan Umum (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Laporan Bidang SDM dan Umum (Berkala)' ? 'selected' : '' }}>
+                                            Laporan Bidang SDM dan Umum (Berkala)
+                                        </option>
+                                        <option value="Daftar Informasi Publik LPP RRI (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Daftar Informasi Publik LPP RRI (Berkala)' ? 'selected' : '' }}>
+                                            Daftar Informasi Publik LPP RRI (Berkala)
+                                        </option>
+                                        <option value="Laporan Akuntabilitas (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Laporan Akuntabilitas (Berkala)' ? 'selected' : '' }}>
+                                            Laporan Akuntabilitas (Berkala)
+                                        </option>
+                                        <option value="ELHKPN LPP RRI (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'ELHKPN LPP RRI (Berkala)' ? 'selected' : '' }}>
+                                            ELHKPN LPP RRI (Berkala)
+                                        </option>
+                                        <option value="Regulasi dan Rancangan Keterbukaan Informasi Publik (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Regulasi dan Rancangan Keterbukaan Informasi Publik (Berkala)' ? 'selected' : '' }}>
+                                            Regulasi dan Rancangan Keterbukaan Informasi Publik (Berkala)
+                                        </option>
+                                        <option value="Rancangan Peraturan di LPP RRI (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Rancangan Peraturan di LPP RRI (Berkala)' ? 'selected' : '' }}>
+                                            Rancangan Peraturan di LPP RRI (Berkala)
+                                        </option>
+                                        <option value="Regulasi LPP RRI (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Regulasi LPP RRI (Berkala)' ? 'selected' : '' }}>
+                                            Regulasi LPP RRI (Berkala)
+                                        </option>
+                                        <option value="SOP (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'SOP (Berkala)' ? 'selected' : '' }}>
+                                            SOP (Berkala)
+                                        </option>
+                                        <option value="Pengadaan Barang dan Jasa (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Pengadaan Barang dan Jasa (Berkala)' ? 'selected' : '' }}>
+                                            Pengadaan Barang dan Jasa (Berkala)
+                                        </option>
+                                        <option value="Standar Pelayanan (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Standar Pelayanan (Berkala)' ? 'selected' : '' }}>
+                                            Standar Pelayanan (Berkala)
+                                        </option>
+                                        <option value="Maklumat Pelayanan (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Maklumat Pelayanan (Berkala)' ? 'selected' : '' }}>
+                                            Maklumat Pelayanan (Berkala)
+                                        </option>
+                                        <option value="Ringkasan Program Strategis LPP RRI (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Ringkasan Program Strategis LPP RRI (Berkala)' ? 'selected' : '' }}>
+                                            Ringkasan Program Strategis LPP RRI (Berkala)
+                                        </option>
+                                        <option value="Dokumen Surat Menyurat (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Dokumen Surat Menyurat (Berkala)' ? 'selected' : '' }}>
+                                            Dokumen Surat Menyurat (Berkala)
+                                        </option>
+                                        <option value="Informasi Terkait Penanganan Covid-19 (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Informasi Terkait Penanganan Covid-19 (Berkala)' ? 'selected' : '' }}>
+                                            Informasi Terkait Penanganan Covid-19 (Berkala)
+                                        </option>
+                                        <option value="Opini BPK RI atas Laporan Keuangan LPP RRI (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Opini BPK RI atas Laporan Keuangan LPP RRI (Berkala)' ? 'selected' : '' }}>
+                                            Opini BPK RI atas Laporan Keuangan LPP RRI (Berkala)
+                                        </option>
+                                        <option value="Penyelenggaraan Satu Data Indonesia (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Penyelenggaraan Satu Data Indonesia (Berkala)' ? 'selected' : '' }}>
+                                            Penyelenggaraan Satu Data Indonesia (Berkala)
+                                        </option>
+                                        <option value="Bintang Radio RRI Tingkat Nasional (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Bintang Radio RRI Tingkat Nasional (Berkala)' ? 'selected' : '' }}>
+                                            Bintang Radio RRI Tingkat Nasional (Berkala)
+                                        </option>
+                                        <option value="Formulir Pendaftaran PTQ RRI ke-53 Tahun 2023 (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Formulir Pendaftaran PTQ RRI ke-53 Tahun 2023 (Berkala)' ? 'selected' : '' }}>
+                                            Formulir Pendaftaran PTQ RRI ke-53 Tahun 2023 (Berkala)
+                                        </option>
+                                        <option value="Informasi Publik dalam Bahasa Isyarat Indonesia (BISINDO) (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Informasi Publik dalam Bahasa Isyarat Indonesia (BISINDO) (Berkala)' ? 'selected' : '' }}>
+                                            Informasi Publik dalam Bahasa Isyarat Indonesia (BISINDO) (Berkala)
+                                        </option>
+                                        <option value="LHKPN Kepala RRI Seluruh Indonesia (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'LHKPN Kepala RRI Seluruh Indonesia (Berkala)' ? 'selected' : '' }}>
+                                            LHKPN Kepala RRI Seluruh Indonesia (Berkala)
+                                        </option>
+                                        <option value="Press Release (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Press Release (Berkala)' ? 'selected' : '' }}>
+                                            Press Release (Berkala)
+                                        </option>
+                                        <option value="Formulir Pendaftaran PTQ RRI ke-54 Tahun 2024 (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Formulir Pendaftaran PTQ RRI ke-54 Tahun 2024 (Berkala)' ? 'selected' : '' }}>
+                                            Formulir Pendaftaran PTQ RRI ke-54 Tahun 2024 (Berkala)
+                                        </option>
+                                        <option value="Laporan Tahunan LPP RRI (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Laporan Tahunan LPP RRI (Berkala)' ? 'selected' : '' }}>
+                                            Laporan Tahunan LPP RRI (Berkala)
+                                        </option>
+                                        <option value="Rencana Umum Pengadaan (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Rencana Umum Pengadaan (Berkala)' ? 'selected' : '' }}>
+                                            Rencana Umum Pengadaan (Berkala)
+                                        </option>
+                                        <option value="Peraturan, Keputusan dan Kebijakan (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Peraturan, Keputusan dan Kebijakan (Berkala)' ? 'selected' : '' }}>
+                                            Peraturan, Keputusan dan Kebijakan (Berkala)
+                                        </option>
+                                        <option value="Regulasi Pedoman Pengelolaan Informasi (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Regulasi Pedoman Pengelolaan Informasi (Berkala)' ? 'selected' : '' }}>
+                                            Regulasi Pedoman Pengelolaan Informasi (Berkala)
+                                        </option>
+                                        <option value="Regulasi Pedoman Pengelolaan Administrasi (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Regulasi Pedoman Pengelolaan Administrasi (Berkala)' ? 'selected' : '' }}>
+                                            Regulasi Pedoman Pengelolaan Administrasi (Berkala)
+                                        </option>
+                                        <option value="Regulasi Pedoman Pengelolaan Personil (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Regulasi Pedoman Pengelolaan Personil (Berkala)' ? 'selected' : '' }}>
+                                            Regulasi Pedoman Pengelolaan Personil (Berkala)
+                                        </option>
+                                        <option value="Rancangan Peraturan (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Rancangan Peraturan (Berkala)' ? 'selected' : '' }}>
+                                            Rancangan Peraturan (Berkala)
+                                        </option>
+                                        <option value="Masukan dari Berbagai Pihak atas Peraturan, Keputusan atau Kebijakan (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Masukan dari Berbagai Pihak atas Peraturan, Keputusan atau Kebijakan (Berkala)' ? 'selected' : '' }}>
+                                            Masukan dari Berbagai Pihak atas Peraturan, Keputusan atau Kebijakan (Berkala)
+                                        </option>
+                                        <option value="Risalah Rapat dari Proses Pembentukan Peraturan, Keputusan atau Kebijakan (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Risalah Rapat dari Proses Pembentukan Peraturan, Keputusan atau Kebijakan (Berkala)' ? 'selected' : '' }}>
+                                            Risalah Rapat dari Proses Pembentukan Peraturan, Keputusan atau Kebijakan (Berkala)
+                                        </option>
+                                        <option value="Dokumen Rancangan Peraturan, Keputusan Kebijakan yang dibentuk (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Dokumen Rancangan Peraturan, Keputusan Kebijakan yang dibentuk (Berkala)' ? 'selected' : '' }}>
+                                            Dokumen Rancangan Peraturan, Keputusan Kebijakan yang dibentuk (Berkala)
+                                        </option>
+                                        <option value="Dokumen Penghargaan (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Dokumen Penghargaan (Berkala)' ? 'selected' : '' }}>
+                                            Dokumen Penghargaan (Berkala)
+                                        </option>
+                                        <option value="LHKPN Dewas dan Direksi (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'LHKPN Dewas dan Direksi (Berkala)' ? 'selected' : '' }}>
+                                            LHKPN Dewas dan Direksi (Berkala)
+                                        </option>
+                                        <option value="Hasil Monitoring dan Evaluasi KIP (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Hasil Monitoring dan Evaluasi KIP (Berkala)' ? 'selected' : '' }}>
+                                            Hasil Monitoring dan Evaluasi KIP (Berkala)
+                                        </option>
+                                        <option value="Pedoman HUT LPP RRI 80th (Berkala)" 
+                                            {{ $siaran->kategori_berita == 'Pedoman HUT LPP RRI 80th (Berkala)' ? 'selected' : '' }}>
+                                            Pedoman HUT LPP RRI 80th (Berkala)
+                                        </option>
+                                        <option value="Informasi yang Wajib Diumumkan Tanpa Penundaan (Serta Merta)" 
+                                            {{ $siaran->kategori_berita == 'Informasi yang Wajib Diumumkan Tanpa Penundaan (Serta Merta)' ? 'selected' : '' }}>
+                                            Informasi yang Wajib Diumumkan Tanpa Penundaan (Serta Merta)
+                                        </option>
+                                        <option value="Menyangkut Ancaman Terhadap Hajat Hidup Orang Banyak dan Ketertiban Umum (Serta Merta)" 
+                                            {{ $siaran->kategori_berita == 'Menyangkut Ancaman Terhadap Hajat Hidup Orang Banyak dan Ketertiban Umum (Serta Merta)' ? 'selected' : '' }}>
+                                            Menyangkut Ancaman Terhadap Hajat Hidup Orang Banyak dan Ketertiban Umum (Serta Merta)
+                                        </option>
+                                        <option value="Pasal 17 UU 14 Tahun 2008 (Dikecualikan)" 
+                                            {{ $siaran->kategori_berita == 'Pasal 17 UU 14 Tahun 2008 (Dikecualikan)' ? 'selected' : '' }}>
+                                            Pasal 17 UU 14 Tahun 2008 (Dikecualikan)
+                                        </option>
+                                    </select>
+                                    <div class="pointer-events-none absolute inset-y-0 right-2 flex items-center text-gray-500">▼</div>
+                                </div>
+                            </div>                        
+                        <div>
+                            <label class="font-medium mb-1 block">Indeks</label>
+                            <input type="text" name="indeks" class="w-full border rounded px-3 py-2 focus:ring-[#003B69] focus:border-[#003B69]" value="{{ $siaran->indeks }}">
+                        </div>
+
+                        <div>
+                            <label class="font-medium mb-1 block">Tanggal</label>
+                            <input type="date" name="tanggal" class="w-full border rounded px-3 py-2 text-gray-500 focus:ring-[#003B69] focus:border-[#003B69]" value="{{ $siaran->tanggal }}">
+                        </div>
+
+                        <div>
+                            <label class="font-medium mb-1 block">Uraian Informasi</label>
+                            <textarea name="uraian_informasi" class="w-full border rounded px-3 py-2 focus:ring-[#003B69] focus:border-[#003B69] min-h-[100px]">{{ $siaran->uraian_informasi }}</textarea>
+                        </div>
+
+                        <div>
+                            <label class="font-medium mb-1 block">Tingkat Perkembangan</label>
+                            <select name="tingkat_perkembangan" class="w-full border rounded px-3 py-2 appearance-none focus:ring-[#003B69] focus:border-[#003B69]" required>
+                                <option value="Asli" {{ old('tingkat_perkembangan', $siaran->tingkat_perkembangan) == 'Asli' ? 'selected' : '' }}>Asli</option>
+                                <option value="Fotocopy" {{ old('tingkat_perkembangan', $siaran->tingkat_perkembangan) == 'Fotocopy' ? 'selected' : '' }}>Fotocopy</option>
+                                <option value="Asli & Fotocopy" {{ old('tingkat_perkembangan', $siaran->tingkat_perkembangan) == 'Asli & Fotocopy' ? 'selected' : '' }}>Asli & Fotocopy</option>
+                                <option value="Softcopy" {{ old('tingkat_perkembangan', $siaran->tingkat_perkembangan) == 'Softcopy' ? 'selected' : '' }}>Softcopy</option>
+                            </select>
+                        </div>
+
+                        <div class="w-full">
+                            <label class="font-medium mb-1 block">Jumlah</label>
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">          
+                            <input type="number" name="jumlah" min="0" class="w-full sm:w-32 border rounded px-3 py-2 text-center" placeholder="0" value="{{ $siaran->jumlah }}">
+
+                                <div class="relative w-full sm:w-40">
+                                    <select 
+                                        name="satuan" 
+                                        class="w-full border rounded px-3 py-2 text-center text-gray-500 appearance-none" 
+                                        required
+                                            >
+                                        <option value="lembar" {{ old('satuan', $siaran->satuan) == 'lembar' ? 'selected' : '' }}>Lembar</option>
+                                        <option value="jilid" {{ old('satuan', $siaran->satuan) == 'jilid' ? 'selected' : '' }}>Jilid</option>
+                                        <option value="bundle" {{ old('satuan', $siaran->satuan) == 'bundle' ? 'selected' : '' }}>Bundle</option>
+                                    </select>
+                                    <div class="pointer-events-none absolute inset-y-0 right-2 flex items-center text-gray-500">
+                                        ▼
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-full">
+                            <label class="font-medium mb-1 block">Unit Pengolah Arsip</label>
+                            <input 
+                                type="text" 
+                                value="SIARAN" 
+                                class="w-full border rounded px-3 py-2 bg-gray-100 text-gray-700" 
+                                readonly
+                            >
+                            <input type="hidden" name="unit_pengolah_id" value="{{ $unitSiaran->id }}">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lokasi Arsip -->
+                <div class="bg-white p-4 sm:p-6 rounded shadow mt-6">
+                    <h2 class="font-semibold text-lg text-[#003B69] mb-6">Lokasi Arsip</h2>
+                    
+                    <div class="grid grid-cols-1 gap-y-4">
+                        <div>
+                            <label class="font-medium mb-1 block">Ruangan</label>
+                            <input type="text" name="ruangan" class="w-full border rounded px-3 py-2 focus:ring-[#003B69] focus:border-[#003B69]" value="{{ $siaran->ruangan }}">
+                        </div>
+                        <div>
+                            <label class="font-medium mb-1 block">No Box</label>
+                            <input type="text" name="no_box" class="w-full border rounded px-3 py-2 focus:ring-[#003B69] focus:border-[#003B69]" value="{{ $siaran->no_box }}">
+                        </div>
+                        <div>
+                            <label class="font-medium mb-1 block">No Filling</label>
+                            <input type="text" name="no_filling" class="w-full border rounded px-3 py-2 focus:ring-[#003B69] focus:border-[#003B69]" value="{{ $siaran->no_filling }}">
+                        </div>
+                        <div>
+                            <label class="font-medium mb-1 block">No Laci</label>
+                            <input type="text" name="no_laci" class="w-full border rounded px-3 py-2 focus:ring-[#003B69] focus:border-[#003B69]" value="{{ $siaran->no_laci }}">
+                        </div>
+                        <div>
+                            <label class="font-medium mb-1 block">No Folder</label>
+                            <input type="text" name="no_folder" class="w-full border rounded px-3 py-2 focus:ring-[#003B69] focus:border-[#003B69]" value="{{ $siaran->no_folder }}">
+                        </div>
+                        <div>
+                            <label class="font-medium mb-1 block">Keterangan</label>
+                            <textarea name="keterangan" class="w-full border rounded px-3 py-2 min-h-[100px] focus:ring-[#003B69] focus:border-[#003B69]">{{ $siaran->keterangan }}</textarea>
+                        </div>
+                        <div>
+                            <label class="font-medium mb-1 block">Upload Dokumen</label>
+                            <input type="file" name="upload_dokumen" class="w-full border rounded px-3 py-2 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-50 file:text-[#003B69] hover:file:bg-gray-100">
+                            @if($siaran->upload_dokumen)
+                                <p class="mt-2 text-sm text-gray-600">File lama: 
+                                    <a href="{{ asset('storage/'.$siaran->upload_dokumen) }}" target="_blank" class="text-blue-600 underline hover:text-blue-800">
+                                        Lihat Dokumen
+                                    </a>
+                                </p>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-3 mt-8">
+                        <a href="{{ route('siaran.index') }}" class="text-center bg-gray-400 text-white px-4 py-2 rounded shadow hover:bg-gray-500 transition-all duration-200">Kembali</a>
+                        <button type="submit" class="bg-[#003B69] text-white px-4 py-2 rounded shadow hover:bg-blue-900 transition-all duration-200">Simpan Perubahan</button>
+                    </div>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>    
+    // === Inisialisasi Select2 dan Logika Kategori ===
+        $(document).ready(function() {
+            // Inisialisasi Select2
+            $('#kategori_berita').select2({
+                dropdownAutoWidth: true,
+                width: '100%'
+            });
+            $('#kode_klasifikasi').select2({
+                dropdownAutoWidth: true,
+                width: '100%' // Ini seharusnya bekerja
+            });
+
+            // Set nilai awal kategori hidden input
+            let initialVal = document.getElementById('kategori_berita').value;
+            document.getElementById('kategori').value = (initialVal === '-') ? '-' : 'PPID';
+
+                    // Update Kategori Hidden Input saat Select Berubah
+            document.getElementById('kategori_berita').addEventListener('change', function () {
+                let val = this.value;
+                let kategoriInput = document.getElementById('kategori');
+                kategoriInput.value = (val === '-') ? '-' : 'PPID';
+            });
+        });
+
+        </script>
+        <script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('layout', () => ({
+            sidebarOpen: window.innerWidth >= 1024, // default: buka kalau desktop
+            init() {
+                window.addEventListener('resize', () => {
+                    this.sidebarOpen = window.innerWidth >= 1024;
+                });
+            }
+        }))
+    })
+</script>
+</body>
+</html>
