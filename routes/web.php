@@ -9,10 +9,14 @@ use App\Http\Controllers\VerifikasiController;
 use App\Http\Controllers\ArsipPublikController;
 use App\Http\Controllers\ArsipController;
 use App\Http\Controllers\ManajemenController;
-use App\Http\Controllers\KmbController;           // ✅ Tambahkan
+use App\Http\Controllers\KmbController;           
 use App\Http\Controllers\KmbDashboardController; 
-use App\Http\Controllers\SiaranController;           // ✅ Tambahkan
+use App\Http\Controllers\SiaranController;           
 use App\Http\Controllers\SiaranDashboardController; 
+use App\Http\Controllers\LpuController;           
+use App\Http\Controllers\LpuDashboardController; 
+use App\Http\Controllers\KeuanganController;           
+use App\Http\Controllers\KeuanganDashboardController; 
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -87,6 +91,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/kmb/{id}', [KmbController::class, 'update'])->name('kmbedit.update');
         Route::delete('/kmb/{id}', [KmbController::class, 'destroy'])->name('kmb.destroy');
     });
+
     // 2.2. Rute UPSIARAN 
     Route::prefix('upsiaran')->group(function () {
         Route::get('/siarandashboard', [SiaranDashboardController::class, 'index'])->name('upsiaran.dashboard');
@@ -98,6 +103,27 @@ Route::middleware('auth')->group(function () {
         Route::delete('/siaran/{id}', [SiaranController::class, 'destroy'])->name('siaran.destroy');
     });
 
+    // 2.2. Rute UPLPU 
+    Route::prefix('uplpu')->group(function () {
+        Route::get('/lpudashboard', [LpuDashboardController::class, 'index'])->name('uplpu.dashboard');
+        Route::get('/lpu', [LpuController::class, 'index'])->name('lpu.index');
+        Route::get('/lpuinput', [LpuController::class, 'create'])->name('lpu.create');
+        Route::post('/lpuinput', [LpuController::class, 'store'])->name('lpu.store');
+        Route::get('/lpu/{id}/edit', [LpuController::class, 'edit'])->name('lpuedit.edit');
+        Route::put('/lpu/{id}', [LpuController::class, 'update'])->name('lpuedit.update');
+        Route::delete('/lpu/{id}', [LpuController::class, 'destroy'])->name('lpu.destroy');
+    });
+
+    // 2.2. Rute UPKeuangan 
+    Route::prefix('upkeuangan')->group(function () {
+        Route::get('/keuangandashboard', [KeuanganDashboardController::class, 'index'])->name('upkeuangan.dashboard');
+        Route::get('/keuangan', [KeuanganController::class, 'index'])->name('keuangan.index');
+        Route::get('/keuanganinput', [KeuanganController::class, 'create'])->name('keuangan.create');
+        Route::post('/keuanganinput', [KeuanganController::class, 'store'])->name('keuangan.store');
+        Route::get('/keuangan/{id}/edit', [KeuanganController::class, 'edit'])->name('keuanganedit.edit');
+        Route::put('/keuangan/{id}', [KeuanganController::class, 'update'])->name('keuanganedit.update');
+        Route::delete('/keuangan/{id}', [KeuanganController::class, 'destroy'])->name('keuangan.destroy');
+    });
 
 
     // 2.2. Rute PPID
