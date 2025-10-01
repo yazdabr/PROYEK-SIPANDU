@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TATA USAHA KEUANGAN - PORTAL DATA TERPADU</title>
+    <title>TATA USAHA SDM - PORTAL DATA TERPADU</title>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -40,15 +40,15 @@
             <div class="text-xs font-bold uppercase tracking-wide text-white rounded [letter-spacing:4px] p-4 mb-3">
                 Selamat Datang
             </div>
-            <a href="{{ url('/upkeuangan/keuangandashboard') }}" class="flex items-center space-x-2 p-3 rounded bg-[#68778B] hover:bg-gray-500 transition-all duration-300 ease-in-out">
+            <a href="{{ url('/upsdm/sdmdashboard') }}" class="flex items-center space-x-2 p-3 rounded bg-[#68778B] hover:bg-gray-500 transition-all duration-300 ease-in-out">
                 <img src="/images/dash.png" alt="Dashboard" class="w-5 h-5">
                 <span>Dashboard</span>
             </a>
-            <a href="{{ url('/upkeuangan/keuanganinput') }}" class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] transition-all duration-300 ease-in-out font-semibold text-[#003B69]">
+            <a href="{{ url('/upsdm/sdminput') }}" class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] transition-all duration-300 ease-in-out font-semibold text-[#003B69]">
                 <img src="/images/inputbiru.png" alt="" class="w-7 h-7 transition-transform duration-300 group-hover:scale-110">
                 <span class="transition-transform duration-300 group-hover:translate-x-1">Input Arsip</span>
             </a>
-            <a href="{{ url('/upkeuangan/keuangan') }}" class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] transition-all duration-300 ease-in-out font-semibold ">
+            <a href="{{ url('/upsdm/sdm') }}" class="group flex items-center space-x-2 p-3 rounded hover:bg-[#CBD2DA] transition-all duration-300 ease-in-out font-semibold ">
                 <img src="/images/daftar.png" alt="" class="w-7 h-7 transition-transform duration-300 group-hover:scale-110">
                 <span class="transition-transform duration-300 group-hover:translate-x-1">Daftar Arsip Unit</span>
             </a>
@@ -74,7 +74,7 @@
         </svg>
     </button>
     <div class="ml-auto lg:ml-0 px-3 py-3 bg-[#CBD2DA] text-[#003B69] font-bold rounded">
-        TATA USAHA KEUANGAN
+        TATA USAHA SDM
     </div>
     <form action="{{ route('logout') }}" method="POST" class="hidden lg:flex ml-auto">
         @csrf
@@ -86,7 +86,7 @@
 </header>
 
 <main class="p-4 sm:p-6 space-y-6">
-    <form action="{{ route('keuangan.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('sdm.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <div class="bg-white p-4 sm:p-6 rounded shadow">
@@ -146,16 +146,16 @@
                                             <option value="Informasi Agenda Terkait Pelaksanaan Tugas LPP RRI (Berkala)">Informasi Agenda Terkait Pelaksanaan Tugas LPP RRI (Berkala)</option>
                                             <option value="DIPA (Berkala)">DIPA (Berkala)</option>
                                             <option value="Informasi Penerimaan Calon Pegawai LPP RRI (Berkala)">Informasi Penerimaan Calon Pegawai LPP RRI (Berkala)</option>
-                                            <option value="Laporan Keuangan Audited (Berkala)">Laporan Keuangan Audited (Berkala)</option>
+                                            <option value="Laporan sdm Audited (Berkala)">Laporan sdm Audited (Berkala)</option>
                                             <option value="Rencana dan LRA (Berkala)">Rencana dan LRA (Berkala)</option>
-                                            <option value="Neraca Keuangan (Berkala)">Neraca Keuangan (Berkala)</option>
+                                            <option value="Neraca sdm (Berkala)">Neraca sdm (Berkala)</option>
                                             <option value="Laporan Arus Kas dan CaLK (Berkala)">Laporan Arus Kas dan CaLK (Berkala)</option>
                                             <option value="Daftar Investasi dan Asset (Administrasi BMN) (Berkala)">Daftar Investasi dan Asset (Administrasi BMN) (Berkala)</option>
-                                            <option value="Acara keuangan (Berkala)">Acara keuangan (Berkala)</option>
+                                            <option value="Acara sdm (Berkala)">Acara sdm (Berkala)</option>
                                             <option value="Laporan Bidang TMB (Berkala)">Laporan Bidang TMB (Berkala)</option>
                                             <option value="Laporan Bidang Pemberitaan/Tim Penyiaran (Berkala)">Laporan Bidang Pemberitaan/Tim Penyiaran (Berkala)</option>
-                                            <option value="Laporan Bidang keuangan/Tim Konten Media Baru (Berkala)">Laporan Bidang keuangan/Tim Konten Media Baru (Berkala)</option>
-                                            <option value="Laporan Bidang Keuangan (Berkala)">Laporan Bidang Keuangan (Berkala)</option>
+                                            <option value="Laporan Bidang sdm/Tim Konten Media Baru (Berkala)">Laporan Bidang sdm/Tim Konten Media Baru (Berkala)</option>
+                                            <option value="Laporan Bidang sdm (Berkala)">Laporan Bidang sdm (Berkala)</option>
                                             <option value="Laporan Bidang SDM dan Umum (Berkala)">Laporan Bidang SDM dan Umum (Berkala)</option>
                                             <option value="Daftar Informasi Publik LPP RRI (Berkala)">Daftar Informasi Publik LPP RRI (Berkala)</option>
                                             <option value="Laporan Akuntabilitas (Berkala)">Laporan Akuntabilitas (Berkala)</option>
@@ -170,7 +170,7 @@
                                             <option value="Ringkasan Program Strategis LPP RRI (Berkala)">Ringkasan Program Strategis LPP RRI (Berkala)</option>
                                             <option value="Dokumen Surat Menyurat (Berkala)">Dokumen Surat Menyurat (Berkala)</option>
                                             <option value="Informasi Terkait Penanganan Covid-19 (Berkala)">Informasi Terkait Penanganan Covid-19 (Berkala)</option>
-                                            <option value="Opini BPK RI atas Laporan Keuangan LPP RRI (Berkala)">Opini BPK RI atas Laporan Keuangan LPP RRI (Berkala)</option>
+                                            <option value="Opini BPK RI atas Laporan sdm LPP RRI (Berkala)">Opini BPK RI atas Laporan sdm LPP RRI (Berkala)</option>
                                             <option value="Penyelenggaraan Satu Data Indonesia (Berkala)">Penyelenggaraan Satu Data Indonesia (Berkala)</option>
                                             <option value="Bintang Radio RRI Tingkat Nasional (Berkala)">Bintang Radio RRI Tingkat Nasional (Berkala)</option>
                                             <option value="Formulir Pendaftaran PTQ RRI ke-53 Tahun 2023 (Berkala)">Formulir Pendaftaran PTQ RRI ke-53 Tahun 2023 (Berkala)</option>
@@ -252,8 +252,8 @@
                 {{-- Unit Pengolah --}}
                 <div>
                     <label class="font-medium mb-1 block">Unit Pengolah Arsip</label>
-                    <input type="text" value="TATA USAHA KEUANGAN" class="w-full border rounded px-3 py-2 bg-gray-100 text-gray-700" readonly>
-                    <input type="hidden" name="unit_pengolah_id" value="{{ $unitKeuangan->id }}">
+                    <input type="text" value="TATA USAHA SDM" class="w-full border rounded px-3 py-2 bg-gray-100 text-gray-700" readonly>
+                    <input type="hidden" name="unit_pengolah_id" value="{{ $unitSdm->id }}">
                 </div>
             </div>
         </div>

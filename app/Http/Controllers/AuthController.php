@@ -23,9 +23,11 @@ class AuthController extends Controller
             } elseif ($user->email === 'upsiaran@gmail.com') {
                 return redirect()->route('upsiaran.dashboard'); 
             } elseif ($user->email === 'upkeuangan@gmail.com') {
-                return redirect()->route('upkeuangan.dashboard'); // ✅ Tambahan untuk Keuangan
+                return redirect()->route('upkeuangan.dashboard'); 
             } elseif ($user->email === 'uplpu@gmail.com') {
                 return redirect()->route('uplpu.dashboard'); 
+            } elseif ($user->email === 'upsdm@gmail.com') {
+                return redirect()->route('upsdm.dashboard'); // ✅ Tambahan untuk SDM
             }
         }
 
@@ -53,9 +55,11 @@ class AuthController extends Controller
             } elseif ($email === 'upsiaran@gmail.com') {
                 return redirect()->route('upsiaran.dashboard'); 
             } elseif ($email === 'upkeuangan@gmail.com') {
-                return redirect()->route('upkeuangan.dashboard'); // ✅ Tambahan untuk Keuangan
+                return redirect()->route('upkeuangan.dashboard'); 
             } elseif ($email === 'uplpu@gmail.com') {
                 return redirect()->route('uplpu.dashboard'); 
+            } elseif ($email === 'upsdm@gmail.com') {
+                return redirect()->route('upsdm.dashboard'); // ✅ Tambahan untuk SDM
             } else {
                 Auth::logout();
                 $request->session()->invalidate();

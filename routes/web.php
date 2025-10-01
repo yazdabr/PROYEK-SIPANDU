@@ -17,6 +17,8 @@ use App\Http\Controllers\LpuController;
 use App\Http\Controllers\LpuDashboardController; 
 use App\Http\Controllers\KeuanganController;           
 use App\Http\Controllers\KeuanganDashboardController; 
+use App\Http\Controllers\SdmController;           
+use App\Http\Controllers\SdmDashboardController; 
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -125,6 +127,17 @@ Route::middleware('auth')->group(function () {
         Route::delete('/keuangan/{id}', [KeuanganController::class, 'destroy'])->name('keuangan.destroy');
     });
 
+    // 2.2. Rute UPSDM 
+    Route::prefix('upsdm')->group(function () {
+        Route::get('/sdmdashboard', [SdmDashboardController::class, 'index'])->name('upsdm.dashboard');
+        Route::get('/sdm', [SdmController::class, 'index'])->name('sdm.index');
+        Route::get('/sdminput', [SdmController::class, 'create'])->name('sdm.create');
+        Route::post('/sdminput', [SdmController::class, 'store'])->name('sdm.store');
+        Route::get('/sdm/{id}/edit', [SdmController::class, 'edit'])->name('sdmedit.edit');
+        Route::put('/sdm/{id}', [SdmController::class, 'update'])->name('sdmedit.update');
+        Route::delete('/sdm/{id}', [SdmController::class, 'destroy'])->name('sdm.destroy');
+    });
+
 
     // 2.2. Rute PPID
     Route::prefix('ppid')->group(function () {
@@ -142,16 +155,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/dap', [ArsipPublikController::class, 'index'])->name('arsip.publik');
         Route::delete('/dap/{id}', [ArsipPublikController::class, 'destroy'])->name('arsip.publik.hapus');
 
-        });
+    });
 
     // 2.3. Rute Manajemen (Contoh)
     Route::prefix('manajemen')->group(function () {
         Route::get('/mastatis', [ManajemenController::class, 'dashboard'])->name('manajemen.dashboard');
         Route::get('/laporanarsip', [ManajemenController::class, 'laporanArsip'])->name('manajemen.laporanarsip');
         Route::get('/laporanlayanan', [ManajemenController::class, 'laporanLayanan'])->name('manajemen.laporanlayanan');
-
-
-
-
-});
+    });
 });
