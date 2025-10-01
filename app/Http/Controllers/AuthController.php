@@ -28,6 +28,8 @@ class AuthController extends Controller
                 return redirect()->route('uplpu.dashboard'); 
             } elseif ($user->email === 'upsdm@gmail.com') {
                 return redirect()->route('upsdm.dashboard'); // ✅ Tambahan untuk SDM
+            } elseif ($user->email === 'upumum@gmail.com') {
+                return redirect()->route('upumum.dashboard'); // ✅ Tambahan untuk SDM
             }
         }
 
@@ -60,6 +62,8 @@ class AuthController extends Controller
                 return redirect()->route('uplpu.dashboard'); 
             } elseif ($email === 'upsdm@gmail.com') {
                 return redirect()->route('upsdm.dashboard'); // ✅ Tambahan untuk SDM
+            } elseif ($email === 'upumum@gmail.com') {
+                return redirect()->route('upumum.dashboard'); // ✅ Tambahan untuk SDM
             } else {
                 Auth::logout();
                 $request->session()->invalidate();

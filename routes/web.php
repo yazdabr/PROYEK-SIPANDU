@@ -19,6 +19,8 @@ use App\Http\Controllers\KeuanganController;
 use App\Http\Controllers\KeuanganDashboardController; 
 use App\Http\Controllers\SdmController;           
 use App\Http\Controllers\SdmDashboardController; 
+use App\Http\Controllers\UmumController;           
+use App\Http\Controllers\UmumDashboardController; 
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -136,6 +138,17 @@ Route::middleware('auth')->group(function () {
         Route::get('/sdm/{id}/edit', [SdmController::class, 'edit'])->name('sdmedit.edit');
         Route::put('/sdm/{id}', [SdmController::class, 'update'])->name('sdmedit.update');
         Route::delete('/sdm/{id}', [SdmController::class, 'destroy'])->name('sdm.destroy');
+    });
+
+    // 2.2. Rute UPUMUM 
+    Route::prefix('upumum')->group(function () {
+        Route::get('/umumdashboard', [UmumDashboardController::class, 'index'])->name('upumum.dashboard');
+        Route::get('/umum', [UmumController::class, 'index'])->name('umum.index');
+        Route::get('/umuminput', [UmumController::class, 'create'])->name('umum.create');
+        Route::post('/umuminput', [UmumController::class, 'store'])->name('umum.store');
+        Route::get('/umum/{id}/edit', [UmumController::class, 'edit'])->name('umumedit.edit');
+        Route::put('/umum/{id}', [UmumController::class, 'update'])->name('umumedit.update');
+        Route::delete('/umum/{id}', [UmumController::class, 'destroy'])->name('umum.destroy');
     });
 
 
